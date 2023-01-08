@@ -6,6 +6,6 @@ import (
 )
 
 func main() {
-	app.InitRouters()
 	dao.InitDb()
+	app.InitRouters()
 }

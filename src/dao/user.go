@@ -2,12 +2,13 @@ package dao
 
 import (
 	"fmt"
+
 	"winter-examination/src/model"
 )
 
 func AddUser(user model.User) {
-	sqlStr := "insert into `users` ( `username`, `password`, `phone`) values ( ?, ?, ?)"
-	_, err := Db.Exec(sqlStr, user.Username, user.Password, user.Phone)
+	sqlStr := "insert into `users` ( `username`, `password`, `phone`, `email`) values ( ?, ?, ?, ?)"
+	_, err := Db.Exec(sqlStr, user.Username, user.Password, user.Phone, user.Email)
 	if err != nil {
 		fmt.Println("add user fail ...")
 		return

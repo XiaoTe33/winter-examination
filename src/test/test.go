@@ -1,13 +1,37 @@
 package main
 
 import (
+	"crypto/sha256"
 	"fmt"
-	"github.com/goccy/go-json"
+
+	"winter-examination/src/app"
 	"winter-examination/src/dao"
 	"winter-examination/src/utils"
+
+	"github.com/goccy/go-json"
 )
 
 func main() {
+	s := "sha256 string"
+
+	h := sha256.New()
+
+	h.Write([]byte(s))
+
+	bs := h.Sum(nil)
+
+	fmt.Println(s)
+	fmt.Println(string(bs))
+	fmt.Println(fmt.Sprintf("%x", h.Sum(nil)))
+	fmt.Printf("%x\n", bs)
+}
+func main07() {
+	fmt.Println(utils.IsValidEmail("wwwxia.o.t.e.3.3@qq.com"))
+}
+func main06() {
+	app.InitRouters()
+}
+func main05() {
 	dao.InitDb()
 	goodsGroup := dao.QueryGoodsGroupByKind("电脑")
 	for _, goods := range goodsGroup {

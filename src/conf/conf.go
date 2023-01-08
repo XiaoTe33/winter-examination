@@ -1,6 +1,9 @@
 package conf
 
-const Port = ":9090"
+const (
+	FrontEndPort = ":9091"
+	BackEndPort  = ":9090"
+)
 
 const (
 	Database = "mysql"

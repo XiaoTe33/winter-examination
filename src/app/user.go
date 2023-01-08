@@ -2,21 +2,24 @@ package app
 
 import (
 	"fmt"
-	"net/http"
+	"winter-examination/src/service"
 
 	"github.com/gin-gonic/gin"
 )
 
-func Index(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"status": "200",
-		"msg":    "hello world!",
-	})
-}
 func Login(c *gin.Context) {
+	token := c.PostForm("token")
 	username := c.PostForm("username")
 	password := c.PostForm("password")
-	fmt.Println(username, password)
+	fmt.Println(token, username, password)
+	msg := service.Login(token, username, password)
+	if msg != "ok" {
+		c.JSON(200, gin.H{
+			"msg": msg,
+		})
+		return
+	}
+
 }
 func Register(c *gin.Context) {
 	username := c.PostForm("username")
@@ -25,6 +28,10 @@ func Register(c *gin.Context) {
 	email := c.PostForm("email")
 	phone := c.PostForm("phone")
 	fmt.Println(username, password, password2, email, phone)
+	msg := service.Register(username, password, password2, email, phone)
+	c.JSON(200, gin.H{
+		"msg": msg,
+	})
 }
 func Logout(c *gin.Context) {
 
