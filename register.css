@@ -1,0 +1,10 @@
+.center{
+    text-align:center;
+    font-size:8px;
+}
+.center a{
+    text-decoration: none;
+}
+#left{
+    text-align: right;
+}
