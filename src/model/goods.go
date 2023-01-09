@@ -2,6 +2,7 @@ package model
 
 type Goods struct {
 	Id         string `json:"id"`
+	ShopId     string `json:"shopId"`
 	Name       string `json:"name"`
 	Kind       string `json:"kind"`
 	Price      string `json:"price"`

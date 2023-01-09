@@ -1,18 +1,23 @@
 package app
 
 import (
-	"github.com/gin-gonic/gin"
 	"winter-examination/src/model"
+	"winter-examination/src/service"
+
+	"github.com/gin-gonic/gin"
 )
 
 func AddGoods(c *gin.Context) {
 	name := c.PostForm("name")
 	kind := c.PostForm("kind")
 	price := c.PostForm("price")
+	shopId := c.PostForm("shop_id")
+	service.AddGoods(name, price, kind, shopId)
 	c.JSON(200, model.Goods{
-		Name:  name,
-		Kind:  kind,
-		Price: price,
+		Name:   name,
+		Kind:   kind,
+		Price:  price,
+		ShopId: shopId,
 	})
 }
 

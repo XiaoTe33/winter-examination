@@ -9,7 +9,8 @@ create table if not exists `goods`
     `goods_kind` varchar(256) default '其他' not null comment '商品种类',
     `goods_price` float not null comment '商品价格',
     `goods_sold_amount` bigint default 0 not null comment '销量',
-    `goods_score` varchar(20) default '5.0' not null comment '商品评分'
+    `goods_score` varchar(20) default '5.0' not null comment '商品评分',
+    `goods_shop_id` varchar(20) not null comment '所属店铺'
 ) comment '`goods`';
 
 insert into `goods` (`goods_name`, `goods_kind`, `goods_price`, `goods_sold_amount`, `goods_score`) values ('谭鸿煊', '服装', 67485.86, 7, '3.5');

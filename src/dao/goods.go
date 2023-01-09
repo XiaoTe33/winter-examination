@@ -8,8 +8,8 @@ import (
 )
 
 func AddGoods(goods model.Goods) {
-	sqlStr := "insert into `goods` (`goods_name`, `goods_kind`, `goods_price`) values (?, ?, ?)"
-	_, err := Db.Exec(sqlStr, goods.Name, goods.Kind, goods.Price)
+	sqlStr := "insert into `goods` (`goods_name`, `goods_kind`, `goods_price`, `goods_shop_id`) values (?, ?, ?, ?)"
+	_, err := Db.Exec(sqlStr, goods.Name, goods.Kind, goods.Price, goods.ShopId)
 	if err != nil {
 		fmt.Println("add goods failed ...")
 		return
