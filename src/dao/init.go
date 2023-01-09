@@ -3,6 +3,7 @@ package dao
 import (
 	"database/sql"
 	"fmt"
+
 	"winter-examination/src/conf"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -11,6 +12,7 @@ import (
 var Db *sql.DB
 
 func InitDb() {
+	fmt.Println()
 	var err error
 	Db, err = sql.Open(conf.Database, conf.MysqlDNS)
 	if err != nil {
@@ -23,5 +25,4 @@ func InitDb() {
 		return
 	}
 	fmt.Println("mysql init success")
-	return
 }

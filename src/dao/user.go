@@ -2,12 +2,13 @@ package dao
 
 import (
 	"fmt"
+
 	"winter-examination/src/model"
 )
 
 func AddUser(user model.User) {
-	sqlStr := "insert into `users` ( `username`, `password`, `phone`) values ( ?, ?, ?)"
-	_, err := Db.Exec(sqlStr, user.Username, user.Password, user.Phone)
+	sqlStr := "insert into `users` ( `username`, `password`, `phone`, `email`) values ( ?, ?, ?, ?)"
+	_, err := Db.Exec(sqlStr, user.Username, user.Password, user.Phone, user.Email)
 	if err != nil {
 		fmt.Println("add user fail ...")
 		return
@@ -15,10 +16,10 @@ func AddUser(user model.User) {
 }
 
 func UpdateUser(user model.User) {
-	sqlStr := "update 'users' set username = ?, password = ?, phone = ?, email = ?, money = ?, photo = ?, shopping_car = ?, address= ? where user_id = ?"
+	sqlStr := "update users t set t.username = ?, t.password = ?, t.phone = ?, t.email = ?, t.money = ?, t.photo = ?, t.shopping_car = ?, t.address = ? where t.user_id = ?"
 	_, err := Db.Exec(sqlStr, user.Username, user.Password, user.Phone, user.Email, user.Money, user.Photo, user.ShoppingCar, user.Address, user.Id)
 	if err != nil {
-		fmt.Println("update user failed ...")
+		fmt.Println("update user failed ...\n", err)
 		return
 	}
 }
