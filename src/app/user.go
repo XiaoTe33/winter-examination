@@ -21,8 +21,8 @@ func Login(c *gin.Context) {
 		return
 	}
 	c.JSON(200, gin.H{
-		"msg":   msg,
-		"token": utils.CreateJWT(username),
+		"msg":             msg,
+		"refreshed_token": utils.CreateJWT(username),
 	})
 
 }

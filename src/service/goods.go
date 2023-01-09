@@ -75,7 +75,7 @@ func QueryGoods(id string) (msg string, goods model.Goods) {
 	return "找不到id为" + id + "的商品捏", model.Goods{}
 }
 
-func QueryGoodsGroup(name string, kind string, mode string) (msg string, goodsGroup []model.Goods) {
+func QueryGoodsGroup(name string, kind string, shopId string, mode string) (msg string, goodsGroup []model.Goods) {
 
 	if name != "" {
 		if goodsGroup = dao.QueryGoodsGroupByName(name, mode); goodsGroup != nil {
@@ -88,6 +88,12 @@ func QueryGoodsGroup(name string, kind string, mode string) (msg string, goodsGr
 			return "ok", goodsGroup
 		}
 		return "找不到kind为" + kind + "的商品捏", nil
+	}
+	if shopId != "" {
+		if goodsGroup = dao.QueryGoodsGroupByShopId(shopId, mode); goodsGroup != nil {
+			return "ok", goodsGroup
+		}
+		return "找不到shopId为" + shopId + "的商品捏", nil
 	}
 	return "参数还没写就传？", nil
 }

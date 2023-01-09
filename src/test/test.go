@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto/sha256"
+	"encoding/base64"
 	"fmt"
 	"strconv"
 	"time"
@@ -14,6 +15,13 @@ import (
 )
 
 func main() {
+	fmt.Println(base64.URLEncoding.EncodeToString([]byte("a")))
+	var a []byte
+	var b = "sda"
+
+	base64.NewEncoding("a").Encode(a, []byte(b))
+}
+func main11() {
 	dao.InitDb()
 	goodsGroup := dao.QueryGoodsGroupByKind("手机", "11")
 	fmt.Println(goodsGroup)
@@ -73,7 +81,7 @@ func main05() {
 
 func main04() {
 	dao.InitDb()
-	goodsGroup := dao.QueryGoodsGroupByName("朱")
+	goodsGroup := dao.QueryGoodsGroupByName("朱", "10")
 	for _, goods := range goodsGroup {
 		fmt.Println(goods)
 	}
