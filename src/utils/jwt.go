@@ -21,7 +21,7 @@ func CreateJWT(username string) string {
 		fmt.Println("marshal err")
 		return ""
 	}
-	jwtHeader := base64.URLEncoding.EncodeToString(header)
+	jwtHeader := base64.StdEncoding.EncodeToString(header)
 
 	body, err := json.Marshal(map[string]string{
 		"aud": username,
@@ -32,7 +32,7 @@ func CreateJWT(username string) string {
 		fmt.Println("marshal err")
 		return ""
 	}
-	jwtBody := base64.URLEncoding.EncodeToString(body)
+	jwtBody := base64.StdEncoding.EncodeToString(body)
 
 	sign := SHA256Secret(jwtHeader + "." + jwtBody)
 	return jwtHeader + "." + jwtBody + "." + sign
