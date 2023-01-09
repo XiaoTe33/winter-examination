@@ -59,3 +59,16 @@ func QueryUser(c *gin.Context) {
 		"user": user,
 	})
 }
+
+func UpdateUser(c *gin.Context) {
+	id := c.PostForm("id")
+	username := c.PostForm("username")
+	password := c.PostForm("password")
+	phone := c.PostForm("phone")
+	email := c.PostForm("email")
+	photo := c.PostForm("photo")
+	msg := service.UpdateUser(id, username, password, phone, email, photo)
+	c.JSON(200, gin.H{
+		"msg": msg,
+	})
+}

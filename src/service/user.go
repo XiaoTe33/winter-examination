@@ -83,3 +83,48 @@ func QueryUser(id string, username string, phone string, email string) (msg stri
 	}
 	return "not find", model.User{}
 }
+
+func UpdateUser(id string, username string, password string, phone string, email string, photo string) (msg string) {
+	user := dao.QueryUserById(id)
+	if user == (model.User{}) {
+		return "user not found"
+	}
+	if username != "" {
+		if !utils.IsValidUsername(username) {
+			return "用户名需在1~20个字符之间"
+		}
+		if utils.IsRegisteredUsername(username) {
+			return "用户名已存在"
+		}
+		user.Username = username
+	}
+	if password != "" {
+		if !utils.IsValidPassword(password) {
+			return "密码由6~20位数字、字母和部分特殊字符组成"
+		}
+		user.Password = utils.SHA256Secret(password)
+	}
+	if phone != "" {
+		if !utils.IsValidPhone(phone) {
+			return "请输入正确的手机号"
+		}
+		if utils.IsRegisteredPhone(phone) {
+			return "手机号已被注册"
+		}
+		user.Phone = phone
+	}
+	if email != "" {
+		if !utils.IsValidEmail(email) {
+			return "请输入正确的邮箱"
+		}
+		if utils.IsRegisteredEmail(email) {
+			return "邮箱已被注册"
+		}
+		user.Email = email
+	}
+	if photo != "" {
+		user.Photo = photo
+	}
+	dao.UpdateUser(user)
+	return "ok"
+}

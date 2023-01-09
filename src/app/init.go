@@ -25,6 +25,7 @@ func initBackEndRouters() {
 		u.POST("/register", Register) //注册
 		u.GET("/logout", Logout)      //退出登录
 		u.POST("/query", QueryUser)
+		u.POST("/update", UpdateUser)
 	}
 
 	g := r.Group("/goods") //商品模块
