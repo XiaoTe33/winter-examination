@@ -30,7 +30,8 @@ func initBackEndRouters() {
 
 	g := r.Group("/goods") //商品模块
 	{
-		g.POST("/add", AddGoods)       //新增商品
+		g.POST("/add", AddGoods) //新增商品
+		g.POST("/update", UpdateGoods)
 		g.POST("/delete", DeleteGoods) //删除商品
 		g.POST("/query", QueryGoods)   //查找商品
 	}

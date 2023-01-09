@@ -12,6 +12,6 @@ func IsValidGoodsKind(kind string) bool {
 
 func IsValidGoodsPrice(price string) bool {
 	return regexp.
-		MustCompile(`^[1-9]*[0-9].[0-9]{2}$`).
+		MustCompile(`^[1-9]*[0-9](.[0-9]{1,2})?$`).
 		MatchString(price)
 }

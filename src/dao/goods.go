@@ -24,8 +24,19 @@ func UpdateGoods(goods model.Goods) {
 	}
 }
 
+func QueryGoodsById(id string) model.Goods {
+	sqlStr := "select goods_id, goods_is_deleted, goods_name, goods_kind, goods_price, goods_sold_amount, goods_score, goods_shop_id from goods where goods_id = ?;"
+	row := Db.QueryRow(sqlStr, id)
+	goods := model.Goods{}
+	err := row.Scan(&goods.Id, &goods.IsDeleted, &goods.Name, &goods.Kind, &goods.Price, &goods.SoldAmount, &goods.Score, &goods.ShopId)
+	if err != nil {
+		fmt.Println("QueryGoodsById failed ...")
+		return model.Goods{}
+	}
+	return goods
+}
 func QueryGoodsGroupByName(name string) []model.Goods {
-	sqlStr := "select goods_id, goods_is_deleted, goods_name, goods_kind, goods_price, goods_sold_amount, goods_score from goods where goods_name like ?"
+	sqlStr := "select goods_id, goods_is_deleted, goods_name, goods_kind, goods_price, goods_sold_amount, goods_score, goods_shop_id from goods where goods_name like ?"
 	query, err := Db.Query(sqlStr, "%"+name+"%")
 	if err != nil {
 		fmt.Println("query goods by name failed1 ...\n", err)
@@ -40,7 +51,7 @@ func QueryGoodsGroupByName(name string) []model.Goods {
 	var goodsGroup []model.Goods
 	for query.Next() {
 		var goods = model.Goods{}
-		err := query.Scan(&goods.Id, &goods.IsDeleted, &goods.Name, &goods.Kind, &goods.Price, &goods.SoldAmount, &goods.Score)
+		err := query.Scan(&goods.Id, &goods.IsDeleted, &goods.Name, &goods.Kind, &goods.Price, &goods.SoldAmount, &goods.Score, &goods.ShopId)
 		if err != nil {
 			fmt.Println("query goods by name failed2 ...\n", err)
 			return nil

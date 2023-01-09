@@ -21,6 +21,17 @@ func AddGoods(c *gin.Context) {
 	})
 }
 
+func UpdateGoods(c *gin.Context) {
+	id := c.PostForm("id")
+	name := c.PostForm("name")
+	price := c.PostForm("price")
+	kind := c.PostForm("kind")
+	msg := service.UpdateGoods(id, name, price, kind)
+	c.JSON(200, gin.H{
+		"msg": msg,
+	})
+}
+
 func DeleteGoods(c *gin.Context) {
 	id := c.PostForm("id")
 	c.JSON(200, gin.H{
