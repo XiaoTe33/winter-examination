@@ -48,5 +48,6 @@ func QueryUserByKeyValue(key string, value string) model.User {
 		fmt.Println("err :", err)
 		return model.User{}
 	}
+	user.Password = ""
 	return user
 }

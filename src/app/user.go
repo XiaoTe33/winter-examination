@@ -41,3 +41,21 @@ func Register(c *gin.Context) {
 func Logout(c *gin.Context) {
 
 }
+
+func QueryUser(c *gin.Context) {
+	id := c.PostForm("id")
+	username := c.PostForm("username")
+	phone := c.PostForm("phone")
+	email := c.PostForm("email")
+	msg, user := service.QueryUser(id, username, phone, email)
+	if msg != "ok" {
+		c.JSON(200, gin.H{
+			"msg": msg,
+		})
+		return
+	}
+	c.JSON(200, gin.H{
+		"msg":  "ok",
+		"user": user,
+	})
+}

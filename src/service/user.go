@@ -59,3 +59,27 @@ func Login(token string, username string, password string) (msg string) {
 	}
 	return "ok"
 }
+
+func QueryUser(id string, username string, phone string, email string) (msg string, user model.User) {
+	if id != "" {
+		if user = dao.QueryUserById(id); user != (model.User{}) {
+			return "ok", user
+		}
+	}
+	if username != "" {
+		if user = dao.QueryUserByUsername(username); user != (model.User{}) {
+			return "ok", user
+		}
+	}
+	if phone != "" {
+		if user = dao.QueryUserByPhone(phone); user != (model.User{}) {
+			return "ok", user
+		}
+	}
+	if email != "" {
+		if user = dao.QueryUserByEmail(email); user != (model.User{}) {
+			return "ok", user
+		}
+	}
+	return "not find", model.User{}
+}
