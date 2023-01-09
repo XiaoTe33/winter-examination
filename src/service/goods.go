@@ -58,3 +58,36 @@ func UpdateGoods(id string, name string, price string, kind string) (msg string)
 	dao.UpdateGoods(goods)
 	return "ok"
 }
+
+func DeleteGoods(id string) (msg string) {
+	goods := dao.QueryGoodsById(id)
+	if goods == (model.Goods{}) {
+		return "找不到id为" + id + "的商品捏"
+	}
+	goods.IsDeleted = "1"
+	dao.UpdateGoods(goods)
+	return "ok"
+}
+func QueryGoods(id string) (msg string, goods model.Goods) {
+	if goods = dao.QueryGoodsById(id); goods != (model.Goods{}) {
+		return "ok", goods
+	}
+	return "找不到id为" + id + "的商品捏", model.Goods{}
+}
+
+func QueryGoodsGroup(name string, kind string, mode string) (msg string, goodsGroup []model.Goods) {
+
+	if name != "" {
+		if goodsGroup = dao.QueryGoodsGroupByName(name, mode); goodsGroup != nil {
+			return "ok", goodsGroup
+		}
+		return "找不到name为" + name + "的商品捏", nil
+	}
+	if kind != "" {
+		if goodsGroup = dao.QueryGoodsGroupByKind(kind, mode); goodsGroup != nil {
+			return "ok", goodsGroup
+		}
+		return "找不到kind为" + kind + "的商品捏", nil
+	}
+	return "参数还没写就传？", nil
+}

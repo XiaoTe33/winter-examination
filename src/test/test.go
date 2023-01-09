@@ -14,6 +14,11 @@ import (
 )
 
 func main() {
+	dao.InitDb()
+	goodsGroup := dao.QueryGoodsGroupByKind("手机", "11")
+	fmt.Println(goodsGroup)
+}
+func main10() {
 	jwt := utils.CreateJWT("xiaote33")
 	fmt.Println(utils.IsValidJWT(jwt))
 }
@@ -60,7 +65,7 @@ func main06() {
 }
 func main05() {
 	dao.InitDb()
-	goodsGroup := dao.QueryGoodsGroupByKind("电脑")
+	goodsGroup := dao.QueryGoodsGroupByKind("电脑", "10")
 	for _, goods := range goodsGroup {
 		fmt.Println(goods)
 	}

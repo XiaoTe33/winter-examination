@@ -34,6 +34,7 @@ func UpdateGoods(c *gin.Context) {
 
 func DeleteGoods(c *gin.Context) {
 	id := c.PostForm("id")
+	service.DeleteGoods(id)
 	c.JSON(200, gin.H{
 		"status": "200",
 		"id":     id,
@@ -42,11 +43,20 @@ func DeleteGoods(c *gin.Context) {
 
 func QueryGoods(c *gin.Context) {
 	id := c.PostForm("id")
+	if id != "" {
+		msg, goods := service.QueryGoods(id)
+		c.JSON(200, gin.H{
+			"msg":  msg,
+			"data": goods,
+		})
+		return
+	}
 	name := c.PostForm("name")
 	kind := c.PostForm("kind")
+	mode := c.PostForm("mode")
+	msg, goodsGroup := service.QueryGoodsGroup(name, kind, mode)
 	c.JSON(200, gin.H{
-		"id":   id,
-		"name": name,
-		"kind": kind,
+		"msg":  msg,
+		"data": goodsGroup,
 	})
 }
