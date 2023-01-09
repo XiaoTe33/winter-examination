@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 	"winter-examination/src/service"
+	"winter-examination/src/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,6 +20,10 @@ func Login(c *gin.Context) {
 		})
 		return
 	}
+	c.JSON(200, gin.H{
+		"msg":   msg,
+		"token": utils.CreateJWT(username),
+	})
 
 }
 func Register(c *gin.Context) {

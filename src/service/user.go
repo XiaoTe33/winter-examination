@@ -34,7 +34,7 @@ func Register(username string, password string, password2 string, email string, 
 
 	dao.AddUser(model.User{
 		Username: username,
-		Password: password,
+		Password: utils.SHA256Secret(password),
 		Phone:    phone,
 		Email:    email,
 	})
@@ -42,8 +42,8 @@ func Register(username string, password string, password2 string, email string, 
 }
 
 func Login(token string, username string, password string) (msg string) {
-	if token != "" {
-		return "token登录还没做好"
+	if utils.IsValidJWT(token) {
+		return "ok"
 	}
 	if !utils.IsValidUsername(username) {
 		return "用户名需在1~20个字符之间"

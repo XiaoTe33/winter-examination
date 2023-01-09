@@ -4,10 +4,14 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"strconv"
 	"strings"
+	"time"
+
+	"winter-examination/src/conf"
 )
 
-func CreateJWT(data any) string {
+func CreateJWT(username string) string {
 
 	header, err := json.Marshal(map[string]string{
 		"alg": "HS256",
@@ -19,10 +23,10 @@ func CreateJWT(data any) string {
 	}
 	jwtHeader := base64.URLEncoding.EncodeToString(header)
 
-	body, err := json.Marshal(map[string]interface{}{
-		"iss": data,
-		"exp": "20231216",
-		"jti": "100",
+	body, err := json.Marshal(map[string]string{
+		"aud": username,
+		"exp": strconv.FormatInt(time.Now().Add(time.Second*conf.JWTLastTime).Unix(), 10),
+		"nbf": strconv.FormatInt(time.Now().Unix(), 10),
 	})
 	if err != nil {
 		fmt.Println("marshal err")
@@ -42,5 +46,20 @@ func IsValidJWT(jwt string) bool {
 	if arr[2] != SHA256Secret(arr[0]+"."+arr[1]) {
 		return false
 	}
-	return true
+	var data = map[string]string{}
+	decodeString, err2 := base64.StdEncoding.DecodeString(arr[1])
+	if err2 != nil {
+		fmt.Println("decodeString failed ...")
+	}
+	err := json.Unmarshal(decodeString, &data)
+	if err != nil {
+		fmt.Println("json unmarshal failed...", err)
+		return false
+	}
+	i, err := strconv.ParseInt(data["exp"], 10, 64)
+	if err != nil {
+		fmt.Println("strconv ParseInt failed ...")
+		return false
+	}
+	return time.Unix(i, 0).After(time.Now())
 }

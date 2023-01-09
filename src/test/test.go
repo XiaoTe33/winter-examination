@@ -3,6 +3,8 @@ package main
 import (
 	"crypto/sha256"
 	"fmt"
+	"strconv"
+	"time"
 
 	"winter-examination/src/app"
 	"winter-examination/src/dao"
@@ -12,6 +14,31 @@ import (
 )
 
 func main() {
+	jwt := utils.CreateJWT("xiaote33")
+	fmt.Println(utils.IsValidJWT(jwt))
+}
+
+func main09() {
+	fmt.Println(time.Now().Unix())
+	fmt.Println(time.Now().UnixMicro())
+	JsonData, _ := json.Marshal(map[string]string{
+		"msg": "1673195178",
+	})
+	var dataMap = map[string]string{}
+	err := json.Unmarshal(JsonData, &dataMap)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(dataMap["msg"])
+	i, err := strconv.ParseInt(dataMap["msg"], 10, 64)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(i)
+	fmt.Println(time.Unix(i, 0).Before(time.Now()))
+}
+
+func main08() {
 	s := "sha256 string"
 
 	h := sha256.New()
