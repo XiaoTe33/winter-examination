@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"strconv"
 	"time"
+	"winter-examination/src/model"
 
 	"winter-examination/src/app"
 	"winter-examination/src/dao"
@@ -15,6 +16,32 @@ import (
 )
 
 func main() {
+
+	slice := []model.Goods{{
+		Name: "1",
+	}, {
+		Name: "2",
+	}, {
+		Name: "3",
+	}}
+	jsonStr, err := json.Marshal(slice)
+	if err != nil {
+		fmt.Println("json.Marshal(slice) failed ...", err)
+	}
+	fmt.Println(string(jsonStr))
+	var slice2 []model.Goods
+	err = json.Unmarshal(jsonStr, &slice2)
+	if err != nil {
+		fmt.Println("json.Unmarshal(jsonStr,slice2) failed ...", err)
+	}
+	fmt.Println(slice2)
+}
+
+func main13() {
+	token := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiLmnKjlja/kuqbpkqYiLCJleHAiOiIxNjczMzM1MTc1IiwibmJmIjoiMTY3MzMzMTU3NSJ9.4e3ed0d2617a57f231638999e7fdda8ed6b9c9a69baadce6f206fa3f025c06c2"
+	fmt.Println(utils.GetUsernameByToken(token))
+}
+func main12() {
 	fmt.Println(base64.URLEncoding.EncodeToString([]byte("a")))
 	var a []byte
 	var b = "sda"

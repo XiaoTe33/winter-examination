@@ -63,3 +63,20 @@ func IsValidJWT(jwt string) bool {
 	}
 	return time.Unix(i, 0).After(time.Now())
 }
+
+func GetUsernameByToken(token string) (username string) {
+	arr := strings.Split(token, ".")
+
+	decodingString, err := base64.StdEncoding.DecodeString(arr[1])
+	if err != nil {
+		fmt.Println("base64.StdEncoding.DecodeString failed ...")
+		return ""
+	}
+	var data = map[string]string{}
+	err = json.Unmarshal(decodingString, &data)
+	if err != nil {
+		fmt.Println("json.Unmarshal(decodingString,&data) failed ...")
+		return ""
+	}
+	return data["aud"]
+}
