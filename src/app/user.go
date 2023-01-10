@@ -20,9 +20,16 @@ func Login(c *gin.Context) {
 		})
 		return
 	}
+	if username != "" {
+		c.JSON(200, gin.H{
+			"msg":             msg,
+			"refreshed_token": utils.CreateJWT(username),
+		})
+		return
+	}
 	c.JSON(200, gin.H{
-		"msg":   msg,
-		"token": utils.CreateJWT(username),
+		"msg":             msg,
+		"refreshed_token": utils.CreateJWT(utils.GetUsernameByToken(token)),
 	})
 
 }

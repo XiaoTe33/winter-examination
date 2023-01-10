@@ -11,7 +11,7 @@ func InitRouters() {
 	go initBackEndRouters()
 	gin.SetMode(gin.ReleaseMode)
 	time.Sleep(3 * time.Second)
-	go initFrontEndRouters()
+	//go initFrontEndRouters()
 	forever := make(chan int)
 	<-forever
 }

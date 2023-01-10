@@ -21,7 +21,7 @@ func CreateJWT(username string) string {
 		fmt.Println("marshal err")
 		return ""
 	}
-	jwtHeader := base64.URLEncoding.EncodeToString(header)
+	jwtHeader := base64.StdEncoding.EncodeToString(header)
 
 	body, err := json.Marshal(map[string]string{
 		"aud": username,
@@ -32,7 +32,7 @@ func CreateJWT(username string) string {
 		fmt.Println("marshal err")
 		return ""
 	}
-	jwtBody := base64.URLEncoding.EncodeToString(body)
+	jwtBody := base64.StdEncoding.EncodeToString(body)
 
 	sign := SHA256Secret(jwtHeader + "." + jwtBody)
 	return jwtHeader + "." + jwtBody + "." + sign
@@ -62,4 +62,21 @@ func IsValidJWT(jwt string) bool {
 		return false
 	}
 	return time.Unix(i, 0).After(time.Now())
+}
+
+func GetUsernameByToken(token string) (username string) {
+	arr := strings.Split(token, ".")
+
+	decodingString, err := base64.StdEncoding.DecodeString(arr[1])
+	if err != nil {
+		fmt.Println("base64.StdEncoding.DecodeString failed ...")
+		return ""
+	}
+	var data = map[string]string{}
+	err = json.Unmarshal(decodingString, &data)
+	if err != nil {
+		fmt.Println("json.Unmarshal(decodingString,&data) failed ...")
+		return ""
+	}
+	return data["aud"]
 }
