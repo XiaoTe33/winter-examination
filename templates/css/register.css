@@ -9,46 +9,71 @@ a {
 
 .div1{
     height:100px;
-    width:970px;
+    width:975px;
     margin:0 auto;
 }
 #logo1{
     display:block;
-    height:30px;
-    width:100px;
-    background-image: url();
-}
+    float:left;
+    height:100px;
+    width: 200px;
+    background: url(../images/registerheader.png) center no-repeat;
+}   
 .lefttop{
+    float:right;
+    height:100px;
+}
+.lefttop p{
+    margin-top: 45px;
     text-align: center;
-    font: 12px 'Microsoft YaHei';
+    font: 10px 'Microsoft YaHei';
+    padding:7px;
     border:#fecd66 2px solid;
     background: #fefff1;
+}
+.lefttop a{
+    float:right;
 }
 
 .div2{
     height:570px;
-    width:970px;
+    background: url(../images/registermain.jpg) center no-repeat;
+}
+.ddiv2{
+    width: 975px;
+    height: 570px;
+    margin:0 auto;
+    /* background-color: #fecd66; */
 }
 .suning{
     float:left;
     display:block;
-    width:630px;
-    height:500px;
-    background-color: aqua;
+    width:600px;
+    height:570px;
 }
 .login{
     float:left;
-    width:300px;
-    height:300px;
-    background-color: aquamarine;
+    width:355px;
+    height:425px;
+    margin-left: 10px;
+    margin-top: 50px;
+    background-color: rgb(252, 252, 252);
 }
 h3 {
-    width:149px;
-    height:25px;
+    width:175px;
+    height:48px;
     float:left;
     border-bottom:1px solid #bcb9b9;
     font-weight: normal;
     text-align: center;
+    line-height: 48px;
+    margin-bottom: 42px;
+}
+.login input{
+    height:40px;
+    width:300px;
+    margin-bottom:25px;
+    margin-left:25px;
 }
 
 
