@@ -2,6 +2,7 @@ package app
 
 import (
 	"fmt"
+
 	"winter-examination/src/service"
 	"winter-examination/src/utils"
 
@@ -46,7 +47,10 @@ func Register(c *gin.Context) {
 	})
 }
 func Logout(c *gin.Context) {
-
+	c.JSON(200, gin.H{
+		"msg":   "ok",
+		"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiLmnKjlja/kuqbpkqYiLCJleHAiOiIxNjczMzM3NDc2IiwibmJmIjoiMTY3MzMzMzg3NiJ9.ebe0a8ef4d248d1df6ed038f31522c74e491feda31e186141ebc514122da8fe2",
+	})
 }
 
 func QueryUser(c *gin.Context) {
@@ -77,5 +81,13 @@ func UpdateUser(c *gin.Context) {
 	msg := service.UpdateUser(id, username, password, phone, email, photo)
 	c.JSON(200, gin.H{
 		"msg": msg,
+	})
+}
+
+func QueryAllUsers(c *gin.Context) {
+	msg, users := service.QueryAllUsers()
+	c.JSON(200, gin.H{
+		"msg":  msg,
+		"data": users,
 	})
 }

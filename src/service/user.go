@@ -128,3 +128,7 @@ func UpdateUser(id string, username string, password string, phone string, email
 	dao.UpdateUser(user)
 	return "ok"
 }
+
+func QueryAllUsers() (msg string, users []model.User) {
+	return "ok", dao.QueryAllUsers()
+}

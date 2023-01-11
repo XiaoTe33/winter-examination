@@ -1,3 +1,4 @@
+-- `users`
 create database if not exists winter_examination_database;
 use winter_examination_database;
 create table if not exists `users`

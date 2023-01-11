@@ -8,6 +8,6 @@ type User struct {
 	Email       string `json:"email"`
 	Money       string `json:"money"`
 	Photo       string `json:"photo"`
-	ShoppingCar string `json:"shopping_car"`
+	ShoppingCar string `json:"shoppingCar"`
 	Address     string `json:"address"`
 }

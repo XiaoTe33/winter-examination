@@ -57,3 +57,12 @@ func QueryGoods(c *gin.Context) {
 		"data": goodsGroup,
 	})
 }
+
+func QueryAllGoods(c *gin.Context) {
+	mode := c.PostForm("mode")
+	msg, goodsGroup := service.QueryAllGoods(mode)
+	c.JSON(200, gin.H{
+		"msg":  msg,
+		"data": goodsGroup,
+	})
+}

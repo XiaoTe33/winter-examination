@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"database/sql"
 	"fmt"
 
 	"winter-examination/src/model"
@@ -49,4 +50,30 @@ func QueryUserByKeyValue(key string, value string) model.User {
 		return model.User{}
 	}
 	return user
+}
+
+func QueryAllUsers() []model.User {
+	sqlStr := "select user_id, username, password, phone, email, money, photo, shopping_car, address from users "
+	rows, err := Db.Query(sqlStr)
+	defer func(rows *sql.Rows) {
+		err := rows.Close()
+		if err != nil {
+			fmt.Println("QueryAllUsers rows.Close() failed ... ")
+		}
+	}(rows)
+	if err != nil {
+		fmt.Println("QueryAllUsers Db.Query(sqlStr) failed ...")
+		return nil
+	}
+	var users []model.User
+	for rows.Next() {
+		var user model.User
+		err = rows.Scan(&user.Id, &user.Username, &user.Password, &user.Phone, &user.Email, &user.Money, &user.Photo, &user.ShoppingCar, &user.Address)
+		if err != nil {
+			fmt.Println("QueryAllUsers rows.Scan failed ...")
+			return nil
+		}
+		users = append(users, user)
+	}
+	return users
 }

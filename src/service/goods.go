@@ -97,3 +97,7 @@ func QueryGoodsGroup(name string, kind string, shopId string, mode string) (msg 
 	}
 	return "参数还没写就传？", nil
 }
+
+func QueryAllGoods(mode string) (msg string, goodsGroup []model.Goods) {
+	return "ok", dao.QueryAllGoods(mode)
+}
