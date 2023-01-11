@@ -48,6 +48,13 @@ func initBackEndRouters() {
 		s.POST("/queryAll", QueryAllShops)
 	}
 
+	o := r.Group("/order")
+	{
+		o.POST("/add", AddOrder)
+		o.POST("/query", QueryOrders)
+
+	}
+
 	r.Run(conf.BackEndPort)
 }
 func initFrontEndRouters() {
