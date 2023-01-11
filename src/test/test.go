@@ -16,6 +16,9 @@ import (
 )
 
 func main() {
+	fmt.Println(utils.GetNowTime())
+}
+func main15() {
 	dao.InitDb()
 	//fmt.Println(dao.QueryAllUsers())
 	fmt.Println(dao.QueryAllGoods("20"))

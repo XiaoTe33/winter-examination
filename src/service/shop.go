@@ -21,18 +21,20 @@ func AddShop(shopName string, token string) (msg string) {
 	return "ok"
 }
 
-func UpdateShop(token string, shopName string) (msg string) {
-	if !utils.IsValidShopName(shopName) {
-		return "shopName不能超过30字"
-	}
-	if utils.IsRegisteredShopName(shopName) {
-		return "shopName已被注册"
-	}
+func UpdateShop(token string, shopName string, newShopName string) (msg string) {
 	owner := utils.GetUsernameByToken(token)
-	dao.UpdateShop(model.Shop{
-		Name:  shopName,
-		Owner: owner,
-	})
+	shop := dao.QueryShopsByOwnerAndShopName(owner, shopName)
+	if shop == (model.Shop{}) {
+		return "无法找到shopName为" + shopName + "的shop"
+	}
+	if !utils.IsValidShopName(newShopName) {
+		return "newShopName不能超过30字"
+	}
+	if utils.IsRegisteredShopName(newShopName) {
+		return "newShopName已被注册"
+	}
+	shop.Name = newShopName
+	dao.UpdateShop(shop)
 	return "ok"
 }
 

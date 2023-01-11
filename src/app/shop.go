@@ -18,7 +18,8 @@ func AddShop(c *gin.Context) {
 func UpdateShop(c *gin.Context) {
 	token := c.PostForm("token")
 	shopName := c.PostForm("shopName")
-	msg := service.UpdateShop(token, shopName)
+	newShopName := c.PostForm("newShopName")
+	msg := service.UpdateShop(token, shopName, newShopName)
 	c.JSON(200, gin.H{
 		"msg": msg,
 	})
