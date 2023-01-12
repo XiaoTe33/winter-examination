@@ -6,16 +6,24 @@ import (
 	"fmt"
 	"strconv"
 	"time"
-	"winter-examination/src/model"
 
 	"winter-examination/src/app"
 	"winter-examination/src/dao"
+	"winter-examination/src/model"
 	"winter-examination/src/utils"
 
 	"github.com/goccy/go-json"
 )
 
-func main() {
+func main16() {
+	fmt.Println(time.Now().Format("2006-01-02 15:04:05"))
+}
+func main15() {
+	dao.InitDb()
+	//fmt.Println(dao.QueryAllUsers())
+	fmt.Println(dao.QueryAllGoods("20"))
+}
+func main14() {
 
 	slice := []model.Goods{{
 		Name: "1",

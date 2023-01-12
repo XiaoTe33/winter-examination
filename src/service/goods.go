@@ -6,7 +6,10 @@ import (
 	"winter-examination/src/utils"
 )
 
-func AddGoods(name string, price string, kind string, shopId string) (msg string) {
+func AddGoods(token string, name string, price string, kind string, shopId string) (msg string) {
+	if dao.QueryShopById(shopId).OwnerId != utils.GetUserIdByToken(token) {
+		return "您没有shopId为" + shopId + "商店"
+	}
 	if !utils.IsValidGoodsName(name) {
 		return "商品名长度不合理"
 	}
@@ -30,10 +33,10 @@ func AddGoods(name string, price string, kind string, shopId string) (msg string
 
 }
 
-func UpdateGoods(id string, name string, price string, kind string) (msg string) {
+func UpdateGoods(token string, id string, name string, price string, kind string) (msg string) {
 
 	goods := dao.QueryGoodsById(id)
-	if goods == (model.Goods{}) {
+	if goods == (model.Goods{}) || utils.GetShopOwnerIdByGoodsId(id) != utils.GetUserIdByToken(token) {
 		return "商品不存在"
 	}
 	if name != "" {
@@ -59,8 +62,11 @@ func UpdateGoods(id string, name string, price string, kind string) (msg string)
 	return "ok"
 }
 
-func DeleteGoods(id string) (msg string) {
+func DeleteGoods(token string, id string) (msg string) {
 	goods := dao.QueryGoodsById(id)
+	if goods == (model.Goods{}) || utils.GetShopOwnerIdByGoodsId(id) != utils.GetUserIdByToken(token) {
+		return "商品不存在"
+	}
 	if goods == (model.Goods{}) {
 		return "找不到id为" + id + "的商品捏"
 	}
@@ -96,4 +102,8 @@ func QueryGoodsGroup(name string, kind string, shopId string, mode string) (msg 
 		return "找不到shopId为" + shopId + "的商品捏", nil
 	}
 	return "参数还没写就传？", nil
+}
+
+func QueryAllGoods(mode string) (msg string, goodsGroup []model.Goods) {
+	return "ok", dao.QueryAllGoods(mode)
 }

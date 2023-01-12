@@ -47,3 +47,7 @@ func SHA256Secret(str string) string {
 	h.Write([]byte(str + "secret"))
 	return fmt.Sprintf("%x", h.Sum(nil))
 }
+
+func GetIdByUsername(username string) (id string) {
+	return dao.QueryUserByUsername(username).Id
+}

@@ -126,3 +126,34 @@ func QueryGoodsGroupByShopId(shopId string, mode string) []model.Goods {
 	}
 	return goodsGroup
 }
+
+func QueryAllGoods(mode string) []model.Goods {
+	sqlStr := "select goods_id, goods_is_deleted, goods_name, goods_kind, goods_price, goods_sold_amount, goods_score, goods_shop_id from goods "
+	if mode == "" {
+		sqlStr += Mode["10"]
+	} else {
+		sqlStr += Mode[mode]
+	}
+	query, err := Db.Query(sqlStr)
+	if err != nil {
+		fmt.Println("QueryAllGoods failed1 ...\n", err)
+		return nil
+	}
+	defer func(query *sql.Rows) {
+		err := query.Close()
+		if err != nil {
+			fmt.Println("QueryAllGoods close err:", err)
+		}
+	}(query)
+	var goodsGroup []model.Goods
+	for query.Next() {
+		var goods = model.Goods{}
+		err := query.Scan(&goods.Id, &goods.IsDeleted, &goods.Name, &goods.Kind, &goods.Price, &goods.SoldAmount, &goods.Score, &goods.ShopId)
+		if err != nil {
+			fmt.Println("QueryAllGoods failed2 ...\n", err)
+			return nil
+		}
+		goodsGroup = append(goodsGroup, goods)
+	}
+	return goodsGroup
+}

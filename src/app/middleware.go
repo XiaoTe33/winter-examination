@@ -12,8 +12,8 @@ import (
 
 func JWT() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		jwt := c.PostForm("jwt")
-		if !utils.IsValidJWT(jwt) {
+		token := c.PostForm("token")
+		if !utils.IsValidJWT(token) {
 			c.JSON(http.StatusBadRequest, gin.H{"msg": "请输入有效的Token"})
 			c.Abort()
 			return
