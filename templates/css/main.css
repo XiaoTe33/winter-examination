@@ -1,0 +1,47 @@
+*{
+    margin:0;
+    padding: 0;
+}
+a{
+    text-decoration: none;
+    color: #666666;
+}
+
+.toptop{
+    height: 100px;
+    background-color:red;
+    position: relative;
+}
+.toptop img{
+    width:1190px;
+    height:100px;
+    display:block;
+    margin:0 auto;
+}
+.toptop span{
+    position: absolute;
+    top:0;
+    left:1530px;
+    height:15px;
+    width:15px;
+    background: rgba(177, 166, 166, 0.3);
+    font-size: 15px;
+    line-height: 15px;
+    text-align: center;
+}
+
+.top{
+    height:35px;
+    background-color: #f5f5f5;
+}
+.header{
+    height:35px;
+    width:1190px;
+    margin:0 auto;
+}
+.header .header1{
+    float:left;
+}
+.header .header2{
+    float:right;
+}

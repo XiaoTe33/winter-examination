@@ -18,6 +18,7 @@ a {
     height:100px;
     width: 200px;
     background: url(../images/registerheader.png) center no-repeat;
+    /* vertical-align: middle; */
 }   
 .lefttop{
     float:right;
@@ -28,11 +29,12 @@ a {
     text-align: center;
     font: 10px 'Microsoft YaHei';
     padding:7px;
-    border:#fecd66 2px solid;
+    border:#fecd66 1px solid;
     background: #fefff1;
 }
 .lefttop a{
     float:right;
+    /* background-image: url(../images/sprite.png); */
 }
 
 .div2{
