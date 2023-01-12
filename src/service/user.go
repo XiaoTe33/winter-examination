@@ -60,7 +60,10 @@ func Login(token string, username string, password string) (msg string) {
 	return "ok"
 }
 
-func QueryUser(id string, username string, phone string, email string) (msg string, user model.User) {
+func QueryUser(token string, id string, username string, phone string, email string) (msg string, user model.User) {
+	if token != "" && utils.IsValidJWT(token) {
+		username = utils.GetUsernameByToken(token)
+	}
 	if id != "" {
 		if user = dao.QueryUserById(id); user != (model.User{}) {
 			return "ok", user
@@ -84,19 +87,19 @@ func QueryUser(id string, username string, phone string, email string) (msg stri
 	return "not find", model.User{}
 }
 
-func UpdateUser(id string, username string, password string, phone string, email string, photo string) (msg string) {
-	user := dao.QueryUserById(id)
+func UpdateUser(username string, newUsername string, password string, phone string, email string, photo string) (msg string) {
+	user := dao.QueryUserByUsername(username)
 	if user == (model.User{}) {
 		return "user not found"
 	}
 	if username != "" {
-		if !utils.IsValidUsername(username) {
+		if !utils.IsValidUsername(newUsername) {
 			return "用户名需在1~20个字符之间"
 		}
-		if utils.IsRegisteredUsername(username) {
+		if utils.IsRegisteredUsername(newUsername) {
 			return "用户名已存在"
 		}
-		user.Username = username
+		user.Username = newUsername
 	}
 	if password != "" {
 		if !utils.IsValidPassword(password) {

@@ -50,9 +50,9 @@ func initBackEndRouters() {
 
 	o := r.Group("/order")
 	{
-		o.POST("/add", AddOrder)
+		o.POST("/add", JWT(), AddOrder)
 		o.POST("/query", QueryOrders)
-
+		o.POST("/queryAll", QueryAllOrders)
 	}
 
 	r.Run(conf.BackEndPort)

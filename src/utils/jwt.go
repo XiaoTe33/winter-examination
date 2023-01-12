@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"winter-examination/src/dao"
 
 	"winter-examination/src/conf"
 )
@@ -79,4 +80,12 @@ func GetUsernameByToken(token string) (username string) {
 		return ""
 	}
 	return data["aud"]
+}
+
+func RefreshToken(token string) (refreshedToken string) {
+	return CreateJWT(GetUsernameByToken(token))
+}
+
+func GetUserIdByToken(token string) (id string) {
+	return dao.QueryUserByUsername(GetUsernameByToken(token)).Id
 }

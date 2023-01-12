@@ -1,9 +1,9 @@
 package model
 
 type Order struct {
-	Id      string `json:"id"`
-	Buyer   string `json:"buyer"`
-	Solder  string `json:"solder"`
-	GoodsId string `json:"goodsId"`
-	Time    string `json:"time"`
+	Id       string `json:"id"`
+	BuyerId  string `json:"buyerId"`
+	SolderId string `json:"solderId"`
+	GoodsId  string `json:"goodsId"`
+	Time     string `json:"time"`
 }

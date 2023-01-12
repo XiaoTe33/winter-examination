@@ -13,19 +13,19 @@ func AddShop(shopName string, token string) (msg string) {
 	if utils.IsRegisteredShopName(shopName) {
 		return "shopName已被注册"
 	}
-	owner := utils.GetUsernameByToken(token)
+	ownerId := utils.GetUserIdByToken(token)
 	dao.AddShop(model.Shop{
-		Name:  shopName,
-		Owner: owner,
+		Name:    shopName,
+		OwnerId: ownerId,
 	})
 	return "ok"
 }
 
-func UpdateShop(token string, shopName string, newShopName string) (msg string) {
-	owner := utils.GetUsernameByToken(token)
-	shop := dao.QueryShopsByOwnerAndShopName(owner, shopName)
+func UpdateShop(token string, shopId string, newShopName string) (msg string) {
+	ownerId := utils.GetUserIdByToken(token)
+	shop := dao.QueryShopsByOwnerIdAndShopId(ownerId, shopId)
 	if shop == (model.Shop{}) {
-		return "无法找到shopName为" + shopName + "的shop"
+		return "无法找到shopName为" + shopId + "的shop"
 	}
 	if !utils.IsValidShopName(newShopName) {
 		return "newShopName不能超过30字"
@@ -38,30 +38,39 @@ func UpdateShop(token string, shopName string, newShopName string) (msg string) 
 	return "ok"
 }
 
-func QueryShops(shopName string, owner string) (msg string, shops []model.Shop) {
+func QueryShops(shopName string, ownerId string, owner string) (msg string, shops []model.Shop) {
 	if shopName != "" {
 		if shops = dao.QueryShopsByName(shopName); shops != nil {
 			return "ok", shops
 		}
 		return "找不到shopName为" + shopName + "的shop", nil
 	}
-	if owner != "" {
-		if shops = dao.QueryShopsByOwner(owner); shops != nil {
+	if ownerId != "" {
+		if shops = dao.QueryShopsByOwnerId(ownerId); shops != nil {
 			return "ok", shops
 		}
-		return "找不到owner为" + owner + "的shop", nil
+		return "找不到owner为" + ownerId + "的shop", nil
+	}
+	if owner != "" {
+		if ownerId = utils.GetIdByUsername(owner); ownerId != "" {
+			if shops = dao.QueryShopsByOwnerId(ownerId); shops != nil {
+				return "ok", shops
+			}
+			return "找不到owner为" + ownerId + "的shop", nil
+		}
+		return "找不到username为" + owner + "的用户", nil
 	}
 	return "参数捏?", nil
 }
-func DeleteShop(token string, shopName string) (msg string) {
-	owner := utils.GetUsernameByToken(token)
-	if shopName != "" {
-		if shop := dao.QueryShopsByOwnerAndShopName(owner, shopName); shop != (model.Shop{}) {
+func DeleteShop(token string, shopId string) (msg string) {
+	ownerId := utils.GetUserIdByToken(token)
+	if shopId != "" {
+		if shop := dao.QueryShopsByOwnerIdAndShopId(ownerId, shopId); shop != (model.Shop{}) {
 			shop.IsDeleted = "1"
 			dao.UpdateShop(shop)
 			return "ok"
 		}
-		return "没有找到shopName为" + shopName + "的shop"
+		return "没有找到shopId为" + shopId + "的shop"
 	}
 	return "参数捏？"
 }

@@ -2,7 +2,7 @@ package model
 
 type Shop struct {
 	Id        string `json:"id"`
-	Owner     string `json:"owner"`
+	OwnerId   string `json:"ownerId"`
 	Name      string `json:"name"`
 	IsDeleted string `json:"isDeleted"`
 }

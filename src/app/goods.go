@@ -2,6 +2,7 @@ package app
 
 import (
 	"winter-examination/src/service"
+	"winter-examination/src/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -11,9 +12,11 @@ func AddGoods(c *gin.Context) {
 	kind := c.PostForm("kind")
 	price := c.PostForm("price")
 	shopId := c.PostForm("shop_id")
-	msg := service.AddGoods(name, price, kind, shopId)
+	token := c.PostForm("token")
+	msg := service.AddGoods(token, name, price, kind, shopId)
 	c.JSON(200, gin.H{
-		"msg": msg,
+		"msg":             msg,
+		"refreshed_token": utils.RefreshToken(token),
 	})
 }
 
@@ -22,18 +25,21 @@ func UpdateGoods(c *gin.Context) {
 	name := c.PostForm("name")
 	price := c.PostForm("price")
 	kind := c.PostForm("kind")
-	msg := service.UpdateGoods(id, name, price, kind)
+	token := c.PostForm("token")
+	msg := service.UpdateGoods(token, id, name, price, kind)
 	c.JSON(200, gin.H{
-		"msg": msg,
+		"msg":             msg,
+		"refreshed_token": utils.RefreshToken(token),
 	})
 }
 
 func DeleteGoods(c *gin.Context) {
 	id := c.PostForm("id")
-	service.DeleteGoods(id)
+	token := c.PostForm("token")
+	msg := service.DeleteGoods(token, id)
 	c.JSON(200, gin.H{
-		"status": "200",
-		"id":     id,
+		"msg":             msg,
+		"refreshed_token": utils.RefreshToken(token),
 	})
 }
 
