@@ -72,3 +72,14 @@ func QueryAllGoods(c *gin.Context) {
 		"data": goodsGroup,
 	})
 }
+
+func GoodsShoppingCar(c *gin.Context) {
+	token := c.PostForm("token")
+	mode := c.PostForm("mode")
+	goodsId := c.PostForm("goodsId")
+	msg := service.GoodsShoppingCar(token, goodsId, mode)
+	c.JSON(200, gin.H{
+		"msg":             msg,
+		"refreshed_token": utils.RefreshToken(token),
+	})
+}

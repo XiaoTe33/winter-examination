@@ -37,6 +37,7 @@ func initBackEndRouters() {
 		g.POST("/delete", JWT(), DeleteGoods) //删除商品
 		g.POST("/query", QueryGoods)          //查找商品
 		g.POST("/queryAll", QueryAllGoods)
+		g.POST("/shoppingCar", GoodsShoppingCar)
 	}
 
 	s := r.Group("/shop") //商店模块
@@ -51,6 +52,8 @@ func initBackEndRouters() {
 	o := r.Group("/order")
 	{
 		o.POST("/add", JWT(), AddOrder)
+		o.POST("/updateStatus", JWT(), UpdateOrderStatus)
+		o.POST("/updateAddress", JWT(), UpdateOrderAddress)
 		o.POST("/query", QueryOrders)
 		o.POST("/queryAll", QueryAllOrders)
 	}

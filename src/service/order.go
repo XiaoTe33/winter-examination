@@ -8,17 +8,21 @@ import (
 	"winter-examination/src/utils"
 )
 
-func AddOrder(token string, goodsId string) (msg string) {
+func AddOrder(token string, goodsId string, address string) (msg string) {
 	buyerId := utils.GetUserIdByToken(token)
 	var solderId string
 	if goodsId != "" {
 		goods := dao.QueryGoodsById(goodsId)
+		if address == "" {
+			return "地址都不填，是送给我的吗？"
+		}
 		if goods != (model.Goods{}) {
-			solderId = dao.QueryShopById(goods.ShopId).Name
+			solderId = goods.ShopId
 			dao.AddOrder(model.Order{
 				BuyerId:  buyerId,
 				SolderId: solderId,
 				GoodsId:  goodsId,
+				Address:  address,
 				Time:     time.Now().Format("2006-01-02 15:04:05 "),
 			})
 			return "ok"
@@ -70,4 +74,35 @@ func QueryOrders(id string, token string, buyer string, solder string) (msg stri
 
 func QueryAllOrders() (msg string, data []model.Order) {
 	return "ok", dao.QueryAllOrders()
+}
+
+func UpdateOrderStatus(token string, orderId string, status string) (msg string) {
+	if orderId != "" {
+		order := dao.QueryOrderById(orderId)
+		buyerId := order.BuyerId
+		if buyerId != "" && buyerId == utils.GetUserIdByToken(token) {
+			order.Status = status
+			dao.UpdateOrder(order)
+			return "ok"
+		}
+		return "您没有id为" + orderId + "的订单"
+	}
+	return "参数捏？"
+}
+
+func UpdateOrderAddress(token string, orderId string, address string) (msg string) {
+	if orderId != "" {
+		order := dao.QueryOrderById(orderId)
+		buyerId := order.BuyerId
+		if address == "" {
+			return "地址都不填，是送给我的吗？"
+		}
+		if buyerId != "" && buyerId == utils.GetUserIdByToken(token) {
+			order.Address = address
+			dao.UpdateOrder(order)
+			return "ok"
+		}
+		return "您没有id为" + orderId + "的订单"
+	}
+	return "参数捏？"
 }
