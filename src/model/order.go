@@ -6,4 +6,6 @@ type Order struct {
 	SolderId string `json:"solderId"`
 	GoodsId  string `json:"goodsId"`
 	Time     string `json:"time"`
+	Status   string `json:"status"`
+	Address  string `json:"address"`
 }

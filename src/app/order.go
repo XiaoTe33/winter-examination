@@ -3,15 +3,44 @@ package app
 import (
 	"github.com/gin-gonic/gin"
 	"winter-examination/src/service"
+	"winter-examination/src/utils"
 )
 
 func AddOrder(c *gin.Context) {
 	token := c.PostForm("token")
 	goodsId := c.PostForm("goodsId")
-	msg := service.AddOrder(token, goodsId)
+	address := c.PostForm("address")
+	msg := service.AddOrder(token, goodsId, address)
 	c.JSON(200, gin.H{
-		"msg": msg,
+		"msg":             msg,
+		"refreshed_token": utils.RefreshToken(token),
 	})
+	return
+}
+
+func UpdateOrderStatus(c *gin.Context) {
+	token := c.PostForm("token")
+	orderId := c.PostForm("orderId")
+	status := c.PostForm("status")
+	msg := service.UpdateOrderStatus(token, orderId, status)
+	c.JSON(200, gin.H{
+		"msg":             msg,
+		"refreshed_token": utils.RefreshToken(token),
+	})
+	return
+}
+
+func UpdateOrderAddress(c *gin.Context) {
+	token := c.PostForm("token")
+	orderId := c.PostForm("orderId")
+	address := c.PostForm("address")
+	msg := service.UpdateOrderAddress(token, orderId, address)
+	c.JSON(200, gin.H{
+		"msg":             msg,
+		"refreshed_token": utils.RefreshToken(token),
+	})
+	return
+
 }
 
 func QueryOrders(c *gin.Context) {
@@ -20,10 +49,19 @@ func QueryOrders(c *gin.Context) {
 	buyer := c.PostForm("username")
 	solder := c.PostForm("shopName")
 	msg, data := service.QueryOrders(id, token, buyer, solder)
+	if token != "" {
+		c.JSON(200, gin.H{
+			"msg":             msg,
+			"refreshed_token": utils.RefreshToken(token),
+			"data":            data,
+		})
+		return
+	}
 	c.JSON(200, gin.H{
 		"msg":  msg,
 		"data": data,
 	})
+	return
 }
 func QueryAllOrders(c *gin.Context) {
 	msg, data := service.QueryAllOrders()
@@ -31,4 +69,5 @@ func QueryAllOrders(c *gin.Context) {
 		"msg":  msg,
 		"data": data,
 	})
+	return
 }

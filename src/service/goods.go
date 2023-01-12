@@ -1,6 +1,8 @@
 package service
 
 import (
+	"encoding/json"
+	"fmt"
 	"winter-examination/src/dao"
 	"winter-examination/src/model"
 	"winter-examination/src/utils"
@@ -106,4 +108,36 @@ func QueryGoodsGroup(name string, kind string, shopId string, mode string) (msg 
 
 func QueryAllGoods(mode string) (msg string, goodsGroup []model.Goods) {
 	return "ok", dao.QueryAllGoods(mode)
+}
+
+func GoodsShoppingCar(token string, goodsId string, mode string) (msg string) {
+	userId := utils.GetUserIdByToken(token)
+	user := dao.QueryUserById(userId)
+	shoppingCar := map[string]string{}
+	err := json.Unmarshal([]byte(user.ShoppingCar), &shoppingCar)
+	if err != nil {
+		fmt.Println("GoodsShoppingCar json.Unmarshal failed ...", err)
+		return "bug了？"
+	}
+	if mode == "0" {
+		delete(shoppingCar, goodsId)
+		bytes, err := json.Marshal(shoppingCar)
+		if err != nil {
+			return "GoodsShoppingCar json.Marshal failed ..."
+		}
+		user.ShoppingCar = string(bytes)
+		dao.UpdateUser(user)
+		return "ok"
+	}
+	if mode == "1" {
+		shoppingCar[goodsId] = dao.QueryGoodsById(goodsId).Name
+		bytes, err := json.Marshal(shoppingCar)
+		if err != nil {
+			return "GoodsShoppingCar json.Marshal failed ..."
+		}
+		user.ShoppingCar = string(bytes)
+		dao.UpdateUser(user)
+		return "ok"
+	}
+	return "见到我就bug了"
 }

@@ -10,7 +10,7 @@ create table if not exists `users`
     `email` varchar(256) default '' comment '邮箱',
     `money` varchar(256) default '0.00' not null comment '余额',
     `photo` varchar(256) default '' comment '头像',
-    `shopping_car` varchar(256) default '' comment '购物车',
+    `shopping_car` varchar(256) default '{}' comment '购物车',
     `address` varchar(256) default '' comment '收货地址'
 ) comment '`users`';
 
@@ -79,3 +79,4 @@ insert into `users` (`user_id`, `username`, `password`, `phone`, `address`) valu
 insert into `users` (`user_id`, `username`, `password`, `phone`, `address`) values (63, '姚绍辉', 'JTYK', '17884037476', '南体育大学');
 insert into `users` (`user_id`, `username`, `password`, `phone`, `address`) values (64, '魏睿渊', 'po', '15345038472', '南技术大学');
 insert into `users` (`user_id`, `username`, `password`, `phone`, `address`) values (65, '谭思远', 'PbE', '15944973170', '中国科技大学');
+

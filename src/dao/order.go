@@ -8,28 +8,28 @@ import (
 )
 
 func AddOrder(order model.Order) {
-	sqlStr := "insert into orders (order_buyer_id, order_solder_id, order_goods_id, order_time) value ( ?, ?, ?, ?)"
-	_, err := Db.Exec(sqlStr, order.BuyerId, order.SolderId, order.GoodsId, order.Time)
+	sqlStr := "insert into orders (order_buyer_id, order_solder_id, order_goods_id, order_time, order_address) value ( ?, ?, ?, ?, ?) "
+	_, err := Db.Exec(sqlStr, order.BuyerId, order.SolderId, order.GoodsId, order.Time, order.Address)
 	if err != nil {
-		fmt.Println("AddOrder Db.Exec failed ...")
+		fmt.Println("AddOrder Db.Exec failed ...", err)
 		return
 	}
 }
 
 func UpdateOrder(order model.Order) {
-	sqlStr := "update orders o set o.order_buyer_id = ?, o.order_solder_id = ?, o.order_goods_id = ?, o.order_time = ? where o.order_id = ? "
-	_, err := Db.Exec(sqlStr, order.BuyerId, order.SolderId, order.GoodsId, order.Time, order.Id)
+	sqlStr := "update orders o set o.order_buyer_id = ?, o.order_solder_id = ?, o.order_goods_id = ?, o.order_time = ?,o.order_address = ?, o.order_status = ? where o.order_id = ? "
+	_, err := Db.Exec(sqlStr, order.BuyerId, order.SolderId, order.GoodsId, order.Time, order.Address, order.Status, order.Id)
 	if err != nil {
-		fmt.Println("UpdateOrder Db.Exec failed ...")
+		fmt.Println("UpdateOrder Db.Exec failed ...", err)
 		return
 	}
 }
 
 func QueryOrderById(id string) model.Order {
-	sqlStr := "select order_id, order_buyer_id, order_solder_id, order_goods_id, order_time from orders where order_id = ? "
+	sqlStr := "select order_id, order_buyer_id, order_solder_id, order_goods_id, order_time, order_address, order_status from orders where order_id = ? "
 	row := Db.QueryRow(sqlStr, id)
 	var order model.Order
-	err := row.Scan(&order.Id, &order.BuyerId, &order.SolderId, &order.GoodsId, &order.Time)
+	err := row.Scan(&order.Id, &order.BuyerId, &order.SolderId, &order.GoodsId, &order.Time, &order.Address, &order.Status)
 	if err != nil {
 		fmt.Println("QueryOrderById Db.QueryRow failed ...")
 		return model.Order{}
@@ -38,7 +38,7 @@ func QueryOrderById(id string) model.Order {
 }
 
 func QueryOrdersByUserId(userId string) []model.Order {
-	sqlStr := "select order_id, order_buyer_id, order_solder_id, order_goods_id, order_time from orders where order_buyer_id = ? "
+	sqlStr := "select order_id, order_buyer_id, order_solder_id, order_goods_id, order_time, order_address, order_status from orders where order_buyer_id = ? "
 	rows, err := Db.Query(sqlStr, userId)
 	if err != nil {
 		fmt.Println("QueryOrdersByUserId Db.Query failed ...")
@@ -54,7 +54,7 @@ func QueryOrdersByUserId(userId string) []model.Order {
 	var orders []model.Order
 	for rows.Next() {
 		var order model.Order
-		err := rows.Scan(&order.Id, order.BuyerId, order.SolderId, order.GoodsId, order.Time)
+		err := rows.Scan(&order.Id, &order.BuyerId, &order.SolderId, &order.GoodsId, &order.Time, &order.Address, &order.Status)
 		if err != nil {
 			fmt.Println("QueryOrdersByUsername ows.Scan failed ...")
 			return nil
@@ -65,7 +65,7 @@ func QueryOrdersByUserId(userId string) []model.Order {
 }
 
 func QueryOrdersByShopId(shopId string) []model.Order {
-	sqlStr := "select order_id, order_buyer_id, order_solder_id, order_goods_id, order_time from orders where order_solder_id = ? "
+	sqlStr := "select order_id, order_buyer_id, order_solder_id, order_goods_id, order_time, order_address, order_status from orders where order_solder_id = ? "
 	rows, err := Db.Query(sqlStr, shopId)
 	if err != nil {
 		fmt.Println("QueryOrdersByShopId Db.Query failed ...")
@@ -81,7 +81,7 @@ func QueryOrdersByShopId(shopId string) []model.Order {
 	var orders []model.Order
 	for rows.Next() {
 		var order model.Order
-		err := rows.Scan(&order.Id, order.BuyerId, order.SolderId, order.GoodsId, order.Time)
+		err := rows.Scan(&order.Id, order.BuyerId, order.SolderId, order.GoodsId, order.Time, &order.Address, &order.Status)
 		if err != nil {
 			fmt.Println("QueryOrdersByShop rows.Scan failed ...")
 			return nil
@@ -96,7 +96,7 @@ func QueryOrdersByKeyValue() {
 }
 
 func QueryAllOrders() []model.Order {
-	sqlStr := "select order_id, order_buyer_id, order_solder_id, order_goods_id, order_time from orders "
+	sqlStr := "select order_id, order_buyer_id, order_solder_id, order_goods_id, order_time, order_address, order_status from orders "
 	rows, err := Db.Query(sqlStr)
 	if err != nil {
 		fmt.Println("QueryAllOrders Db.Query failed ...")
@@ -112,7 +112,7 @@ func QueryAllOrders() []model.Order {
 	var orders []model.Order
 	for rows.Next() {
 		var order model.Order
-		err := rows.Scan(&order.Id, order.BuyerId, order.SolderId, order.GoodsId, order.Time)
+		err := rows.Scan(&order.Id, &order.BuyerId, &order.SolderId, &order.GoodsId, &order.Time, &order.Address, &order.Status)
 		if err != nil {
 			fmt.Println("QueryAllOrders rows.Scan failed ...")
 			return nil
