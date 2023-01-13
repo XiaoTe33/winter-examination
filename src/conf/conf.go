@@ -12,3 +12,4 @@ const (
 
 // JWTLastTime jwt持续时间（秒）
 const JWTLastTime = 3600
+const OKMsg = "200"

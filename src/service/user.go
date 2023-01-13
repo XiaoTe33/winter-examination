@@ -1,6 +1,7 @@
 package service
 
 import (
+	"winter-examination/src/conf"
 	"winter-examination/src/dao"
 	"winter-examination/src/model"
 	"winter-examination/src/utils"
@@ -31,19 +32,18 @@ func Register(username string, password string, password2 string, email string, 
 	if utils.IsRegisteredEmail(email) {
 		return "邮箱已被注册"
 	}
-
 	dao.AddUser(model.User{
 		Username: username,
 		Password: utils.SHA256Secret(password),
 		Phone:    phone,
 		Email:    email,
 	})
-	return "ok"
+	return conf.OKMsg
 }
 
 func Login(token string, username string, password string) (msg string) {
 	if utils.IsValidJWT(token) {
-		return "ok"
+		return conf.OKMsg
 	}
 	if !utils.IsValidUsername(username) {
 		return "用户名需在1~20个字符之间"
@@ -57,7 +57,7 @@ func Login(token string, username string, password string) (msg string) {
 	if dao.QueryUserByUsername(username).Password != utils.SHA256Secret(password) {
 		return "密码不正确"
 	}
-	return "ok"
+	return conf.OKMsg
 }
 
 func QueryUser(token string, id string, username string, phone string, email string) (msg string, user model.User) {
@@ -66,22 +66,22 @@ func QueryUser(token string, id string, username string, phone string, email str
 	}
 	if id != "" {
 		if user = dao.QueryUserById(id); user != (model.User{}) {
-			return "ok", user
+			return conf.OKMsg, user
 		}
 	}
 	if username != "" {
 		if user = dao.QueryUserByUsername(username); user != (model.User{}) {
-			return "ok", user
+			return conf.OKMsg, user
 		}
 	}
 	if phone != "" {
 		if user = dao.QueryUserByPhone(phone); user != (model.User{}) {
-			return "ok", user
+			return conf.OKMsg, user
 		}
 	}
 	if email != "" {
 		if user = dao.QueryUserByEmail(email); user != (model.User{}) {
-			return "ok", user
+			return conf.OKMsg, user
 		}
 	}
 	return "not find", model.User{}
@@ -129,9 +129,17 @@ func UpdateUser(username string, newUsername string, password string, phone stri
 		user.Photo = photo
 	}
 	dao.UpdateUser(user)
-	return "ok"
+	return conf.OKMsg
 }
 
 func QueryAllUsers() (msg string, users []model.User) {
-	return "ok", dao.QueryAllUsers()
+	return conf.OKMsg, dao.QueryAllUsers()
+}
+
+func AddUserPhoto(token string) (msg string) {
+	userId := utils.GetUserIdByToken(token)
+	user := dao.QueryUserById(userId)
+	user.Photo = userId + ".png"
+	dao.UpdateUser(user)
+	return conf.OKMsg
 }
