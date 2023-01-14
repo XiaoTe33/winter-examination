@@ -3,6 +3,7 @@ package service
 import (
 	"time"
 
+	"winter-examination/src/conf"
 	"winter-examination/src/dao"
 	"winter-examination/src/model"
 	"winter-examination/src/utils"
@@ -19,13 +20,14 @@ func AddOrder(token string, goodsId string, address string) (msg string) {
 		if goods != (model.Goods{}) {
 			solderId = goods.ShopId
 			dao.AddOrder(model.Order{
+				Id:       utils.GetOrderId(),
 				BuyerId:  buyerId,
 				SolderId: solderId,
 				GoodsId:  goodsId,
 				Address:  address,
 				Time:     time.Now().Format("2006-01-02 15:04:05 "),
 			})
-			return "ok"
+			return conf.OKMsg
 		}
 		return "没找到id为" + goodsId + "的商品"
 	}
@@ -44,7 +46,7 @@ func QueryOrders(id string, token string, buyer string, solder string) (msg stri
 		buyerId := utils.GetUserIdByToken(token)
 		orders := dao.QueryOrdersByUserId(buyerId)
 		if orders != nil {
-			return "ok", orders
+			return conf.OKMsg, orders
 		}
 		return "您没有订单哦", nil
 	}
@@ -53,7 +55,7 @@ func QueryOrders(id string, token string, buyer string, solder string) (msg stri
 		if buyerId != "" {
 			orders := dao.QueryOrdersByUserId(buyerId)
 			if orders != nil {
-				return "ok", orders
+				return conf.OKMsg, orders
 			}
 			return "用户 " + buyerId + " 没有订单哦", nil
 		}
@@ -63,7 +65,7 @@ func QueryOrders(id string, token string, buyer string, solder string) (msg stri
 		if solderId != "" {
 			orders := dao.QueryOrdersByShopId(solderId)
 			if orders != nil {
-				return "ok", orders
+				return conf.OKMsg, orders
 			}
 			return "商店" + solderId + "没有订单哦", nil
 		}
@@ -73,7 +75,7 @@ func QueryOrders(id string, token string, buyer string, solder string) (msg stri
 }
 
 func QueryAllOrders() (msg string, data []model.Order) {
-	return "ok", dao.QueryAllOrders()
+	return conf.OKMsg, dao.QueryAllOrders()
 }
 
 func UpdateOrderStatus(token string, orderId string, status string) (msg string) {
@@ -83,7 +85,7 @@ func UpdateOrderStatus(token string, orderId string, status string) (msg string)
 		if buyerId != "" && buyerId == utils.GetUserIdByToken(token) {
 			order.Status = status
 			dao.UpdateOrder(order)
-			return "ok"
+			return conf.OKMsg
 		}
 		return "您没有id为" + orderId + "的订单"
 	}
@@ -100,7 +102,7 @@ func UpdateOrderAddress(token string, orderId string, address string) (msg strin
 		if buyerId != "" && buyerId == utils.GetUserIdByToken(token) {
 			order.Address = address
 			dao.UpdateOrder(order)
-			return "ok"
+			return conf.OKMsg
 		}
 		return "您没有id为" + orderId + "的订单"
 	}

@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 
+	"winter-examination/src/conf"
 	"winter-examination/src/service"
 	"winter-examination/src/utils"
 
@@ -15,7 +16,7 @@ func Login(c *gin.Context) {
 	password := c.PostForm("password")
 	fmt.Println(token, username, password)
 	msg := service.Login(token, username, password)
-	if msg != "ok" {
+	if msg != conf.OKMsg {
 		c.JSON(200, gin.H{
 			"msg":             msg,
 			"refreshed_token": "",
@@ -49,7 +50,7 @@ func Register(c *gin.Context) {
 }
 func Logout(c *gin.Context) {
 	c.JSON(200, gin.H{
-		"msg":             "ok",
+		"msg":             conf.OKMsg,
 		"refreshed_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiLmnKjlja/kuqbpkqYiLCJleHAiOiIxNjczMzM3NDc2IiwibmJmIjoiMTY3MzMzMzg3NiJ9.ebe0a8ef4d248d1df6ed038f31522c74e491feda31e186141ebc514122da8fe2",
 	})
 }
@@ -61,7 +62,7 @@ func QueryUser(c *gin.Context) {
 	phone := c.PostForm("phone")
 	email := c.PostForm("email")
 	msg, user := service.QueryUser(token, id, username, phone, email)
-	if msg != "ok" {
+	if msg != conf.OKMsg {
 		c.JSON(200, gin.H{
 			"msg": msg,
 		})
@@ -76,7 +77,7 @@ func QueryUser(c *gin.Context) {
 		return
 	}
 	c.JSON(200, gin.H{
-		"msg":  "ok",
+		"msg":  conf.OKMsg,
 		"data": user,
 	})
 }
@@ -108,5 +109,26 @@ func QueryAllUsers(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"msg":  msg,
 		"data": users,
+	})
+}
+
+func AddUserPhoto(c *gin.Context) {
+	token := c.PostForm("token")
+	photo, err := c.FormFile("photo")
+	if err != nil {
+		c.JSON(200, gin.H{
+			"msg": "解析文件出错",
+		})
+		return
+	}
+	err = c.SaveUploadedFile(photo, ".\\src\\photos\\"+utils.GetUserIdByToken(token)+".png")
+	if err != nil {
+		c.JSON(200, "下载文件出错")
+		return
+	}
+	msg := service.AddUserPhoto(token)
+	c.JSON(200, gin.H{
+		"msg":             msg,
+		"refreshed_token": utils.RefreshToken(token),
 	})
 }

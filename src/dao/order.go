@@ -8,8 +8,8 @@ import (
 )
 
 func AddOrder(order model.Order) {
-	sqlStr := "insert into orders (order_buyer_id, order_solder_id, order_goods_id, order_time, order_address) value ( ?, ?, ?, ?, ?) "
-	_, err := Db.Exec(sqlStr, order.BuyerId, order.SolderId, order.GoodsId, order.Time, order.Address)
+	sqlStr := "insert into orders (order_id, order_buyer_id, order_solder_id, order_goods_id, order_time, order_address) value (? ,?, ?, ?, ?, ?) "
+	_, err := Db.Exec(sqlStr, order.Id, order.BuyerId, order.SolderId, order.GoodsId, order.Time, order.Address)
 	if err != nil {
 		fmt.Println("AddOrder Db.Exec failed ...", err)
 		return

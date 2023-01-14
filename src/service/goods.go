@@ -3,6 +3,8 @@ package service
 import (
 	"encoding/json"
 	"fmt"
+
+	"winter-examination/src/conf"
 	"winter-examination/src/dao"
 	"winter-examination/src/model"
 	"winter-examination/src/utils"
@@ -31,7 +33,7 @@ func AddGoods(token string, name string, price string, kind string, shopId strin
 		Kind:   kind,
 		ShopId: shopId,
 	})
-	return "ok"
+	return conf.OKMsg
 
 }
 
@@ -61,7 +63,7 @@ func UpdateGoods(token string, id string, name string, price string, kind string
 	}
 
 	dao.UpdateGoods(goods)
-	return "ok"
+	return conf.OKMsg
 }
 
 func DeleteGoods(token string, id string) (msg string) {
@@ -74,7 +76,7 @@ func DeleteGoods(token string, id string) (msg string) {
 	}
 	goods.IsDeleted = "1"
 	dao.UpdateGoods(goods)
-	return "ok"
+	return conf.OKMsg
 }
 func QueryGoods(id string) (msg string, goods model.Goods) {
 	if goods = dao.QueryGoodsById(id); goods != (model.Goods{}) {
@@ -127,7 +129,7 @@ func GoodsShoppingCar(token string, goodsId string, mode string) (msg string) {
 		}
 		user.ShoppingCar = string(bytes)
 		dao.UpdateUser(user)
-		return "ok"
+		return conf.OKMsg
 	}
 	if mode == "1" {
 		shoppingCar[goodsId] = dao.QueryGoodsById(goodsId).Name
@@ -137,7 +139,7 @@ func GoodsShoppingCar(token string, goodsId string, mode string) (msg string) {
 		}
 		user.ShoppingCar = string(bytes)
 		dao.UpdateUser(user)
-		return "ok"
+		return conf.OKMsg
 	}
 	return "见到我就bug了"
 }
