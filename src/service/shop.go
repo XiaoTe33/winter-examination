@@ -1,6 +1,7 @@
 package service
 
 import (
+	"winter-examination/src/conf"
 	"winter-examination/src/dao"
 	"winter-examination/src/model"
 	"winter-examination/src/utils"
@@ -18,7 +19,7 @@ func AddShop(shopName string, token string) (msg string) {
 		Name:    shopName,
 		OwnerId: ownerId,
 	})
-	return "ok"
+	return conf.OKMsg
 }
 
 func UpdateShop(token string, shopId string, newShopName string) (msg string) {
@@ -35,26 +36,26 @@ func UpdateShop(token string, shopId string, newShopName string) (msg string) {
 	}
 	shop.Name = newShopName
 	dao.UpdateShop(shop)
-	return "ok"
+	return conf.OKMsg
 }
 
 func QueryShops(shopName string, ownerId string, owner string) (msg string, shops []model.Shop) {
 	if shopName != "" {
 		if shops = dao.QueryShopsByName(shopName); shops != nil {
-			return "ok", shops
+			return conf.OKMsg, shops
 		}
 		return "找不到shopName为" + shopName + "的shop", nil
 	}
 	if ownerId != "" {
 		if shops = dao.QueryShopsByOwnerId(ownerId); shops != nil {
-			return "ok", shops
+			return conf.OKMsg, shops
 		}
 		return "找不到owner为" + ownerId + "的shop", nil
 	}
 	if owner != "" {
 		if ownerId = utils.GetIdByUsername(owner); ownerId != "" {
 			if shops = dao.QueryShopsByOwnerId(ownerId); shops != nil {
-				return "ok", shops
+				return conf.OKMsg, shops
 			}
 			return "找不到owner为" + ownerId + "的shop", nil
 		}
@@ -68,7 +69,7 @@ func DeleteShop(token string, shopId string) (msg string) {
 		if shop := dao.QueryShopsByOwnerIdAndShopId(ownerId, shopId); shop != (model.Shop{}) {
 			shop.IsDeleted = "1"
 			dao.UpdateShop(shop)
-			return "ok"
+			return conf.OKMsg
 		}
 		return "没有找到shopId为" + shopId + "的shop"
 	}
@@ -76,5 +77,5 @@ func DeleteShop(token string, shopId string) (msg string) {
 }
 
 func QueryAllShops() (msg string, shops []model.Shop) {
-	return "ok", dao.QueryAllShops()
+	return conf.OKMsg, dao.QueryAllShops()
 }

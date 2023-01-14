@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"time"
+	"winter-examination/src/conf"
 )
 
 var orderIdGenerator = make(chan string, 1)
@@ -16,11 +17,10 @@ func OrderIdGenerateRoutine() {
 	for {
 		select {
 		case <-orderIdRequester:
-			const BaseTimeStamp int64 = 1672531200
-			DurationTimeStamp := time.Now().Unix() - BaseTimeStamp
+			DurationTimeStamp := time.Now().Unix() - conf.OrderIdBaseTimeStamp
 			a[time.Now().Format("20060102")]++
 			num := a[time.Now().Format("20060102")]
-			sprintf := fmt.Sprintf("%d", DurationTimeStamp<<32|num)
+			sprintf := fmt.Sprintf("%d", DurationTimeStamp<<conf.OrderIdLeftShiftNumber|num)
 			orderIdGenerator <- sprintf
 		}
 	}

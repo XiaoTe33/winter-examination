@@ -3,7 +3,6 @@ package dao
 import (
 	"database/sql"
 	"fmt"
-
 	"winter-examination/src/conf"
 
 	_ "github.com/go-sql-driver/mysql"

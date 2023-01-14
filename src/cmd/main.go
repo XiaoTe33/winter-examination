@@ -8,6 +8,7 @@ import (
 
 func main() {
 	dao.InitDb()
+	utils.InitGoodsIdGenerator()
 	utils.InitOrderIdGenerator()
 	app.InitRouters()
 }

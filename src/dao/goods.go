@@ -8,10 +8,10 @@ import (
 )
 
 func AddGoods(goods model.Goods) {
-	sqlStr := "insert into `goods` (`goods_name`, `goods_kind`, `goods_price`, `goods_shop_id`) values (?, ?, ?, ?)"
-	_, err := Db.Exec(sqlStr, goods.Name, goods.Kind, goods.Price, goods.ShopId)
+	sqlStr := "insert into `goods` (`goods_id`,`goods_name`, `goods_amount`, `goods_kind`, `goods_price`, `goods_shop_id`, `goods_picture`, `goods_link`) values ( ?, ?, ?, ?, ?, ?, ?, ?)"
+	_, err := Db.Exec(sqlStr, goods.Id, goods.Name, goods.Amount, goods.Kind, goods.Price, goods.ShopId, goods.Picture, goods.Link)
 	if err != nil {
-		fmt.Println("add goods failed ...")
+		fmt.Println("add goods failed ...", err)
 		return
 	}
 }
@@ -25,10 +25,10 @@ func UpdateGoods(goods model.Goods) {
 }
 
 func QueryGoodsById(id string) model.Goods {
-	sqlStr := "select goods_id, goods_is_deleted, goods_name, goods_kind, goods_price, goods_sold_amount, goods_score, goods_shop_id from goods where goods_id = ?;"
+	sqlStr := "select goods_id, goods_is_deleted, goods_name, goods_kind, goods_price, goods_sold_amount,goods_amount, goods_score, goods_shop_id,goods_picture,goods_link from goods where goods_id = ?;"
 	row := Db.QueryRow(sqlStr, id)
 	goods := model.Goods{}
-	err := row.Scan(&goods.Id, &goods.IsDeleted, &goods.Name, &goods.Kind, &goods.Price, &goods.SoldAmount, &goods.Score, &goods.ShopId)
+	err := row.Scan(&goods.Id, &goods.IsDeleted, &goods.Name, &goods.Kind, &goods.Price, &goods.SoldAmount, &goods.Amount, &goods.Score, &goods.ShopId, &goods.Picture, &goods.Link)
 	if err != nil {
 		fmt.Println("QueryGoodsById failed ...")
 		return model.Goods{}
@@ -36,7 +36,7 @@ func QueryGoodsById(id string) model.Goods {
 	return goods
 }
 func QueryGoodsGroupByName(name string, mode string) []model.Goods {
-	sqlStr := "select goods_id, goods_is_deleted, goods_name, goods_kind, goods_price, goods_sold_amount, goods_score, goods_shop_id from goods where goods_name like ?"
+	sqlStr := "select goods_id, goods_is_deleted, goods_name, goods_kind, goods_price, goods_sold_amount,goods_amount, goods_score, goods_shop_id,goods_picture,goods_link from goods where goods_name like ?"
 	if mode == "" {
 		sqlStr += Mode["10"]
 	} else {
@@ -56,7 +56,7 @@ func QueryGoodsGroupByName(name string, mode string) []model.Goods {
 	var goodsGroup []model.Goods
 	for query.Next() {
 		var goods = model.Goods{}
-		err := query.Scan(&goods.Id, &goods.IsDeleted, &goods.Name, &goods.Kind, &goods.Price, &goods.SoldAmount, &goods.Score, &goods.ShopId)
+		err := query.Scan(&goods.Id, &goods.IsDeleted, &goods.Name, &goods.Kind, &goods.Price, &goods.SoldAmount, &goods.Amount, &goods.Score, &goods.ShopId, &goods.Picture, &goods.Link)
 		if err != nil {
 			fmt.Println("query goods by name failed2 ...\n", err)
 			return nil
@@ -66,7 +66,7 @@ func QueryGoodsGroupByName(name string, mode string) []model.Goods {
 	return goodsGroup
 }
 func QueryGoodsGroupByKind(kind string, mode string) []model.Goods {
-	sqlStr := "select goods_id, goods_is_deleted, goods_name, goods_kind, goods_price, goods_sold_amount, goods_score, goods_shop_id from goods where goods_kind = ?"
+	sqlStr := "select goods_id, goods_is_deleted, goods_name, goods_kind, goods_price, goods_sold_amount,goods_amount, goods_score, goods_shop_id,goods_picture,goods_link from goods where goods_kind = ?"
 	if mode == "" {
 		sqlStr += Mode["10"]
 	} else {
@@ -86,7 +86,7 @@ func QueryGoodsGroupByKind(kind string, mode string) []model.Goods {
 	var goodsGroup []model.Goods
 	for query.Next() {
 		var goods = model.Goods{}
-		err := query.Scan(&goods.Id, &goods.IsDeleted, &goods.Name, &goods.Kind, &goods.Price, &goods.SoldAmount, &goods.Score, &goods.ShopId)
+		err := query.Scan(&goods.Id, &goods.IsDeleted, &goods.Name, &goods.Kind, &goods.Price, &goods.SoldAmount, &goods.Amount, &goods.Score, &goods.ShopId, &goods.Picture, &goods.Link)
 		if err != nil {
 			fmt.Println("query goods by kind failed2 ...\n", err)
 			return nil
@@ -97,7 +97,7 @@ func QueryGoodsGroupByKind(kind string, mode string) []model.Goods {
 }
 
 func QueryGoodsGroupByShopId(shopId string, mode string) []model.Goods {
-	sqlStr := "select goods_id, goods_is_deleted, goods_name, goods_kind, goods_price, goods_sold_amount, goods_score, goods_shop_id from goods where goods_shop_id = ?"
+	sqlStr := "select goods_id, goods_is_deleted, goods_name, goods_kind, goods_price, goods_sold_amount,goods_amount, goods_score, goods_shop_id,goods_picture,goods_link from goods where goods_shop_id = ?"
 	if mode == "" {
 		sqlStr += Mode["10"]
 	} else {
@@ -117,7 +117,7 @@ func QueryGoodsGroupByShopId(shopId string, mode string) []model.Goods {
 	var goodsGroup []model.Goods
 	for query.Next() {
 		var goods = model.Goods{}
-		err := query.Scan(&goods.Id, &goods.IsDeleted, &goods.Name, &goods.Kind, &goods.Price, &goods.SoldAmount, &goods.Score, &goods.ShopId)
+		err := query.Scan(&goods.Id, &goods.IsDeleted, &goods.Name, &goods.Kind, &goods.Price, &goods.SoldAmount, &goods.Amount, &goods.Score, &goods.ShopId, &goods.Picture, &goods.Link)
 		if err != nil {
 			fmt.Println("query goods by shopId failed2 ...\n", err)
 			return nil
@@ -128,7 +128,7 @@ func QueryGoodsGroupByShopId(shopId string, mode string) []model.Goods {
 }
 
 func QueryAllGoods(mode string) []model.Goods {
-	sqlStr := "select goods_id, goods_is_deleted, goods_name, goods_kind, goods_price, goods_sold_amount, goods_score, goods_shop_id from goods "
+	sqlStr := "select goods_id, goods_is_deleted, goods_name, goods_kind, goods_price, goods_sold_amount,goods_amount, goods_score, goods_shop_id,goods_picture,goods_link from goods "
 	if mode == "" {
 		sqlStr += Mode["10"]
 	} else {
@@ -148,7 +148,7 @@ func QueryAllGoods(mode string) []model.Goods {
 	var goodsGroup []model.Goods
 	for query.Next() {
 		var goods = model.Goods{}
-		err := query.Scan(&goods.Id, &goods.IsDeleted, &goods.Name, &goods.Kind, &goods.Price, &goods.SoldAmount, &goods.Score, &goods.ShopId)
+		err := query.Scan(&goods.Id, &goods.IsDeleted, &goods.Name, &goods.Kind, &goods.Price, &goods.SoldAmount, &goods.Amount, &goods.Score, &goods.ShopId, &goods.Picture, &goods.Link)
 		if err != nil {
 			fmt.Println("QueryAllGoods failed2 ...\n", err)
 			return nil
