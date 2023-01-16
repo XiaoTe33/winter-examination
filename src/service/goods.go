@@ -29,14 +29,13 @@ func AddGoods(token string, name string, price string, kind string, shopId strin
 	}
 	id = utils.GetGoodsId()
 	dao.AddGoods(model.Goods{
-		Id:      id,
-		Name:    name,
-		Price:   price,
-		Kind:    kind,
-		ShopId:  shopId,
-		Amount:  amount,
-		Picture: conf.LocalPathOfGoodsPicture + id + ".jpg",
-		Link:    conf.WebLinkPathOfGoodsPicture + id + ".jpg",
+		Id:          id,
+		Name:        name,
+		Price:       price,
+		Kind:        kind,
+		ShopId:      shopId,
+		Amount:      amount,
+		PictureLink: conf.WebLinkPathOfGoodsPicture + id + ".jpg",
 	})
 	return conf.OKMsg, id
 
@@ -83,6 +82,7 @@ func DeleteGoods(token string, id string) (msg string) {
 	dao.UpdateGoods(goods)
 	return conf.OKMsg
 }
+
 func QueryGoods(id string) (msg string, goods model.Goods) {
 	if goods = dao.QueryGoodsById(id); goods != (model.Goods{}) {
 		return conf.OKMsg, goods

@@ -117,13 +117,25 @@ func AddUserPhoto(c *gin.Context) {
 	photo, err := c.FormFile("photo")
 	if err != nil {
 		c.JSON(200, gin.H{
-			"msg": "解析文件出错",
+			"msg":             "解析文件出错",
+			"refreshed_token": utils.RefreshToken(token),
 		})
 		return
 	}
-	err = c.SaveUploadedFile(photo, ".\\src\\photos\\"+utils.GetUserIdByToken(token)+".png")
+	ok, style := utils.IsValidPictureFile(photo.Filename)
+	if !ok {
+		c.JSON(200, gin.H{
+			"msg":             "仅支持jpg,png,jfif格式的图片",
+			"refreshed_token": utils.RefreshToken(token),
+		})
+		return
+	}
+	err = c.SaveUploadedFile(photo, conf.LocalSavePathOfUserPhotos+utils.GetUserIdByToken(token)+style)
 	if err != nil {
-		c.JSON(200, "下载文件出错")
+		c.JSON(200, gin.H{
+			"msg":             "保存文件出错",
+			"refreshed_token": utils.RefreshToken(token),
+		})
 		return
 	}
 	msg := service.AddUserPhoto(token)

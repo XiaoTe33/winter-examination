@@ -11,7 +11,9 @@ const (
 
 	OKMsg = "200" //成功返回消息
 
-	SavePathOfGoodsPictures = ".\\src\\static\\goods\\pictures\\" //商品图片保存路径
+	LocalSavePathOfGoodsPictures      = ".\\src\\static\\goods\\pictures\\"      //商品图片保存路径
+	LocalSavePathOfUserPhotos         = ".\\src\\static\\user\\photos\\"         //用户头像保存地址
+	LocalSavePathOfEvaluationPictures = ".\\src\\static\\evaluation\\pictures\\" //评价图片保存地址
 
 	OrderIdLeftShiftNumber = 32 //生成全局OrderId左移位数
 	GoodsIdLeftShiftNumber = 20 //生成全局GoodsId左移位数
@@ -23,12 +25,11 @@ const (
 const (
 	IP = "http://localhost"
 
-	LocalPathOfUserPhoto    = "../../src/static/user/photos/"
-	LocalPathOfGoodsPicture = "../../src/static/goods/pictures/"
+	GinPathOfUserPhoto          = "user/photo/" //路由地址
+	GinPathOfGoodsPicture       = "goods/picture/"
+	GinPathOfEvaluationPictures = "evaluation/picture/"
 
-	GinPathOfUserPhoto    = "user/photo/"
-	GinPathOfGoodsPicture = "goods/picture/"
-
-	WebLinkPathOfUserPhoto    = IP + FrontEndPort + "/" + GinPathOfUserPhoto
-	WebLinkPathOfGoodsPicture = IP + FrontEndPort + "/" + GinPathOfGoodsPicture
+	WebLinkPathOfUserPhoto          = IP + FrontEndPort + "/" + GinPathOfUserPhoto //链接地址
+	WebLinkPathOfGoodsPicture       = IP + FrontEndPort + "/" + GinPathOfGoodsPicture
+	WebLinkPathOfEvaluationPictures = IP + FrontEndPort + "/" + GinPathOfEvaluationPictures
 )

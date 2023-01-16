@@ -139,7 +139,7 @@ func QueryAllUsers() (msg string, users []model.User) {
 func AddUserPhoto(token string) (msg string) {
 	userId := utils.GetUserIdByToken(token)
 	user := dao.QueryUserById(userId)
-	user.Photo = userId + ".png"
+	user.Photo = conf.WebLinkPathOfUserPhoto + userId + ".jpg"
 	dao.UpdateUser(user)
 	return conf.OKMsg
 }
