@@ -52,16 +52,77 @@ li{
     float:right;
 }
 
-.sousuo{
+.search{
     height: 150px;
     width: 1190px;
     margin: 0 auto;
     background-color: antiquewhite;
 }
-.sousuo #gongshi{
-    width: 196px;
-    height: 39px;
-    float:right
+.search .searchbox{
+    height: 110px;
+    width: 100%;
+}
+.searchbox img{
+    float: left;
+    width: 200px;
+    height: 45px;
+    margin:20px;
+}
+.searchbox .box{
+    float: left;
+    height: 35px;
+    width: 420px;
+    margin-top: 20px;
+    outline: none;
+}
+.searchbox .submit1{
+    float: left;
+    height: 38px;
+    margin: 0px;
+    border:0px; 
+    margin-top: 20px;
+    padding-left: 40px;padding-right: 40px;
+    background-color: #ff8000;
+    color: white;
+    font-weight: bold;
+    text-indent: 2px;
+    font-size: 20px;
+}
+.searchbox .q{
+    float: left;
+    padding-left: 3px;
+}
+.search .index{
+    display: block;
+    float: left;
+    width: 200px;
+    height: 40px;
+    background-color: #ff8000;
+    border-radius: 10px 10px 0px 0px;
+    color: #fff;
+    font-size: 15px;
+    line-height: 40px;
+}
+.search .fenlei1{
+    float:left;
+    width: 790px;
+    height: 40px;
+}
+.fenlei1 img{
+    float:left;
+    height: 40px;
+    width: auto;
+}
+.fenlei1 a{
+    display: block;
+    float:left;
+    margin: 5px;
+    padding: 5px;
+}
+.search #gongshi{
+    width: 200px;
+    height: 40px;
+    float:right;
 }
 
 .mainmain{
@@ -107,14 +168,14 @@ li{
     border-radius: 5px 0px 0px 5px;
 }
 
-ul{
+.lunbotu ul{
     position: absolute;
     top: 345px;
     left: 486px;
     width: 224px;
     height: 4px;
 }
-ul li{
+.lunbotu ul li{
     float:left;
     width: 20px;
     height: 4px;
@@ -146,4 +207,9 @@ ul li{
     height: 479px;
     float:left;
     background-color: aquamarine;
+}
+.classify ul li{
+    width: 200px;
+    height: 31px;
+    background-color: #fff;
 }
