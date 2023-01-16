@@ -9,4 +9,8 @@ type Goods struct {
 	SoldAmount string `json:"soldAmount"`
 	Score      string `json:"score"`
 	IsDeleted  string `json:"isDeleted"`
+	Picture    string `json:"picture"`
+	Link       string `json:"link"`
+	Amount     string `json:"amount"`
+	IsStar     string `json:"isStar"`
 }

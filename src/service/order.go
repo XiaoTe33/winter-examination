@@ -9,7 +9,7 @@ import (
 	"winter-examination/src/utils"
 )
 
-func AddOrder(token string, goodsId string, address string) (msg string) {
+func AddOrder(token string, goodsId string, address string, amount string, style string, discount string, originPrice string, actualPrice string) (msg string) {
 	buyerId := utils.GetUserIdByToken(token)
 	var solderId string
 	if goodsId != "" {
@@ -20,12 +20,17 @@ func AddOrder(token string, goodsId string, address string) (msg string) {
 		if goods != (model.Goods{}) {
 			solderId = goods.ShopId
 			dao.AddOrder(model.Order{
-				Id:       utils.GetOrderId(),
-				BuyerId:  buyerId,
-				SolderId: solderId,
-				GoodsId:  goodsId,
-				Address:  address,
-				Time:     time.Now().Format("2006-01-02 15:04:05 "),
+				Id:          utils.GetOrderId(),
+				BuyerId:     buyerId,
+				SolderId:    solderId,
+				GoodsId:     goodsId,
+				Address:     address,
+				Amount:      amount,
+				Style:       style,
+				Discount:    discount,
+				OriginPrice: originPrice,
+				ActualPrice: actualPrice,
+				Time:        time.Now().Format("2006-01-02 15:04:05"),
 			})
 			return conf.OKMsg
 		}
@@ -38,7 +43,7 @@ func QueryOrders(id string, token string, buyer string, solder string) (msg stri
 	if id != "" {
 		order := dao.QueryOrderById(id)
 		if order != (model.Order{}) {
-			return "ok", order
+			return conf.OKMsg, order
 		}
 		return "没有id为" + id + "的订单", order
 	}

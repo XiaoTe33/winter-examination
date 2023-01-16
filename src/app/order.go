@@ -10,7 +10,12 @@ func AddOrder(c *gin.Context) {
 	token := c.PostForm("token")
 	goodsId := c.PostForm("goodsId")
 	address := c.PostForm("address")
-	msg := service.AddOrder(token, goodsId, address)
+	amount := c.PostForm("amount")
+	style := c.PostForm("style")
+	discount := c.PostForm("discount")
+	originPrice := c.PostForm("originPrice")
+	actualPrice := c.PostForm("actualPrice")
+	msg := service.AddOrder(token, goodsId, address, amount, style, discount, originPrice, actualPrice)
 	c.JSON(200, gin.H{
 		"msg":             msg,
 		"refreshed_token": utils.RefreshToken(token),

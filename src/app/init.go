@@ -20,7 +20,7 @@ func InitRouters() {
 func initBackEndRouters() {
 
 	r := gin.Default()
-	r.MaxMultipartMemory = 8 << 20
+	r.MaxMultipartMemory = 3 << 20
 	r.Use(Cors())
 	u := r.Group("/user") //用户模块
 	{
@@ -65,12 +65,16 @@ func initBackEndRouters() {
 }
 func initFrontEndRouters() {
 	r := gin.Default()
+	r.Use(Cors())
 	r.Static("templates/", "./templates")
-	r.Static("photos/", "./src/photos")
+	r.Static(conf.GinPathOfUserPhoto, "./src/static/user/photos")
+	r.Static(conf.GinPathOfGoodsPicture, "./src/static/goods/pictures")
 	r.LoadHTMLGlob("templates/html/*")
+	r.LoadHTMLFiles("./src/test/test.html")
 
 	r.GET("/register", FRegister)
 	r.GET("/login", FLogin)
+	r.GET("/test", PictureTest)
 	r.POST("/jwt", JWT(), FLogin)
 
 	r.Run(conf.FrontEndPort)

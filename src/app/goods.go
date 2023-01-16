@@ -1,6 +1,7 @@
 package app
 
 import (
+	"winter-examination/src/conf"
 	"winter-examination/src/service"
 	"winter-examination/src/utils"
 
@@ -8,12 +9,39 @@ import (
 )
 
 func AddGoods(c *gin.Context) {
+	file, err := c.FormFile("picture")
+	token := c.PostForm("token")
+	if err != nil {
+		c.JSON(400, gin.H{
+			"msg":             "图片解析错误",
+			"refreshed_token": utils.RefreshToken(token),
+		})
+		return
+	}
+	ok, style := utils.IsValidPictureFile(file.Filename)
+	if !ok {
+		c.JSON(200, gin.H{
+			"msg":             "仅支持jpg,png格式的图片",
+			"refreshed_token": utils.RefreshToken(token),
+		})
+		return
+	}
 	name := c.PostForm("name")
 	kind := c.PostForm("kind")
 	price := c.PostForm("price")
 	shopId := c.PostForm("shop_id")
-	token := c.PostForm("token")
-	msg := service.AddGoods(token, name, price, kind, shopId)
+	amount := c.PostForm("amount")
+	msg, id := service.AddGoods(token, name, price, kind, shopId, amount)
+	if msg == conf.OKMsg {
+		err = c.SaveUploadedFile(file, conf.SavePathOfGoodsPictures+id+style)
+		if err != nil {
+			c.JSON(400, gin.H{
+				"msg":             "文件下载出错",
+				"refreshed_token": utils.RefreshToken(token),
+			})
+			return
+		}
+	}
 	c.JSON(200, gin.H{
 		"msg":             msg,
 		"refreshed_token": utils.RefreshToken(token),

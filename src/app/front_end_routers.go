@@ -9,3 +9,7 @@ func FRegister(c *gin.Context) {
 func FLogin(c *gin.Context) {
 	c.HTML(200, "login.html", nil)
 }
+
+func PictureTest(c *gin.Context) {
+	c.HTML(200, "test.html", nil)
+}
