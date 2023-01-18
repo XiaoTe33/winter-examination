@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"winter-examination/src/conf"
+	"winter-examination/src/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -22,6 +23,8 @@ func initBackEndRouters() {
 	r := gin.Default()
 	r.MaxMultipartMemory = 3 << 20
 	r.Use(Cors())
+	r.LoadHTMLFiles("./src/static/managePage/manage.html")
+
 	u := r.Group("/user") //用户模块
 	{
 		u.POST("/login", Login)              //登录
@@ -52,7 +55,7 @@ func initBackEndRouters() {
 		s.POST("/queryAll", QueryAllShops)   //查看当前所有商店信息
 	}
 
-	o := r.Group("/order")
+	o := r.Group("/order") //订单模块
 	{
 		o.POST("/add", JWT(), AddOrder)                     //新增订单
 		o.POST("/updateStatus", JWT(), UpdateOrderStatus)   //修改订单状态
@@ -61,20 +64,43 @@ func initBackEndRouters() {
 		o.POST("/queryAll", QueryAllOrders)                 //查看所有订单
 	}
 
+	st := r.Group("/star") //收藏模块
+	{
+		st.POST("/add", JWT(), AddStar)          //收藏商品
+		st.POST("/query", JWT(), QueryUserStars) //我的收藏
+		st.POST("/queryAll", QueryAllStars)      //查看所有
+		st.POST("/delete", JWT(), DeleteStar)    //取消收藏
+	}
+
+	e := r.Group("/evaluation") //评价模块
+	{
+		e.POST("/add", JWT(), AddEvaluation)        //新增评价
+		e.POST("/delete", JWT(), DeleteEvaluations) //删除评价
+		e.POST("/query", QueryGoodsEvaluations)     //查询某个商品的评价
+		e.POST("/queryAll", QueryAllEvaluations)    //查看所有
+	}
+
+	r.GET("/RESTART/:yes", utils.Restart) //数据库重开
+
+	r.GET("/manage", func(c *gin.Context) {
+		c.HTML(200, "manage.html", nil)
+	})
+
 	r.Run(conf.BackEndPort)
 }
 func initFrontEndRouters() {
 	r := gin.Default()
 	r.Use(Cors())
-	r.Static("templates/", "./templates")
+	r.Static("js/", "./templates/js")
+	r.Static("css/", "./templates/css")
+	r.Static("images", "./templates/images")
 	r.Static(conf.GinPathOfUserPhoto, "./src/static/user/photos")
 	r.Static(conf.GinPathOfGoodsPicture, "./src/static/goods/pictures")
+	r.Static(conf.GinPathOfEvaluationPictures, "./src/static/evaluation/pictures")
 	r.LoadHTMLGlob("templates/html/*")
-	r.LoadHTMLFiles("./src/test/test.html")
 
 	r.GET("/register", FRegister)
 	r.GET("/login", FLogin)
-	r.GET("/test", PictureTest)
 	r.POST("/jwt", JWT(), FLogin)
 
 	r.Run(conf.FrontEndPort)

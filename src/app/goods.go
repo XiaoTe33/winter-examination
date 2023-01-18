@@ -21,7 +21,7 @@ func AddGoods(c *gin.Context) {
 	ok, style := utils.IsValidPictureFile(file.Filename)
 	if !ok {
 		c.JSON(200, gin.H{
-			"msg":             "仅支持jpg,png格式的图片",
+			"msg":             "仅支持jpg,png,jfif格式的图片",
 			"refreshed_token": utils.RefreshToken(token),
 		})
 		return
@@ -33,7 +33,7 @@ func AddGoods(c *gin.Context) {
 	amount := c.PostForm("amount")
 	msg, id := service.AddGoods(token, name, price, kind, shopId, amount)
 	if msg == conf.OKMsg {
-		err = c.SaveUploadedFile(file, conf.SavePathOfGoodsPictures+id+style)
+		err = c.SaveUploadedFile(file, conf.LocalSavePathOfGoodsPictures+id+style)
 		if err != nil {
 			c.JSON(400, gin.H{
 				"msg":             "文件下载出错",

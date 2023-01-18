@@ -67,7 +67,9 @@ func IsValidJWT(jwt string) bool {
 
 func GetUsernameByToken(token string) (username string) {
 	arr := strings.Split(token, ".")
-
+	if len(arr) != 3 {
+		return ""
+	}
 	decodingString, err := base64.StdEncoding.DecodeString(arr[1])
 	if err != nil {
 		fmt.Println("base64.StdEncoding.DecodeString failed ...")

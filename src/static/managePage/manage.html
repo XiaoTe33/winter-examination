@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {{.}}
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            color: #b1b1b1;
+        }
+
+        html {
+            background-color: #3c3f41;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        span {
+            width: 50%;
+            height: auto;
+        }
+
+        .color1 {
+            width: 50%;
+            height: auto;
+            margin: 0 25%;
+            background-color: #56585d;
+        }
+
+        .color2 {
+            width: 50%;
+            height: auto;
+            margin: 0 25%;
+            background-color: #494a4a;
+        }
+        textarea{
+            background-color: #3c3f41
+        }
+        input {
+            background-color: #3c3f41
+        }
+    </style>
+</head>
+
+<body>
+<h1>文件上传测试</h1><br>
+<div class="color1">
+        <span>
+            <form action="http://127.0.0.1:9090/goods/add" method="post" enctype="multipart/form-data">
+                <table style="border-radius: 0%;">
+                    <thead>
+                    <tr>
+                        <td>
+                            <h3>新增商品</h3>
+                        </td>
+                        <td>
+                            <h5>/goods/add</h5>
+                        </td>
+                    </tr>
+                    </thead>
+                    <tr>
+
+                    </tr>
+                    <tr>
+                        <td>图片：</td>
+                        <td>picture</td>
+                        <td><input type="file" name="picture"></td>
+                    </tr>
+                    <tr>
+                        <td>商品名：</td>
+                        <td>name</td>
+                        <td><input type="text" name="name" value="vivo S12"></td>
+                    </tr>
+                    <tr>
+                        <td>种类：</td>
+                        <td>kind</td>
+                        <td><input type="text" name="kind" value="手机"></td>
+                    </tr>
+                    <tr>
+                        <td>数量：</td>
+                        <td>amount</td>
+                        <td><input type="text" name="amount" value="100"></td>
+                    </tr>
+                    <tr>
+                        <td>商店号：</td>
+                        <td>shop_id</td>
+                        <td><input type="text" name="shop_id" value="1"></td>
+                    </tr>
+
+                    <tr>
+                        <td> 价格：</td>
+                        <td>price</td>
+                        <td><input type="text" name="price" value="666"></td>
+                    </tr>
+                    <tr>
+                        <td>token：</td>
+                        <td class="">token</td>
+                        <td><input type="text" name="token" value="">
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input type="submit" value="post"></td>
+                    </tr>
+                </table>
+            </form>
+        </span>
+</div>
+<div class="color2">
+    <form action="http://127.0.0.1:9090/user/photo" method="post" enctype="multipart/form-data">
+        <table>
+            <thead>
+            <td>
+                <h3>用户头像上传</h3>
+            </td>
+            <td>
+                <h5>/user/photo</h5>
+            </td>
+            </thead>
+            <tr>
+                <td>图片：</td>
+                <td class="">photo</td>
+                <td><input type="file" name="photo"></td>
+            </tr>
+            <tr>
+                <td>token：</td>
+                <td class="">token</td>
+                <td><input type="text" name="token" value=""></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="post"></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="color1">
+    <form action="http://127.0.0.1:9090/evaluation/add" method="post" enctype="multipart/form-data">
+        <table>
+            <thead>
+            <td>
+                <h3>新增评价：</h3>
+            </td>
+            <td>
+                <h5>/evaluation/add</h5>
+            </td>
+            </thead>
+            <tr>
+                <td>图片：</td>
+                <td>picture</td>
+                <td><input type="file" name="picture"></td>
+            </tr>
+            <tr>
+                <td>token：</td>
+                <td>token</td>
+                <td>
+                    <input type="text" name="token" value="">
+                </td>
+            </tr>
+            <tr>
+                <td>商品ID：</td>
+                <td>goodsId</td>
+                <td><input type="text" name="goodsId" value="1"></td>
+            </tr>
+            <tr>
+                <td>评价文本：</td>
+                <td>text</td>
+                <td><textarea name="text" cols="22" rows="3" placeholder="a"></textarea></td>
+            </tr>
+            <tr>
+                <td>评分：</td>
+                <td>score</td>
+                <td><input type="text" name="score"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="post"></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+</body>
+
+</html>

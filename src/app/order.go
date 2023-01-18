@@ -53,7 +53,8 @@ func QueryOrders(c *gin.Context) {
 	token := c.PostForm("token")
 	buyer := c.PostForm("username")
 	solder := c.PostForm("shopName")
-	msg, data := service.QueryOrders(id, token, buyer, solder)
+	shopId := c.PostForm("shopId")
+	msg, data := service.QueryOrders(id, token, buyer, solder, shopId)
 	if token != "" {
 		c.JSON(200, gin.H{
 			"msg":             msg,
