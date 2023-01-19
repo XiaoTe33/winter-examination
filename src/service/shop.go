@@ -22,7 +22,7 @@ func AddShop(shopName string, token string) (msg string) {
 	return conf.OKMsg
 }
 
-func UpdateShop(token string, shopId string, newShopName string) (msg string) {
+func UpdateShop(token string, shopId string, newShopName string, notice string) (msg string) {
 	ownerId := utils.GetUserIdByToken(token)
 	shop := dao.QueryShopsByOwnerIdAndShopId(ownerId, shopId)
 	if shop == (model.Shop{}) {
@@ -35,6 +35,9 @@ func UpdateShop(token string, shopId string, newShopName string) (msg string) {
 		return "newShopName已被注册"
 	}
 	shop.Name = newShopName
+	if notice != "" {
+		shop.Notice = notice
+	}
 	dao.UpdateShop(shop)
 	return conf.OKMsg
 }

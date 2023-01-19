@@ -91,6 +91,7 @@ func initBackEndRouters() {
 func initFrontEndRouters() {
 	r := gin.Default()
 	r.Use(Cors())
+	r.StaticFile("/favicon.ico", "./src/static/favicon/favicon.ico")
 	r.Static("js/", "./templates/js")
 	r.Static("css/", "./templates/css")
 	r.Static("images", "./templates/images")
@@ -99,9 +100,11 @@ func initFrontEndRouters() {
 	r.Static(conf.GinPathOfEvaluationPictures, "./src/static/evaluation/pictures")
 	r.LoadHTMLGlob("templates/html/*")
 
-	r.GET("/register", FRegister)
-	r.GET("/login", FLogin)
-	r.POST("/jwt", JWT(), FLogin)
+	u := r.Group("/user")
+	u.Use(TokenMiddleware())
+	u.GET("/register", PageRegister)
+	u.GET("/login", PageLogin)
+	u.GET("/main", PageMain)
 
 	r.Run(conf.FrontEndPort)
 }
