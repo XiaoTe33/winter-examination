@@ -21,7 +21,8 @@ func UpdateShop(c *gin.Context) {
 	token := c.PostForm("token")
 	shopId := c.PostForm("shopId")
 	newShopName := c.PostForm("newShopName")
-	msg := service.UpdateShop(token, shopId, newShopName)
+	newNotice := c.PostForm("newNotice")
+	msg := service.UpdateShop(token, shopId, newShopName, newNotice)
 	c.JSON(200, gin.H{
 		"msg":             msg,
 		"refreshed_token": utils.RefreshToken(token),

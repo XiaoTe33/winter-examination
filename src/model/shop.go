@@ -5,4 +5,5 @@ type Shop struct {
 	OwnerId   string `json:"ownerId"`
 	Name      string `json:"name"`
 	IsDeleted string `json:"isDeleted"`
+	Notice    string `json:"notice"`
 }

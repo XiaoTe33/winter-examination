@@ -17,8 +17,8 @@ func AddShop(shop model.Shop) {
 }
 
 func UpdateShop(shop model.Shop) {
-	sqlStr := "update shops s set s.shop_name = ? , s.shop_is_delete = ? where s.shop_id = ? and s.shop_owner_id = ? "
-	_, err := Db.Exec(sqlStr, shop.Name, shop.IsDeleted, shop.Id, shop.OwnerId)
+	sqlStr := "update shops s set s.shop_name = ? , s.shop_is_delete = ? ,shop_notice = ? where s.shop_id = ? and s.shop_owner_id = ? "
+	_, err := Db.Exec(sqlStr, shop.Name, shop.IsDeleted, shop.Notice, shop.Id, shop.OwnerId)
 	if err != nil {
 		fmt.Println("UpdateShop Db.Exec failed ...")
 		return
@@ -111,10 +111,6 @@ func QueryShopsByOwnerIdAndShopId(ownerId string, shopId string) model.Shop {
 		return model.Shop{}
 	}
 	return shop
-}
-
-func QueryShopByKeyValue(key string, value string) {
-
 }
 
 func QueryAllShops() []model.Shop {
