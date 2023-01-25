@@ -16,10 +16,24 @@
         <span>
         </span>
         <form>
-            <input type="text">
-            <input type="text">
-            <input type="text">
-            <input type="submit" value="提交注册">
+            <div class="phonenumber">
+                <div><input type="text" name="phone" id="phone" value="建议使用常用的手机号"></div>
+                <div><label for="phone">手机号码</label></div>
+            </div>
+            <div class="yanzhengma">
+                <div><input type="text" name="yanzhengma" id="yanzheng"></div>
+                <div><label for="yanzheng">手机验证码</label></div>
+            </div>
+            <div class="password">
+                <div><input type="password" name="password" id="psw"></div>
+                <div>
+                    <label for="psw">设置密码</label>
+                </div>
+            </div>
+            
+            
+            
+            <input type="submit" value="提交注册" name="submit" id="submit">
         </form>
     </div>
     <div class="end">
@@ -44,5 +58,6 @@
             <br />
         </p>
     </div>
+    <script type="text/javascript" src="../js/register.js"></script>
 </body>
 </html>
