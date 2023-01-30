@@ -11,14 +11,15 @@
     <script>
          const btn = document.querySelector('#btn')
          btn.addEventListener('click',async()=>{
-            const res = await fetch('http://39.101.72.18:9090/user/login', {
+            const res = await fetch('http://39.101.72.18:9999/', {
             method: "post",
             headers: {
                 'Content-Type': 'application/json; charset=utf-8'
             },
             body: JSON.stringify({
-                username:123,
-                password:123
+                name :"123",
+                age :123,
+                sex :"女",
             })
           })
           const data = await res.json()

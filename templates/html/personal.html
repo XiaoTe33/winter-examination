@@ -9,7 +9,7 @@
     <link rel="shortcut icon" href="https://www.suning.com/favicon.ico">
 </head>
 <body>
-    <div>
+    <div class="toptop">
         <div class="top">
             <div class="top1">
                 <a href="">网站导航</a>
@@ -31,65 +31,81 @@
         </div>
     </div>
     <div class="header">
-        <a href=""></a>
-        <ul>
-            <li>首页</li>
-            <li>账户管理</li>
-            <li>消息</li>
-        </ul>
+        <div class="logo">
+            <a href="./mysuning.html"></a>
+        </div>
+
+        <div class="nav1">
+            <ul>
+                <li>首页</li>
+                <li>账户管理</li>
+                <li>消息</li>
+            </ul>
+        </div>
+        
     </div>
-    <div>
-        <div>
+    <div class="main">
+        <div class="nav2">
             <dl>
                 <dt>账户管理</dt>
-                <dd>·个人信息</dd>
-                <dd>·安全设置</dd>
-                <dd>·我的易付宝</dd>
-                <dd>·地址管理</dd>
-                <dd>·易付宝绑定设置</dd>
-                <dd>·绑定管理</dd>
-                <dd>·个人增票</dd>
-                <dd>·股东会员认证</dd>
-                <dd>·苏宁国际实名认证</dd>
+                <dd>· 个人信息</dd>
+                <dd>· 安全设置</dd>
+                <dd>· 我的易付宝</dd>
+                <dd>· 地址管理</dd>
+                <dd>· 易付宝绑定设置</dd>
+                <dd>· 绑定管理</dd>
+                <dd>· 个人增票</dd>
+                <dd>· 股东会员认证</dd>
+                <dd>· 苏宁国际实名认证</dd>
             </dl>
         </div>
         <div class="big">
             <h3>
-                <span>其他说明：您的会员编号为：，您可以凭此编号到苏宁任一门店消费。</span>
                 <strong>个人信息</strong>
+                <span>其他说明：您的会员编号为：，您可以凭此编号到苏宁任一门店消费。</span>
             </h3>
             <div class="xinxi1">
                 <div class="touxiang"></div>
                 <div class="yonghuming">
-                    <div></div>
+                    <div><input type="text" vaule="请输入用户名"></div>
                     <p>立即查看账户安全状态</p>
                 </div>
             </div>
-            <div class="xiinxi2">
+            <div class="xinxi2">
                 <form action="">
-                    <div>
-                        <label for="nicheng">昵称：</label>
-                        <input type="text" name="nicheng" id="nicheng">
+                    <div class="line">
+                        <div class="tips"><label for="nicheng">昵称：</label></div>
+                        <div class="text"><input type="text" name="nicheng" id="nicheng"></div>
                     </div>
-                    <div>
-                        <label for="">性别：</label>
-                        <input type="text">
+                    <div class="line">
+                        <div class="tips"><label for="">性别：</label></div>
+                        <div class="text">
+                            <input type="radio" name="sex" id="nan">
+                            <label for="nan">男</label>
+                            <input type="radio" name="sex" id="nv">
+                            <label for="nv">女</label>
+                            <input type="radio" name="sex" id="baomi" checked>
+                            <label for="baomi">保密</label>
+                        </div>
                     </div>
-                    <div>
-                        <label for="">手机：</label>
-                        <input type="text">
+                    <div class="line">
+                        <div class="tips"><label for="">手机：</label></div>
+                        <div class="text"><input type="text"></div>
                     </div>
-                    <div>
-                        <label for="">邮箱：</label>
-                        <input type="text">
+                    <div class="line">
+                        <div class="tips"><label for="">邮箱：</label></div>
+                        <div class="text"><input type="text"></div>
                     </div>
-                    <div>
-                        <label for="">出生日期：</label>
-                        <input type="text">
+                    <div class="line">
+                        <div class="tips"><label for="">出生日期：</label></div>
+                        <div class="text"><input type="text"></div>
                     </div>
-                    <div>
-                        <button>保存</button>
-                        <button>删除</button>
+                    <div class="line">
+                        <div class="tips"></div>
+                        <div class="text">
+                            <button id="push">保存</button>
+                            <button id="delete">删除</button>
+                        </div>
                     </div>
                 </form>
             </div>

@@ -69,8 +69,9 @@ li{
 .main{
     position: relative;
     width: 1240px;
-    height: 650px;
+    height: 600px;
     margin:0px auto;
+    background-color: aquamarine;
 }
 .main .nav2{
     position: absolute;
@@ -79,8 +80,6 @@ li{
     padding-left: 20px;
     padding-bottom: 20px;
     padding-right: 35px;
-    background-color: #fff;
-    border:1px solid #999999;
 }
 .main .nav2 dt{
     margin-top: 30px;
@@ -98,86 +97,7 @@ li{
     color:orange;
     cursor:pointer;
 }
-.main .big{
-    position: absolute;
-    top:10px;
-    right:0px;
-    height: 575px;
-    width: 1068px;
-    background-color: #fff;
-    border: 1px solid #666666;
-}
-.main .big h3{
-    display: flex;
-    justify-content: space-between;
-    margin:3px 5px;
-    padding-bottom: 5px;
-    color: #666666;
-}
 
-.main .big .xinxi1{
-    height: 200px;
-    display: flex;
-    align-items: center;
-    border-bottom:1px solid #666666;
-}
-.main .big .xinxi1 .touxiang{
-    height: 130px;
-    width: 130px;
-    border-radius: 65px;
-    border: 2px solid #e3e3e3;
-    margin-left: 90px;
-    margin-right: 25px;
-}
-.main .big .yonghuming input{
-    height: 12px;
-    width: 150px;
-    padding: 7px 5px;
-    margin-bottom: 10px;
-}
-.main .big .yonghuming p{
-    margin-top: 10px;
-    font-size:12px;
-}
-
-
-
-.main .xinxi2 .line{
-    display: flex;
-    height: 30px;
-    line-height: 30px;
-    margin-top: 20px;
-}
-.main .xinxi2 input{
-    height: 12px;
-    width: 150px;
-    padding: 7px 5px;
-}
-
-.main .xinxi2 .tips{
-    width: 190px;
-    height: 20px;
-    font-size: 12px;
-    display: flex;
-    justify-content: flex-end;
-}
-.main .xinxi2 .text button{
-    height: 30px;
-    width: 80px;
-    margin-right: 42px;
-}
-#push{
-    background-color: orange;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-}
-#delete{
-    background-color: #fff;
-    color:#666666;
-    border: 1px solid #999999;
-    border-radius: 5px;
-}
 
 
 

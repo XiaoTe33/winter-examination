@@ -6,5 +6,5 @@ let hongbao = document.querySelector('.icon-hongbao');
    
 icon_rmb.addEventListener('mouseenter',()=>{
     console.log('111')
-    rmb.classList.add('moved')
+    // rmb.classList.add('moved')
 })
