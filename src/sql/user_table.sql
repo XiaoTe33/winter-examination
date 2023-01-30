@@ -11,8 +11,9 @@ create table if not exists users
     email varchar(256) default '' comment '邮箱',
     money varchar(256) default '0.00' not null comment '余额',
     photo varchar(256) default '' comment '头像',
-    shopping_car varchar(256) default '{}' comment '购物车',
-    address varchar(256) default '' comment '收货地址'
+    shopping_car varchar(4096) default '[]' comment '购物车',
+    address varchar(4096) default '[]' comment '收货地址',
+    coupon varchar(4096) default '[]' comment '优惠券'
 ) comment 'users';
 
 

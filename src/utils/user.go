@@ -1,45 +1,55 @@
 package utils
 
 import (
+	"crypto/md5"
 	"crypto/sha256"
 	"fmt"
 	"regexp"
+	time2 "time"
 
 	"winter-examination/src/dao"
 	"winter-examination/src/model"
+
+	"github.com/go-playground/validator/v10"
 )
 
-func IsValidUsername(username string) bool {
-	return len([]rune(username)) > 0 && len([]rune(username)) <= 20
-}
-func IsValidEmail(email string) bool {
-	return regexp.
-		MustCompile(`^(\w+(.\w+)*)*@(\w+(.\w+)+)+$`).
-		MatchString(email)
+func InitUserVal() {
+	//register,update
+	addValidator("IsValidUsername", IsValidUsername)
+	addValidator("IsValidEmail", IsValidEmail)
+	addValidator("IsValidPhone", IsValidPhone)
+	addValidator("IsValidPassword", IsValidPassword)
+	//addValidator("",)
+
+	//login
+	addValidator("IsRegisteredUsername", IsRegisteredUsername)
 }
 
-func IsValidPhone(phone string) bool {
-	return regexp.
-		MustCompile("^1[3-9][0-9]{9}$").
-		MatchString(phone)
-}
-
-func IsValidPassword(password string) bool {
-	return regexp.
-		MustCompile(`^[\w!-~]{6,20}$`).
-		MatchString(password)
-}
-
-func IsRegisteredUsername(username string) bool {
+func IsRegisteredUsername(fl validator.FieldLevel) bool {
+	username, _ := fl.Field().Interface().(string)
 	return dao.QueryUserByUsername(username) != model.User{}
 }
 
-func IsRegisteredPhone(phone string) bool {
-	return dao.QueryUserByPhone(phone) != model.User{}
+func IsValidPassword(fl validator.FieldLevel) bool {
+	password, _ := fl.Field().Interface().(string)
+	return regexp.MustCompile(`^[!-~]{6,20}$`).MatchString(password)
 }
 
-func IsRegisteredEmail(email string) bool {
-	return dao.QueryUserByEmail(email) != model.User{}
+func IsValidUsername(fl validator.FieldLevel) bool {
+	username, _ := fl.Field().Interface().(string)
+	return dao.QueryUserByUsername(username) == model.User{}
+}
+
+func IsValidEmail(fl validator.FieldLevel) bool {
+	email, _ := fl.Field().Interface().(string)
+	return regexp.MustCompile(`^(\w+(.\w+)*)*@(\w+(.\w+)+)+$`).MatchString(email) &&
+		dao.QueryUserByEmail(email) == model.User{}
+}
+
+func IsValidPhone(fl validator.FieldLevel) bool {
+	phone, _ := fl.Field().Interface().(string)
+	return regexp.MustCompile("^1[3-9][0-9]{9}$").MatchString(phone) &&
+		dao.QueryUserByPhone(phone) == model.User{}
 }
 
 func SHA256Secret(str string) string {
@@ -50,4 +60,12 @@ func SHA256Secret(str string) string {
 
 func GetIdByUsername(username string) (id string) {
 	return dao.QueryUserByUsername(username).Id
+}
+
+func Md5Encoded(pre string) string {
+	return fmt.Sprintf("%x", md5.Sum([]byte(pre)))
+}
+
+func Md5EncodedWithTime(pre string) string {
+	return fmt.Sprintf("%x", md5.Sum([]byte(pre+fmt.Sprintf("%b", time2.Now().Nanosecond()))))
 }

@@ -12,13 +12,20 @@ import (
 
 func JWT() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.PostForm("token")
+		token := c.Request.Header.Get("Token")
 		if !utils.IsValidJWT(token) {
-			c.JSON(http.StatusBadRequest, gin.H{"msg": "请输入有效的Token"})
+			c.JSON(http.StatusBadRequest, gin.H{
+				"status": http.StatusBadRequest,
+				"msg":    "请先登录",
+			})
 			c.Abort()
 			return
 		}
-		fmt.Println("jwt认证成功")
+		username := utils.GetUsernameByToken(token)
+		userId := utils.GetUserIdByToken(token)
+		c.Set("refreshed_token", utils.RefreshToken(token))
+		c.Set("username", username)
+		c.Set("userId", userId)
 		c.Next()
 	}
 }
@@ -27,7 +34,7 @@ func Cors() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		method := c.Request.Method               //请求方法
 		origin := c.Request.Header.Get("Origin") //请求头部
-		var headerKeys []string                  // 声明请求头keys
+		var headerKeys []string                  // 声明请求头keyse
 		for k := range c.Request.Header {
 			headerKeys = append(headerKeys, k)
 		}

@@ -2,7 +2,9 @@ package service
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
+	"strconv"
 
 	"winter-examination/src/conf"
 	"winter-examination/src/dao"
@@ -10,111 +12,168 @@ import (
 	"winter-examination/src/utils"
 )
 
-func AddGoods(token string, name string, price string, kind string, shopId string, amount string) (msg string, id string) {
-	if dao.QueryShopById(shopId).OwnerId != utils.GetUserIdByToken(token) {
-		return "您没有shopId为" + shopId + "商店", ""
+func AddGoods(req model.AddGoodsReq, userId string, fileName string) error {
+	shop := dao.QueryShopByOwnerId(userId)
+	if shop == (model.Shop{}) {
+		return errors.New("请先成为店长")
 	}
-	if !utils.IsValidGoodsName(name) {
-		return "商品名长度不合理", ""
-	}
-	if !utils.IsValidGoodsPrice(price) {
-		return "价格格式有误", ""
-	}
-	if !utils.IsValidGoodsKind(kind) {
-		return "分类名长度不合理", ""
-	}
-	if false {
-		//校验shopId
-		return "shopId有误", ""
-	}
-	id = utils.GetGoodsId()
+	id := utils.GetGoodsId()
 	dao.AddGoods(model.Goods{
 		Id:          id,
-		Name:        name,
-		Price:       price,
-		Kind:        kind,
-		ShopId:      shopId,
-		Amount:      amount,
-		PictureLink: conf.WebLinkPathOfGoodsPicture + id + ".jpg",
+		Name:        req.Name,
+		Price:       req.Price,
+		Kind:        req.Kind,
+		ShopId:      shop.Id,
+		PictureLink: conf.WebLinkPathOfGoodsPicture + utils.Md5EncodedWithTime(fileName) + ".jpg",
 	})
-	return conf.OKMsg, id
+	return nil
 
 }
 
-func UpdateGoods(token string, id string, name string, price string, kind string) (msg string) {
+func UpdateGoods(req model.UpdateGoodsReq, userId string) error {
 
-	goods := dao.QueryGoodsById(id)
-	if goods == (model.Goods{}) || utils.GetShopOwnerIdByGoodsId(id) != utils.GetUserIdByToken(token) {
-		return "商品不存在"
+	goods := dao.QueryGoodsById(req.GoodsId)
+	if goods == (model.Goods{}) || utils.GetShopOwnerIdByGoodsId(req.GoodsId) != userId {
+		return errors.New("商品不存在")
 	}
-	if name != "" {
-		if !utils.IsValidGoodsName(name) {
-			return "商品名长度不合理"
-		}
-		goods.Name = name
-	}
-	if price != "" {
-		if !utils.IsValidGoodsPrice(price) {
-			return "价格格式有误"
-		}
-		goods.Price = price
-	}
-	if kind != "" {
-		if !utils.IsValidGoodsKind(kind) {
-			return "分类名长度不合理"
-		}
-		goods.Kind = kind
-	}
-
+	goods.Name = req.Name
+	goods.Kind = req.Kind
+	goods.Price = req.Price
 	dao.UpdateGoods(goods)
-	return conf.OKMsg
+	return nil
 }
 
-func DeleteGoods(token string, id string) (msg string) {
+func DeleteGoods(userId string, id string) error {
 	goods := dao.QueryGoodsById(id)
-	if goods == (model.Goods{}) || utils.GetShopOwnerIdByGoodsId(id) != utils.GetUserIdByToken(token) {
-		return "商品不存在"
-	}
-	if goods == (model.Goods{}) {
-		return "找不到id为" + id + "的商品捏"
+	if goods == (model.Goods{}) || utils.GetShopOwnerIdByGoodsId(id) != userId {
+		return errors.New("没找到id为" + id + "的商品")
 	}
 	goods.IsDeleted = "1"
+	dao.DeleteStarByGoodsId(id) //商品的评价也一并删了
 	dao.UpdateGoods(goods)
-	return conf.OKMsg
+	return nil
 }
 
-func QueryGoods(id string) (msg string, goods model.Goods) {
-	if goods = dao.QueryGoodsById(id); goods != (model.Goods{}) {
-		return conf.OKMsg, goods
+func AddGoodsAmount(req model.AddGoodsAmountReq, userId string) error {
+	if utils.GetShopOwnerIdByGoodsId(req.GoodsId) != userId {
+		return errors.New("商品id有误")
 	}
-	return "找不到id为" + id + "的商品捏", model.Goods{}
+	dao.UpGoodsAmount(req.GoodsId, req.Amount)
+	return nil
 }
 
-func QueryGoodsGroup(name string, kind string, shopId string, mode string) (msg string, goodsGroup []model.Goods) {
+func CutGoodsAmount(req model.CutGoodsAmountReq, userId string) error {
+	if utils.GetShopOwnerIdByGoodsId(req.GoodsId) != userId {
+		return errors.New("商品id有误")
+	}
+	local, _ := strconv.Atoi(dao.QueryGoodsById(req.GoodsId).Amount)
+	cut, _ := strconv.Atoi(req.Amount)
+	if local < cut {
+		return errors.New("已经超出商品数量下限了")
+	}
+	dao.DownGoodsAmount(req.GoodsId, req.Amount)
+	return nil
+}
+
+func MyShopGoods(ownerId string) []model.MyShopGoodsRsp {
+	shopId := dao.QueryShopByOwnerId(ownerId).Id
+	gg := dao.QueryGoodsGroupByShopIdWithoutMode(shopId)
+	var rsp []model.MyShopGoodsRsp
+	for i := 0; i < len(gg); i++ {
+		var g = model.MyShopGoodsRsp{
+			Id:          gg[i].Id,
+			Name:        gg[i].Name,
+			Kind:        gg[i].Kind,
+			Price:       gg[i].Price,
+			SoldAmount:  gg[i].SoldAmount,
+			Score:       gg[i].Score,
+			PictureLink: gg[i].PictureLink,
+			Amount:      gg[i].Amount,
+		}
+		rsp = append(rsp, g)
+	}
+	return rsp
+}
+
+func QueryGoodsById(id string) (goods model.Goods, err error) {
+	if goods = dao.QueryGoodsById(id); goods != (model.Goods{}) {
+		return goods, nil
+	}
+	return model.Goods{}, errors.New("找不到id为" + id + "的商品捏")
+}
+
+func QueryGoodsByIdWithStar(id string, userId string) (goods model.Goods, err error) {
+	if goods = dao.QueryGoodsById(id); goods != (model.Goods{}) {
+		star := dao.QueryStarsByUserId(userId)
+		for i := 0; i < len(star); i++ {
+			if star[i] == goods.Id {
+				goods.IsStar = "true"
+			}
+		}
+		return goods, nil
+	}
+	return model.Goods{}, errors.New("找不到id为" + id + "的商品捏")
+}
+
+func QueryGoodsGroup(name string, kind string, shopId string, mode string) (goodsGroup []model.Goods, err error) {
 
 	if name != "" {
 		if goodsGroup = dao.QueryGoodsGroupByName(name, mode); goodsGroup != nil {
-			return conf.OKMsg, goodsGroup
+			return goodsGroup, nil
 		}
-		return "找不到name为" + name + "的商品捏", nil
+		return nil, errors.New("找不到name为" + name + "的商品捏")
 	}
 	if kind != "" {
 		if goodsGroup = dao.QueryGoodsGroupByKind(kind, mode); goodsGroup != nil {
-			return conf.OKMsg, goodsGroup
+			return goodsGroup, nil
 		}
-		return "找不到kind为" + kind + "的商品捏", nil
+		return nil, errors.New("找不到kind为" + kind + "的商品捏")
 	}
 	if shopId != "" {
 		if goodsGroup = dao.QueryGoodsGroupByShopId(shopId, mode); goodsGroup != nil {
-			return conf.OKMsg, goodsGroup
+			return goodsGroup, nil
 		}
-		return "找不到shopId为" + shopId + "的商品捏", nil
+		return nil, errors.New("找不到shopId为" + shopId + "的商品捏")
 	}
-	return "参数还没写就传？", nil
+	return nil, errors.New("请填写参数")
 }
 
-func QueryAllGoods(mode string) (msg string, goodsGroup []model.Goods) {
-	return conf.OKMsg, dao.QueryAllGoods(mode)
+func QueryGoodsGroupWithStar(name string, kind string, shopId string, mode string, userId string) (goodsGroup []model.Goods, err error) {
+
+	if name != "" {
+		if goodsGroup = dao.QueryGoodsGroupByName(name, mode); goodsGroup != nil {
+			goto RETURN
+		}
+		return nil, errors.New("找不到name为" + name + "的商品捏")
+	}
+	if kind != "" {
+		if goodsGroup = dao.QueryGoodsGroupByKind(kind, mode); goodsGroup != nil {
+			goto RETURN
+		}
+		return nil, errors.New("找不到kind为" + kind + "的商品捏")
+	}
+	if shopId != "" {
+		if goodsGroup = dao.QueryGoodsGroupByShopId(shopId, mode); goodsGroup != nil {
+			goto RETURN
+		}
+		return nil, errors.New("找不到shopId为" + shopId + "的商品捏")
+	}
+	return nil, errors.New("请填写参数")
+RETURN:
+	stars := dao.QueryStarsByUserId(userId)
+
+	for i := 0; i < len(stars); i++ {
+		for j := 0; j < len(goodsGroup); j++ {
+			if stars[i] == goodsGroup[j].Id {
+				goodsGroup[j].IsStar = "true"
+			}
+		}
+	}
+	return goodsGroup, nil
+}
+
+func QueryAllGoodsWithoutMode() []model.Goods {
+	return dao.QueryAllGoodsWithoutMode()
 }
 
 func GoodsShoppingCar(token string, goodsId string, mode string) (msg string) {

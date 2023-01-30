@@ -1,14 +1,16 @@
 package utils
 
 import (
+	"github.com/go-playground/validator/v10"
 	"winter-examination/src/dao"
 	"winter-examination/src/model"
 )
 
-func IsValidShopName(shopName string) bool {
-	return len([]rune(shopName)) <= 30 && len([]rune(shopName)) > 0
+func InitShopVal() {
+	addValidator("IsUnregisteredShopName", IsUnregisteredShopName)
 }
 
-func IsRegisteredShopName(shopName string) bool {
-	return dao.QueryShopByName(shopName) != model.Shop{}
+func IsUnregisteredShopName(fl validator.FieldLevel) bool {
+	shopName, _ := fl.Field().Interface().(string)
+	return dao.QueryShopByName(shopName) == model.Shop{}
 }

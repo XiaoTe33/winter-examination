@@ -1,60 +1,69 @@
 package app
 
 import (
-	"winter-examination/src/service"
-	"winter-examination/src/utils"
-
 	"github.com/gin-gonic/gin"
+
+	"winter-examination/src/model"
+	"winter-examination/src/service"
 )
 
 func AddShop(c *gin.Context) {
-	token := c.PostForm("token")
-	shopName := c.PostForm("shopName")
-	msg := service.AddShop(shopName, token)
-	c.JSON(200, gin.H{
-		"msg":             msg,
-		"refreshed_token": utils.RefreshToken(token),
-	})
+	userId := c.GetString("userId")
+	var req = model.AddShopReq{}
+	err := c.ShouldBind(&req)
+	if handleBindingError(c, err, &req) {
+		return
+	}
+	service.AddShop(req, userId)
+	jsonSuccess(c)
 }
 
-func UpdateShop(c *gin.Context) {
-	token := c.PostForm("token")
-	shopId := c.PostForm("shopId")
-	newShopName := c.PostForm("newShopName")
-	newNotice := c.PostForm("newNotice")
-	msg := service.UpdateShop(token, shopId, newShopName, newNotice)
-	c.JSON(200, gin.H{
-		"msg":             msg,
-		"refreshed_token": utils.RefreshToken(token),
-	})
+func UpdateShopInfo(c *gin.Context) {
+	userId := c.GetString("userId")
+	var req = model.UpdateShopInfoReq{}
+	err := c.ShouldBind(&req)
+	if handleBindingError(c, err, &req) {
+		return
+	}
+	service.UpdateShopInfo(req, userId)
+	jsonSuccess(c)
 }
 
-func QueryShops(c *gin.Context) {
-	name := c.PostForm("name")
-	ownerId := c.PostForm("ownerId")
-	owner := c.PostForm("owner")
-	msg, shops := service.QueryShops(name, ownerId, owner)
-	c.JSON(200, gin.H{
-		"msg":  msg,
-		"data": shops,
-	})
+func UpdateShopNotice(c *gin.Context) {
+	userId := c.GetString("userId")
+	var req = model.UpdateShopNoticeReq{}
+	err := c.ShouldBind(&req)
+	if handleBindingError(c, err, &req) {
+		return
+	}
+	service.UpdateShopNotice(req, userId)
+	jsonSuccess(c)
 }
+
+//func QueryShops(c *gin.Context) {
+//	name := c.PostForm("name")
+//	ownerId := c.PostForm("ownerId")
+//	owner := c.PostForm("owner")
+//	msg, shops := service.QueryShops(name, ownerId, owner)
+//	c.JSON(200, gin.H{
+//		"msg":  msg,
+//		"data": shops,
+//	})
+//}
 
 func DeleteShop(c *gin.Context) {
-	token := c.PostForm("token")
-	shopId := c.PostForm("shopId")
-	msg := service.DeleteShop(token, shopId)
-	c.JSON(200, gin.H{
-		"msg":             msg,
-		"refreshed_token": utils.RefreshToken(token),
-	})
+	userId := c.GetString("userId")
+	service.DeleteShop(userId)
+	jsonSuccess(c)
+}
 
+func MyShopInfo(c *gin.Context) {
+	userId := c.GetString("userId")
+	data := service.MyShopInfo(userId)
+	jsonData(c, data)
 }
 
 func QueryAllShops(c *gin.Context) {
-	msg, shops := service.QueryAllShops()
-	c.JSON(200, gin.H{
-		"msg":  msg,
-		"data": shops,
-	})
+	shops := service.QueryAllShops()
+	jsonData(c, shops)
 }
