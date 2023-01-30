@@ -18,19 +18,6 @@ func Restart(c *gin.Context) {
 		})
 		_, err := dao.Db.Exec(`create database if not exists winter_examination_database`)
 		_, err = dao.Db.Exec(`use winter_examination_database`)
-		_, err = dao.Db.Exec(`drop table if exists users`)
-		_, err = dao.Db.Exec(`create table if not exists users
-(
-    user_id bigint not null auto_increment comment 'id' primary key,
-    username varchar(20) not null comment '用户名',
-    password varchar(256) not null comment 'password',
-    phone varchar(11) default '' comment '手机号',
-    email varchar(256) default '' comment '邮箱',
-    money varchar(256) default '0.00' not null comment '余额',
-    photo varchar(256) default '' comment '头像',
-    shopping_car varchar(256) default '{}' comment '购物车',
-    address varchar(256) default '' comment '收货地址'
-) comment 'users'`)
 		_, err = dao.Db.Exec(`drop table if exists goods`)
 		_, err = dao.Db.Exec(`create table if not exists goods
 (
@@ -54,7 +41,7 @@ func Restart(c *gin.Context) {
     order_solder_id bigint not null comment '商店',
     order_goods_id bigint not null comment '商品',
     order_goods_amount int default 1 comment '商品数量',
-    order_goods_style varchar(256) default '{}' comment '商品款式',
+    order_goods_style varchar(256) default '[]' comment '商品款式',
     order_time varchar(50) not null comment '下单时间',
     order_address varchar(100) not null comment '收货地址',
     order_status varchar(1) default '0' not null comment '订单状态',
@@ -100,9 +87,22 @@ func Restart(c *gin.Context) {
     email varchar(256) default '' comment '邮箱',
     money varchar(256) default '0.00' not null comment '余额',
     photo varchar(256) default '' comment '头像',
-    shopping_car varchar(256) default '{}' comment '购物车',
-    address varchar(256) default '' comment '收货地址'
+    shopping_car varchar(4096) default '[]' comment '购物车',
+    address varchar(4096) default '[]' comment '收货地址',
+    coupon varchar(4096) default '[]' comment '优惠券'
 ) comment 'users'`)
+		_, err = dao.Db.Exec(`drop table if exists coupons`)
+		_, err = dao.Db.Exec(`create table if not exists coupons
+(
+    c_id bigint not null unique comment '主键',
+    c_shop_id bigint not null comment '发放商id',
+    c_name varchar(60) not null comment '优惠券名称',
+    c_kind tinyint not null comment '优惠券种类',
+    c_amount int not null comment '数量',
+    c_discount varchar(60) not null comment '折扣详情',
+    c_begin_at varchar(40) not null comment '开始时间',
+    c_end_at varchar(40) not null comment '结束时间'
+)`)
 		fmt.Println(err)
 	} else {
 		c.JSON(200, gin.H{

@@ -10,6 +10,7 @@ import (
 )
 
 func InitRouters() {
+	utils.InitCheckouts()
 	go initBackEndRouters()
 	gin.SetMode(gin.ReleaseMode)
 	time.Sleep(1 * time.Second)
@@ -23,88 +24,107 @@ func initBackEndRouters() {
 	r := gin.Default()
 	r.MaxMultipartMemory = 3 << 20
 	r.Use(Cors())
-	r.LoadHTMLFiles("./src/static/managePage/manage.html")
 
 	u := r.Group("/user") //用户模块
-	{
-		u.POST("/login", Login)              //登录
-		u.POST("/register", Register)        //注册
-		u.POST("/logout", JWT(), Logout)     //退出登录
-		u.POST("/query", QueryUser)          //查用户
-		u.POST("/update", JWT(), UpdateUser) //修改用户信息
-		u.POST("/queryAll", QueryAllUsers)   //查看当前所有用户
-		u.POST("/photo", AddUserPhoto)       //加头像
-	}
 
-	g := r.Group("/goods") //商品模块
 	{
-		g.POST("/add", JWT(), AddGoods)          //新增商品
-		g.POST("/update", JWT(), UpdateGoods)    //修改商品信息
-		g.POST("/delete", JWT(), DeleteGoods)    //删除商品
-		g.POST("/query", QueryGoods)             //查找商品
-		g.POST("/queryAll", QueryAllGoods)       //查看所有商品信息
-		g.POST("/shoppingCar", GoodsShoppingCar) //购物车操作
+		u.POST("/register", Register)                         //注册新用户
+		u.POST("/login", Login)                               //用户名密码登录
+		u.POST("/login/token", TokenLogin)                    //token登录
+		u.PUT("/info", JWT(), UpdateMyInfo)                   //修改我的基本信息
+		u.GET("/info", JWT(), QueryMyInfo)                    //获取我的基本信息
+		u.GET("/info/other", QueryUserInfo)                   //获取别人的基本信息
+		u.PUT("/password", JWT(), UpdatePassword)             //修改密码
+		u.POST("/photo", JWT(), AddUserPhoto)                 //上传头像
+		u.PUT("/money/:money", JWT(), AddMoney)               //充值
+		u.POST("/address", JWT(), AddUserAddress)             //新增收货地址
+		u.GET("/address", JWT(), QueryMyAddressList)          //获取我的地址列表
+		u.DELETE("/address/:id", JWT(), DeleteAddress)        //删除地址
+		u.GET("/car", JWT(), MyShoppingCarList)               //我的购物车
+		u.PUT("/car/:goodsId", JWT(), AddToShoppingCar)       //加入购物车
+		u.DELETE("/car/:numId", JWT(), DeleteFromShoppingCar) //移出购物车
+		u.PUT("/star/:goodsId", JWT(), AddStar)               //收藏商品
+		u.DELETE("/star/:goodsId", JWT(), DeleteStar)         //取消收藏
+		u.GET("/star", JWT(), QueryMyStars)                   //我的收藏
+		u.PUT("/coupon/:couponId", JWT(), FetchCoupon)        //抢购优惠券
+		u.GET("/coupon", JWT(), MyCoupon)                     //我的优惠券
+		u.GET("/star/all", QueryAllStars)                     //查看收藏表
+		u.GET("/all", QueryAllUsers)                          //便于前端查表
 	}
 
 	s := r.Group("/shop") //商店模块
 	{
-		s.POST("/add", JWT(), AddShop)       //新增商店
-		s.POST("/delete", JWT(), DeleteShop) //删除商店
-		s.POST("/update", JWT(), UpdateShop) //更新商店信息
-		s.POST("/query", QueryShops)         //查询商店
-		s.POST("/queryAll", QueryAllShops)   //查看当前所有商店信息
+		s.POST("/", JWT(), AddShop)               //新增商店
+		s.DELETE("/", JWT(), DeleteShop)          //删除商店
+		s.PUT("/info", JWT(), UpdateShopInfo)     //更新商店信息
+		s.PUT("/notice", JWT(), UpdateShopNotice) //修改商店公告
+		s.GET("/info", JWT(), MyShopInfo)         //我的商店信息
+		s.GET("/order", JWT(), MyShopOrders)      //本店订单
+		s.POST("/queryAll", QueryAllShops)        //查看当前所有商店信息
+	}
+
+	g := s.Group("/goods") //商品模块(商家)
+	{
+		g.POST("/", JWT(), AddGoods)                          //新增商品
+		g.PUT("/", JWT(), UpdateGoods)                        //修改商品信息
+		g.PUT("/add/:goodsId/:amount", JWT(), AddGoodsAmount) //补货
+		g.PUT("/cut/:goodsId/:amount", JWT(), CutGoodsAmount) //卸货
+		g.DELETE("/:goodsId", JWT(), DeleteGoods)             //下架商品
+		g.GET("/", JWT(), MyShopGoods)                        //我的商品
+		g.GET("/all", QueryAllGoodsWithoutMode)               //查看所有商品信息
+	}
+
+	{
+		r.GET("/goods", QueryGoods) //查找商品
+	}
+
+	c := r.Group("/coupon") //优惠券模块(商家)
+	{
+		c.POST("/", JWT(), AddCoupon) //发放优惠券
+		c.GET("/all", QueryAllCoupons)
 	}
 
 	o := r.Group("/order") //订单模块
 	{
-		o.POST("/add", JWT(), AddOrder)                     //新增订单
-		o.POST("/updateStatus", JWT(), UpdateOrderStatus)   //修改订单状态
-		o.POST("/updateAddress", JWT(), UpdateOrderAddress) //修改订单地址
-		o.POST("/query", QueryOrders)                       //查询订单
-		o.POST("/queryAll", QueryAllOrders)                 //查看所有订单
-	}
-
-	st := r.Group("/star") //收藏模块
-	{
-		st.POST("/add", JWT(), AddStar)          //收藏商品
-		st.POST("/query", JWT(), QueryUserStars) //我的收藏
-		st.POST("/queryAll", QueryAllStars)      //查看所有
-		st.POST("/delete", JWT(), DeleteStar)    //取消收藏
+		o.POST("/", JWT(), AddOrder)                 //新增订单
+		o.PUT("/status", JWT(), UpdateOrderStatus)   //修改订单状态
+		o.PUT("/address", JWT(), UpdateOrderAddress) //修改订单地址
+		o.GET("/", JWT(), MyOrder)                   //我的订单
+		o.GET("/id/:id", QueryOrdersById)            //订单号查询订单
+		o.GET("/shopId/:shopId", QueryOrderByShopId) //商店id查询订单
+		o.GET("/all", QueryAllOrders)                //查看所有订单
 	}
 
 	e := r.Group("/evaluation") //评价模块
 	{
-		e.POST("/add", JWT(), AddEvaluation)        //新增评价
-		e.POST("/delete", JWT(), DeleteEvaluations) //删除评价
-		e.POST("/query", QueryGoodsEvaluations)     //查询某个商品的评价
-		e.POST("/queryAll", QueryAllEvaluations)    //查看所有
+		e.POST("/", JWT(), AddEvaluation)          //新增评价
+		e.DELETE("/:id", JWT(), DeleteEvaluations) //删除评价
+		e.GET("/", QueryGoodsEvaluations)          //查询某个商品的评价
+		e.GET("/all", QueryAllEvaluations)         //查看所有
 	}
 
 	r.GET("/RESTART/:yes", utils.Restart) //数据库重开
 
-	r.GET("/manage", func(c *gin.Context) {
-		c.HTML(200, "manage.html", nil)
-	})
-
-	r.Run(conf.BackEndPort)
+	_ = r.Run(conf.BackEndPort)
 }
+
 func initFrontEndRouters() {
 	r := gin.Default()
 	r.Use(Cors())
 	r.StaticFile("/favicon.ico", "./src/static/favicon/favicon.ico")
 	r.Static("js/", "./templates/js")
 	r.Static("css/", "./templates/css")
-	r.Static("images", "./templates/images")
+	r.Static("images/", "./templates/images")
 	r.Static(conf.GinPathOfUserPhoto, "./src/static/user/photos")
 	r.Static(conf.GinPathOfGoodsPicture, "./src/static/goods/pictures")
 	r.Static(conf.GinPathOfEvaluationPictures, "./src/static/evaluation/pictures")
-	r.LoadHTMLGlob("templates/html/*")
+	//r.LoadHTMLGlob("templates/html/*")
+	//
+	//u := r.Group("/user")
+	//u.Use(TokenMiddleware())
+	//u.GET("/register", PageRegister)
+	//u.GET("/login", PageLogin)
+	//u.GET("/main", PageMain)
 
-	u := r.Group("/user")
-	u.Use(TokenMiddleware())
-	u.GET("/register", PageRegister)
-	u.GET("/login", PageLogin)
-	u.GET("/main", PageMain)
-
-	r.Run(conf.FrontEndPort)
+	_ = r.Run(conf.FrontEndPort)
 }

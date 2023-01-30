@@ -2,6 +2,7 @@ package app
 
 import (
 	"winter-examination/src/conf"
+	"winter-examination/src/model"
 	"winter-examination/src/service"
 	"winter-examination/src/utils"
 
@@ -10,95 +11,126 @@ import (
 
 func AddGoods(c *gin.Context) {
 	file, err := c.FormFile("picture")
-	token := c.PostForm("token")
+	userId := c.GetString("userId")
 	if err != nil {
-		c.JSON(400, gin.H{
-			"msg":             "图片解析错误",
-			"refreshed_token": utils.RefreshToken(token),
-		})
-		return
+		jsonError(c, "图片解析错误")
 	}
 	ok, style := utils.IsValidPictureFile(file.Filename)
 	if !ok {
-		c.JSON(200, gin.H{
-			"msg":             "仅支持jpg,png,jfif格式的图片",
-			"refreshed_token": utils.RefreshToken(token),
-		})
+		jsonError(c, "仅支持jpg,png,jfif格式的图片")
+	}
+	var req = model.AddGoodsReq{}
+	if handleBindingError(c, c.ShouldBind(&req), &req) {
 		return
 	}
-	name := c.PostForm("name")
-	kind := c.PostForm("kind")
-	price := c.PostForm("price")
-	shopId := c.PostForm("shop_id")
-	amount := c.PostForm("amount")
-	msg, id := service.AddGoods(token, name, price, kind, shopId, amount)
-	if msg == conf.OKMsg {
-		err = c.SaveUploadedFile(file, conf.LocalSavePathOfGoodsPictures+id+style)
-		if err != nil {
-			c.JSON(400, gin.H{
-				"msg":             "文件下载出错",
-				"refreshed_token": utils.RefreshToken(token),
-			})
-			return
-		}
+	if handleError(c, service.AddGoods(req, userId, file.Filename)) {
+		return
 	}
-	c.JSON(200, gin.H{
-		"msg":             msg,
-		"refreshed_token": utils.RefreshToken(token),
-	})
+	err = c.SaveUploadedFile(file, conf.LocalSavePathOfGoodsPictures+utils.Md5EncodedWithTime(file.Filename)+style)
+	if err != nil {
+		jsonError(c, "文件下载出错")
+	}
+	jsonSuccess(c)
 }
 
 func UpdateGoods(c *gin.Context) {
-	id := c.PostForm("id")
-	name := c.PostForm("name")
-	price := c.PostForm("price")
-	kind := c.PostForm("kind")
-	token := c.PostForm("token")
-	msg := service.UpdateGoods(token, id, name, price, kind)
-	c.JSON(200, gin.H{
-		"msg":             msg,
-		"refreshed_token": utils.RefreshToken(token),
-	})
+	userId := c.GetString("userId")
+	var req = model.UpdateGoodsReq{}
+	if handleBindingError(c, c.ShouldBind(&req), &req) {
+		return
+	}
+	if handleError(c, service.UpdateGoods(req, userId)) {
+		return
+	}
+	jsonSuccess(c)
+
+}
+
+func AddGoodsAmount(c *gin.Context) {
+	userId := c.GetString("userId")
+	var req = model.AddGoodsAmountReq{}
+	if handleBindingError(c, c.ShouldBindUri(&req), &req) {
+		return
+	}
+	if handleError(c, service.AddGoodsAmount(req, userId)) {
+		return
+	}
+	jsonSuccess(c)
+
+}
+func CutGoodsAmount(c *gin.Context) {
+	userId := c.GetString("userId")
+	var req = model.CutGoodsAmountReq{}
+	if handleBindingError(c, c.ShouldBindUri(&req), &req) {
+		return
+	}
+	if handleError(c, service.CutGoodsAmount(req, userId)) {
+		return
+	}
+	jsonSuccess(c)
 }
 
 func DeleteGoods(c *gin.Context) {
-	id := c.PostForm("id")
-	token := c.PostForm("token")
-	msg := service.DeleteGoods(token, id)
-	c.JSON(200, gin.H{
-		"msg":             msg,
-		"refreshed_token": utils.RefreshToken(token),
-	})
+	goodsId := c.Param("goodsId")
+	userId := c.GetString("userId")
+	if handleError(c, service.DeleteGoods(userId, goodsId)) {
+		return
+	}
+	jsonSuccess(c)
+}
+
+func MyShopGoods(c *gin.Context) {
+	userId := c.GetString("userId")
+	data := service.MyShopGoods(userId)
+	jsonData(c, data)
 }
 
 func QueryGoods(c *gin.Context) {
-	id := c.PostForm("id")
-	if id != "" {
-		msg, goods := service.QueryGoods(id)
-		c.JSON(200, gin.H{
-			"msg":  msg,
-			"data": goods,
-		})
+	if utils.IsValidJWT(c.Request.Header.Get("Token")) {
+		userId := utils.GetUserIdByToken(c.Request.Header.Get("Token"))
+		id := c.Query("goodsId")
+		if id != "" {
+			goods, err := service.QueryGoodsByIdWithStar(id, userId)
+			if handleError(c, err) {
+				return
+			}
+			jsonData(c, goods)
+			return
+		}
+		name := c.Query("name")
+		kind := c.Query("kind")
+		mode := c.Query("mode")
+		shopId := c.Query("shopId")
+		data, err := service.QueryGoodsGroupWithStar(name, kind, shopId, mode, userId)
+		if handleError(c, err) {
+			return
+		}
+		jsonData(c, data)
 		return
 	}
-	name := c.PostForm("name")
-	kind := c.PostForm("kind")
-	mode := c.PostForm("mode")
-	shopId := c.PostForm("shop_id")
-	msg, goodsGroup := service.QueryGoodsGroup(name, kind, shopId, mode)
-	c.JSON(200, gin.H{
-		"msg":  msg,
-		"data": goodsGroup,
-	})
+	id := c.Query("goodsId")
+	if id != "" {
+		goods, err := service.QueryGoodsById(id)
+		if handleError(c, err) {
+			return
+		}
+		jsonData(c, goods)
+		return
+	}
+	name := c.Query("name")
+	kind := c.Query("kind")
+	mode := c.Query("mode")
+	shopId := c.Query("shopId")
+	data, err := service.QueryGoodsGroup(name, kind, shopId, mode)
+	if handleError(c, err) {
+		return
+	}
+	jsonData(c, data)
 }
 
-func QueryAllGoods(c *gin.Context) {
-	mode := c.PostForm("mode")
-	msg, goodsGroup := service.QueryAllGoods(mode)
-	c.JSON(200, gin.H{
-		"msg":  msg,
-		"data": goodsGroup,
-	})
+func QueryAllGoodsWithoutMode(c *gin.Context) {
+	goodsGroup := service.QueryAllGoodsWithoutMode()
+	jsonData(c, goodsGroup)
 }
 
 func GoodsShoppingCar(c *gin.Context) {

@@ -57,7 +57,7 @@ func QueryAllStars() []model.Star {
 	var stars []model.Star
 	for query.Next() {
 		star := model.Star{}
-		err := query.Scan(&star.Id, &star.UserId, &star.ShopId)
+		err := query.Scan(&star.Id, &star.UserId, &star.GoodsId)
 		if err != nil {
 			fmt.Println("QueryAllStars query.Scan failed ...")
 			return nil
@@ -70,6 +70,15 @@ func QueryAllStars() []model.Star {
 func DeleteStar(userId string, goodsId string) {
 	sqlStr := "delete from stars where star_user_id = ? and star_goods_id = ? "
 	_, err := Db.Exec(sqlStr, userId, goodsId)
+	if err != nil {
+		fmt.Println("DeleteStar Db.Exec failed ...")
+		return
+	}
+}
+
+func DeleteStarByGoodsId(goodsId string) {
+	sqlStr := "delete from stars where star_goods_id = ? "
+	_, err := Db.Exec(sqlStr, goodsId)
 	if err != nil {
 		fmt.Println("DeleteStar Db.Exec failed ...")
 		return

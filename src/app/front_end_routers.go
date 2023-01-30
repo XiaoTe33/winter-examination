@@ -1,10 +1,12 @@
 package app
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
+
 	"winter-examination/src/conf"
 	"winter-examination/src/utils"
+
+	"github.com/gin-gonic/gin"
 )
 
 func PageRegister(c *gin.Context) {

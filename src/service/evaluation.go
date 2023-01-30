@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"fmt"
 	"time"
 
@@ -12,49 +13,48 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func AddEvaluation(token string, goodsId string, text string, score string, c *gin.Context) (msg string) {
-	userId := utils.GetUserIdByToken(token)
+func AddEvaluation(req model.AddEvaReq, userId string, c *gin.Context) error {
 	picture, err := c.FormFile("picture")
 	if err != nil {
 		fmt.Println("AddEvaluation c.FormFile failed ...")
-		return "文件解析出错"
+		return errors.New("文件解析出错")
 	}
 	ok, style := utils.IsValidPictureFile(picture.Filename)
 	if !ok {
-		return "只支持上传png,jeg,jfif文件"
+		return errors.New("只支持上传png,jeg,jfif文件")
 	}
 	t := time.Now()
-	path := conf.LocalSavePathOfEvaluationPictures + t.Format("20060102") + t.Format("150405") + userId + goodsId + style
+	md5String := utils.Md5EncodedWithTime(picture.Filename)
+	path := conf.LocalSavePathOfEvaluationPictures + md5String + style
 	err = c.SaveUploadedFile(picture, path)
 	if err != nil {
 		fmt.Println("AddEvaluation c.SaveUploadedFile failed ...")
-		return "保存文件出错"
+		return errors.New("保存文件出错")
 	}
 	dao.AddEvaluation(model.Evaluation{
 		UserId:  userId,
-		GoodsId: goodsId,
-		Text:    text,
-		Score:   score,
-		Picture: conf.WebLinkPathOfEvaluationPictures + t.Format("20060102") + t.Format("150405") + userId + goodsId + style,
+		GoodsId: req.GoodsId,
+		Text:    req.Text,
+		Score:   req.Score,
+		Picture: conf.WebLinkPathOfEvaluationPictures + md5String + style,
 		Time:    t.Format("2006-01-02 15:04:05"),
 	})
-	return conf.OKMsg
+	return nil
 }
 
-func DeleteEvaluations(token string, evaId string) (msg string) {
-	userId := utils.GetUserIdByToken(token)
+func DeleteEvaluations(userId string, evaId string) error {
 	if userId != dao.QueryEvaluationById(evaId).UserId {
-		return "只能删除自己的评价o"
+		return errors.New("只能删除自己的评价")
 	}
 	dao.DeleteEvaluation(evaId)
-	return conf.OKMsg
+	return nil
 }
 
-func QueryEvaluations(goodsId string) (msg string, data []model.Evaluation) {
+func QueryEvaluations(goodsId string) (data []model.Evaluation, err error) {
 	if dao.QueryGoodsById(goodsId) == (model.Goods{}) {
-		return "没有goodsId为" + goodsId + "的商品", nil
+		return nil, errors.New("没有goodsId为" + goodsId + "的商品")
 	}
-	return conf.OKMsg, dao.QueryEvaluationsByGoodsId(goodsId)
+	return dao.QueryEvaluationsByGoodsId(goodsId), nil
 }
 
 func QueryAllEvaluations() (msg string, data []model.Evaluation) {

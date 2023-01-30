@@ -2,9 +2,11 @@ package utils
 
 import (
 	"fmt"
+	"github.com/go-playground/validator/v10"
 	"regexp"
 	"strings"
 	"time"
+	"winter-examination/src/model"
 
 	"winter-examination/src/conf"
 	"winter-examination/src/dao"
@@ -13,6 +15,9 @@ import (
 var goodsIdLock = make(chan struct{}, 1)
 var g = map[string]int64{}
 
+func InitGoodsVal() {
+	addValidator("IsValidGoodsPrice", IsValidGoodsPrice)
+}
 func IsValidGoodsName(name string) bool {
 	return len([]rune(name)) > 0 && len([]rune(name)) <= 100
 }
@@ -21,7 +26,8 @@ func IsValidGoodsKind(kind string) bool {
 	return len([]rune(kind)) > 0 && len([]rune(kind)) <= 20
 }
 
-func IsValidGoodsPrice(price string) bool {
+func IsValidGoodsPrice(fl validator.FieldLevel) bool {
+	price := fl.Field().Interface().(string)
 	return regexp.
 		MustCompile(`^[1-9]*[0-9](.[0-9]{1,2})?$`).
 		MatchString(price)
@@ -52,4 +58,11 @@ func IsValidPictureFile(filename string) (ok bool, style string) {
 	} else {
 		return false, ""
 	}
+}
+
+func IsValidGoodsId(goodsId string) bool {
+	return regexp.
+		MustCompile(`^[0-9]+$`).
+		MatchString(goodsId) &&
+		dao.QueryGoodsById(goodsId) != model.Goods{}
 }

@@ -17,8 +17,8 @@ func AddUser(user model.User) {
 }
 
 func UpdateUser(user model.User) {
-	sqlStr := "update users t set t.username = ?, t.password = ?, t.phone = ?, t.email = ?, t.money = ?, t.photo = ?, t.shopping_car = ?, t.address = ? where t.user_id = ?"
-	_, err := Db.Exec(sqlStr, user.Username, user.Password, user.Phone, user.Email, user.Money, user.Photo, user.ShoppingCar, user.Address, user.Id)
+	sqlStr := "update users t set t.username = ?, t.password = ?, t.phone = ?, t.email = ?, t.money = ?, t.photo = ?, t.shopping_car = ?, t.address = ?,t.coupon=? where t.user_id = ?"
+	_, err := Db.Exec(sqlStr, user.Username, user.Password, user.Phone, user.Email, user.Money, user.Photo, user.ShoppingCar, user.Address, user.Coupon, user.Id)
 	if err != nil {
 		fmt.Println("update user failed ...\n", err)
 		return
@@ -40,10 +40,10 @@ func QueryUserByEmail(email string) model.User {
 }
 
 func QueryUserByKeyValue(key string, value string) model.User {
-	sqlStr := "select user_id, username, password, phone, email, money, photo, shopping_car, address from users " + "where " + key + " = ?"
+	sqlStr := "select user_id, username, password, phone, email, money, photo, shopping_car, address ,coupon from users " + "where " + key + " = ?"
 	row := Db.QueryRow(sqlStr, value)
 	var user model.User
-	err := row.Scan(&user.Id, &user.Username, &user.Password, &user.Phone, &user.Email, &user.Money, &user.Photo, &user.ShoppingCar, &user.Address)
+	err := row.Scan(&user.Id, &user.Username, &user.Password, &user.Phone, &user.Email, &user.Money, &user.Photo, &user.ShoppingCar, &user.Address, &user.Coupon)
 	if err != nil {
 		fmt.Println("query user by " + key + " failed ...")
 		fmt.Println("err :", err)
@@ -53,7 +53,7 @@ func QueryUserByKeyValue(key string, value string) model.User {
 }
 
 func QueryAllUsers() []model.User {
-	sqlStr := "select user_id, username, password, phone, email, money, photo, shopping_car, address from users "
+	sqlStr := "select user_id, username, password, phone, email, money, photo, shopping_car, address ,coupon  from users "
 	rows, err := Db.Query(sqlStr)
 	defer func(rows *sql.Rows) {
 		err := rows.Close()
@@ -68,7 +68,7 @@ func QueryAllUsers() []model.User {
 	var users []model.User
 	for rows.Next() {
 		var user model.User
-		err = rows.Scan(&user.Id, &user.Username, &user.Password, &user.Phone, &user.Email, &user.Money, &user.Photo, &user.ShoppingCar, &user.Address)
+		err = rows.Scan(&user.Id, &user.Username, &user.Password, &user.Phone, &user.Email, &user.Money, &user.Photo, &user.ShoppingCar, &user.Address, &user.Coupon)
 		if err != nil {
 			fmt.Println("QueryAllUsers rows.Scan failed ...")
 			return nil

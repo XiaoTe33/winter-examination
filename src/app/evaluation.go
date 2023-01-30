@@ -2,54 +2,42 @@ package app
 
 import (
 	"github.com/gin-gonic/gin"
+	"winter-examination/src/model"
 	"winter-examination/src/service"
-	"winter-examination/src/utils"
 )
 
 func AddEvaluation(c *gin.Context) {
-	token := c.PostForm("token")
-	goodsId := c.PostForm("goodsId")
-	text := c.PostForm("text")
-	score := c.PostForm("score")
-	msg := service.AddEvaluation(token, goodsId, text, score, c)
-	c.JSON(200, gin.H{
-		"msg":             msg,
-		"refreshed_token": utils.RefreshToken(token),
-	})
+	userId := c.GetString("userId")
+	var req model.AddEvaReq
+	if handleBindingError(c, c.ShouldBind(&req), &req) {
+		return
+	}
+	if handleError(c, service.AddEvaluation(req, userId, c)) {
+		return
+	}
+	jsonSuccess(c)
+
 }
 
 func DeleteEvaluations(c *gin.Context) {
-	token := c.PostForm("token")
-	evaId := c.PostForm("evaId")
-	msg := service.DeleteEvaluations(token, evaId)
-	c.JSON(200, gin.H{
-		"msg":             msg,
-		"refreshed_token": utils.RefreshToken(token),
-	})
+	userId := c.GetString("userId")
+	id := c.Param("id")
+	if handleError(c, service.DeleteEvaluations(userId, id)) {
+		return
+	}
+	jsonSuccess(c)
 }
 
 func QueryGoodsEvaluations(c *gin.Context) {
-	token := c.PostForm("token")
-	goodsId := c.PostForm("goodsId")
-	msg, data := service.QueryEvaluations(goodsId)
-	if token != "" && utils.IsValidJWT(token) {
-		c.JSON(200, gin.H{
-			"msg":             msg,
-			"refreshed_token": utils.RefreshToken(token),
-			"data":            data,
-		})
+	goodsId := c.Query("goodsId")
+	data, err := service.QueryEvaluations(goodsId)
+	if handleError(c, err) {
 		return
 	}
-	c.JSON(200, gin.H{
-		"msg":  msg,
-		"data": data,
-	})
+	jsonData(c, data)
 }
 
 func QueryAllEvaluations(c *gin.Context) {
-	msg, data := service.QueryAllEvaluations()
-	c.JSON(200, gin.H{
-		"msg":  msg,
-		"data": data,
-	})
+	_, data := service.QueryAllEvaluations()
+	jsonData(c, data)
 }

@@ -1,29 +1,38 @@
 package service
 
 import (
-	"winter-examination/src/conf"
 	"winter-examination/src/dao"
 	"winter-examination/src/model"
-	"winter-examination/src/utils"
 )
 
-func AddStar(token string, goodsId string) (msg string) {
-	userId := utils.GetUserIdByToken(token)
+func AddStar(userId string, goodsId string) {
 	dao.AddStar(userId, goodsId)
-	return conf.OKMsg
 }
 
-func QueryUserStar(token string) (msg string, stars []string) {
-	userId := utils.GetUserIdByToken(token)
-	stars = dao.QueryStarsByUserId(userId)
-	return conf.OKMsg, stars
+func QueryUserStar(userId string) []model.MyStarsRsp {
+	stars := dao.QueryStarsByUserId(userId)
+	var starsList []model.MyStarsRsp
+	for i := 0; i < len(stars); i++ {
+		goods := dao.QueryGoodsById(stars[i])
+		shop := dao.QueryShopById(goods.ShopId)
+		starsList = append(starsList, model.MyStarsRsp{
+			Id:          i,
+			GoodsId:     goods.Id,
+			Name:        goods.Name,
+			ShopName:    shop.Name,
+			Kind:        goods.Kind,
+			Price:       goods.Price,
+			SoldAmount:  goods.SoldAmount,
+			Score:       goods.Score,
+			PictureLink: goods.PictureLink,
+		})
+	}
+	return starsList
 }
-func QueryAllStars() (msg string, stars []model.Star) {
-	return conf.OKMsg, dao.QueryAllStars()
+func QueryAllStars() []model.Star {
+	return dao.QueryAllStars()
 }
 
-func DeleteStar(token string, goodId string) (msg string) {
-	userId := utils.GetUserIdByToken(token)
+func DeleteStar(userId string, goodId string) {
 	dao.DeleteStar(userId, goodId)
-	return conf.OKMsg
 }

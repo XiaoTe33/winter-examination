@@ -17,7 +17,7 @@ func AddEvaluation(eva model.Evaluation) {
 }
 
 func QueryEvaluationById(evaId string) model.Evaluation {
-	sqlStr := "select e_id, e_u_id, e_g_id, e_text, e_score, e_picture, e_time, e_is_deleted from evaluations where e_id = ? "
+	sqlStr := "select e_id, e_u_id, e_g_id, e_text, e_score, e_picture, e_time, e_is_deleted from evaluations where e_id = ? and e_is_deleted != 1"
 	row := Db.QueryRow(sqlStr, evaId)
 	var eva = model.Evaluation{}
 	err := row.Scan(&eva.Id, &eva.UserId, &eva.GoodsId, &eva.Text, &eva.Score, &eva.Picture, &eva.Time, &eva.IsDeleted)
@@ -28,11 +28,8 @@ func QueryEvaluationById(evaId string) model.Evaluation {
 	return eva
 }
 
-func UpdateEvaluation(eva model.Evaluation) {
-}
-
 func QueryEvaluationsByGoodsId(goodsId string) []model.Evaluation {
-	sqlStr := "select e_id, e_u_id, e_g_id, e_text, e_score, e_picture, e_time, e_is_deleted from evaluations where e_g_id = ? "
+	sqlStr := "select e_id, e_u_id, e_g_id, e_text, e_score, e_picture, e_time, e_is_deleted from evaluations where e_g_id = ? and e_is_deleted != 1"
 	rows, err := Db.Query(sqlStr, goodsId)
 	if err != nil {
 		fmt.Println("QueryEvaluationsByGoodsId Db.Query failed ...")
