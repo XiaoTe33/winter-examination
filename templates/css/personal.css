@@ -20,14 +20,10 @@ li{
     margin:0 auto;
     text-align: center;
     line-height: 35px;
-    
+    display: flex;
+    justify-content: space-between;
 }
-.top .top1{
-    float:left;
-}
-.top .top2{
-    float:right;
-}
+
 
 
 .header{
