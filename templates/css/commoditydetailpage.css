@@ -9,6 +9,21 @@ a {
 li{
     list-style: none;
 }
+.flex{
+  display: flex;
+  align-items: center;
+}
+.flex1{
+  display: flex;
+  align-items: flex-start;
+  color: #666666;
+  font-size: 10px;
+}
+.flex2{
+  display: flex;
+  flex-wrap: wrap;
+  width: 500px;
+}
 
 .toptop{
   height: 35px;
@@ -84,7 +99,6 @@ li{
   height: 40px;
   line-height: 40px;
 }
-/* 设置下拉按钮的样式 */
 .dropbtn {
     background-color: #c32d2f;
     height: 40px;
@@ -95,11 +109,9 @@ li{
     border: none;
     cursor: pointer;
   }
-  /* 容器 <div> - 需要放置下拉内容 */
   .dropdown {
     position: relative;
   }
-  /* 下拉内容（默认隐藏） */
   .dropdown-content {
     display: none;
     position: absolute;
@@ -109,18 +121,15 @@ li{
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
   }
-  /* 下拉链接 */
   .dropdown-content a {
     color: white;
     padding: 5px 16px;
     text-decoration: none;
     display: block;
   }
-  /* 悬停时更改下拉链接的颜色 */
   .dropdown-content a:hover {
     background-color: #f1f1f1
   }
-  /* 悬停时显示下拉菜单 */
   .dropdown:hover .dropdown-content {
     display: block;
   }
@@ -160,4 +169,63 @@ li{
 
   .main{
     display: flex;
+    width: 1200px;
+    height: 500px;
+    margin: 0px auto;
   }
+  .main .text{
+    width: 90px;
+    height: 14px;
+    font-size: 14px;
+    margin:5px;
+  }
+  .main .lunbo{
+    width: 400px;
+    height: 490px;
+  }
+.main .details .add .buyitnow{
+  width: 115px;
+  height: 40px;
+  color:white;
+  font-size: 15px;
+  border-radius: 5px;
+  background-color: #663200;
+  border: none;
+  margin-right: 15px;
+  margin-top: 20px;
+}
+.main .details .add .addtocar{
+  width: 135px;
+  height: 40px;
+  color:white;
+  font-size: 15px;
+  border-radius: 5px;
+  background-color: #ff5500;
+  border: none;
+  margin-top: 20px;
+}
+.main .details .add .btn{
+  height: 30px;
+  width: 20px;
+  border: 1px solid #dedede;
+  background-color: #f8f8f8;
+  color: #666666;
+  font-size: 20px;
+  cursor: pointer;
+}
+.main .details .add input{
+  height: 30px;
+  width: 30px;
+  border: 1px solid #dedede;
+  background-color: #ffffff;
+  color: #666666;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+} 
+.main .details .version .version1{
+  width: 235px;
+  height: 40px;
+  background-color: darkolivegreen;
+  margin: 5px;
+}
