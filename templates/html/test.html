@@ -11,19 +11,26 @@
     <script>
          const btn = document.querySelector('#btn')
          btn.addEventListener('click',async()=>{
-            const res = await fetch('http://39.101.72.18:9999/', {
+        //     const res = await fetch('http://39.101.72.18:9999/', {
+        //     method: "post",
+        //     headers: {
+        //         'Content-Type': 'application/json; charset=utf-8'
+        //     },
+        //     body: JSON.stringify({
+        //         name :"123",
+        //         age :123,
+        //         sex :"女",
+        //     })
+        //   })
+        const fd = new FormData();
+        fd.append("username","qwer");
+        fd.append("password","111111");
+        const res = await fetch('http://39.101.72.18:9090/user/login', {
             method: "post",
-            headers: {
-                'Content-Type': 'application/json; charset=utf-8'
-            },
-            body: JSON.stringify({
-                name :"123",
-                age :123,
-                sex :"女",
-            })
-          })
-          const data = await res.json()
-          console.log(data)
+            body: fd,
+        })
+      const data = await res.json();
+      console.log(data);
          })
 
     </script>
