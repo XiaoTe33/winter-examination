@@ -4,38 +4,38 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>注册</title>
     <link rel="stylesheet" href="../css/register.css">
     <link rel="shortcut icon" href="https://www.suning.com/favicon.ico">
 </head>
 <body>
     <div class="top">
         <h2>欢迎注册</h2>
-        <a>我已经注册，马上登录></a>
+        <!-- <a>我已经注册，马上登录></a> -->
     </div>
     <div class="main">
-        <span>
-        </span>
-        <form>
-            <div class="phonenumber">
+            <div class="username flex">
+                <div class="text"><label for="username">用户名</label></div>
+                <div><input type="password" name="username" id="username"></div>
+            </div>
+            <div class="phonenumber flex">
+                <div class="text"><label for="phone">手机号码</label></div>
                 <div><input type="text" name="phone" id="phone" value="建议使用常用的手机号"></div>
-                <div><label for="phone">手机号码</label></div>
             </div>
-            <div class="yanzhengma">
-                <div><input type="text" name="yanzhengma" id="yanzheng"></div>
-                <div><label for="yanzheng">手机验证码</label></div>
+            <div class="email flex">
+                <div class="text"><label for="email">邮箱</label></div>
+                <div><input type="text" name="email" id="email"></div>
             </div>
-            <div class="password">
+            <div class="password flex"> 
+                <div class="text"><label for="psw">设置密码</label></div>
                 <div><input type="password" name="password" id="psw"></div>
-                <div>
-                    <label for="psw">设置密码</label>
-                </div>
             </div>
-            
-            
-            
-            <input type="submit" value="提交注册" name="submit" id="submit">
-        </form>
+            <div class="password flex">
+                <div class="text"><label for="repsw">确认密码</label></div>
+                <div><input type="password" name="repassword" id="repsw"></div>
+            </div>
+
+            <button id="submit">提交注册</button>
     </div>
     <div class="end">
         <p class="center big">

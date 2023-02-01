@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>登录</title>
     <link rel="stylesheet" href="../css/login.css">
     <link rel="shortcut icon" href="https://www.suning.com/favicon.ico">
 </head>
@@ -23,13 +23,22 @@
         <div class="ddiv2">
         <a href="#" class="suning"></a> 
         <div class="login">
-            <h3>扫码登录</h3>
-            <h3>账户登陆</h3>
-            <form id="form1">
-                <input type="text" name="username" id="account"/>
-                <input type="password" name="password" id="psd"/>
+            <div class="flex">
+                <h3>扫码登录</h3>
+                <h3>账户登陆</h3>
+            </div>
+            <div>
+                <div class="flex">
+                    <div class="text"><label for="account">用户名</label></div>
+                    <div><input type="text" name="username" id="account"/></div>
+                </div>
+                <div class="flex">
+                    <div class="text"><label for="psd">密码</label></div>
+                    <div><input type="password" name="password" id="psd"/></div>
+                </div>
                 <button type="submit" id="btn">登录</button>
-            </form>
+            </div>
+            
             <div></div>
         </div>
         </div>
