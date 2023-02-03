@@ -22,13 +22,21 @@
         //         sex :"女",
         //     })
         //   })
-        const fd = new FormData();
-        fd.append("username","qwer");
-        fd.append("password","111111");
-        const res = await fetch('http://39.101.72.18:9090/user/login', {
-            method: "post",
-            body: fd,
-        })
+    //     const fd = new FormData();
+    //     fd.append("username","qwer");
+    //     fd.append("password","111111");
+    //     const res = await fetch('http://39.101.72.18:9090/user/login', {
+    //         method: "post",
+    //         body: fd,
+    //     })
+    //   const data = await res.json();
+    //   console.log(data);
+    var storage = window.localStorage;
+    storage.setItem("id",2959189491118);
+     const url = `http://39.101.72.18:9090/goods?goodsId=${storage.getItem("id")}`
+    const res = await fetch(url, {
+        method:"get"
+            })
       const data = await res.json();
       console.log(data);
          })

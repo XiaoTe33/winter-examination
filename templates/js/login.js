@@ -18,6 +18,13 @@ btn.addEventListener('click',async()=>{
           })
           const data = await res.json()
           console.log(data);
+          if(data.msg == '用户名不存在'){
+            alert('用户名不正确');
+          }else if(data.msg == '密码错误'){
+            alert('密码错误');
+          }
+          var storage = window.localStorage;
+          storage.setItem("token",data.token);
     }
     
 })

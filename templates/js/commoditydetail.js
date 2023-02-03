@@ -1,3 +1,14 @@
+//读取localstorage，渲染页面
+var storage = window.localStorage;
+storage.setItem("id",2958009840063);
+const res = await fetch('http://39.101.72.18:9090/user/login', {
+            method: "post",
+            body: fd,
+        })
+      const data = await res.json();
+      console.log(data);
+
+
 //放大镜
 const pic = document.querySelector('#pic');
 const bigpic = document.querySelector('#bigpic');
@@ -83,3 +94,5 @@ buy.addEventListener('click',async()=>{
 addtocar.addEventListener('click',async()=>{
     
 })
+
+//选择款式
