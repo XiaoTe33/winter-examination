@@ -11,7 +11,7 @@ btn.addEventListener('click',async()=>{
   const fd = new FormData();
   fd.append("username",username.value);
   fd.append("password",psd.value);
-  fd.append("repassword",repsd.value);
+  fd.append("rePassword",repsd.value);
   fd.append("phone",phone.value);
   fd.append("email",email.value);
   const res = await fetch('http://39.101.72.18:9090/user/register', {
@@ -20,4 +20,19 @@ btn.addEventListener('click',async()=>{
   })
 const data = await res.json();
 console.log(data);
+if(data.status != 200){
+  alert(data.msg);
+}else{
+  let fd1 = new FormData();
+  fd1.append("username",username.value);
+  fd1.append("password",psd.value);
+  const res = await fetch('http://39.101.72.18:9090/user/login', {
+      method: "post",
+      body: fd,
+    })
+    console.log(res.json());
+    var storage = window.localStorage;
+    storage.setItem("token",data.token);
+    
+}
 })

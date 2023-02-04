@@ -347,4 +347,8 @@ li{
 }
 .introduce img{
   width: 790px;
+  display:none;
+}
+.active{
+  display: block;
 }

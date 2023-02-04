@@ -26,6 +26,9 @@ li{
     width: 1190px;
     margin:0 auto;
 }
+.none{
+    display: none;
+}
 
 .center {
     text-align:center;
@@ -70,6 +73,9 @@ li{
 }
 .header .header2{
     float:right;
+}
+.header a:hover{
+    color: #ff8000;
 }
 .top{
     height: 150px;

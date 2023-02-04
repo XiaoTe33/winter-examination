@@ -51,13 +51,35 @@
 //     dots.children[num].className = 'active';
 //     images.children[num].classList.add('current');
 //     })
-
-
-
+const phonenum = document.querySelector('#phonenum');
 const example = document.querySelectorAll('.more');
-console.log(example);
-example[0].id = 3055483356794;
-console.log(example[0].id)
+const header = document.querySelector('.header2')
+window.addEventListener('load',async()=>{
+    var storage = window.localStorage;
+    //console.log(storage.getItem("token"));
+    let url = `http://39.101.72.18:9090/user/info`
+    const res = await fetch(url, {
+      method : 'get',
+      headers : {"Token": storage.getItem("token")}
+    })
+     let data = await res.json();
+     console.log(data);
+     if( data.status == 200){
+       phonenum.innerText = data.data.phone;
+       header.children[2].classList.remove('none');
+       header.children[0].classList.add('none');
+       header.children[1].classList.add('none');
+     }
+     
+
+})
+
+
+// console.log(example);
+// example[0].id = 3055483356794;
+// console.log(example[0].id)
+
+// //注册事件
 for( let i = 0; i < example.length; i++){
     example[i].addEventListener('click',()=>{
         let storage = window.localStorage;

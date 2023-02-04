@@ -25,6 +25,7 @@ btn.addEventListener('click',async()=>{
           }
           var storage = window.localStorage;
           storage.setItem("token",data.token);
+          console.log(storage.getItem("token"));
     }
     
 })
