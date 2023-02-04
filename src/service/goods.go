@@ -24,7 +24,7 @@ func AddGoods(req model.AddGoodsReq, userId string, fileName string) error {
 		Price:       req.Price,
 		Kind:        req.Kind,
 		ShopId:      shop.Id,
-		PictureLink: conf.WebLinkPathOfGoodsPicture + utils.Md5EncodedWithTime(fileName) + ".jpg",
+		PictureLink: conf.WebLinkPathOfGoodsPicture + utils.Md5Encoded(fileName) + ".jpg",
 	})
 	return nil
 

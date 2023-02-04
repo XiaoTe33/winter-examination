@@ -14,8 +14,8 @@ func JWT() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.Request.Header.Get("Token")
 		if !utils.IsValidJWT(token) {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"status": http.StatusBadRequest,
+			c.JSON(200, gin.H{
+				"status": 400,
 				"msg":    "请先登录",
 			})
 			c.Abort()

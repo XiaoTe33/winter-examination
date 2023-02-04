@@ -6,6 +6,7 @@ import (
 	"winter-examination/src/service"
 )
 
+// AddEvaluation 新增评论
 func AddEvaluation(c *gin.Context) {
 	userId := c.GetString("userId")
 	var req model.AddEvaReq
@@ -16,9 +17,9 @@ func AddEvaluation(c *gin.Context) {
 		return
 	}
 	jsonSuccess(c)
-
 }
 
+// DeleteEvaluations 删除评论
 func DeleteEvaluations(c *gin.Context) {
 	userId := c.GetString("userId")
 	id := c.Param("id")
@@ -28,6 +29,7 @@ func DeleteEvaluations(c *gin.Context) {
 	jsonSuccess(c)
 }
 
+// QueryGoodsEvaluations 查看某个商品的评论区
 func QueryGoodsEvaluations(c *gin.Context) {
 	goodsId := c.Query("goodsId")
 	data, err := service.QueryEvaluations(goodsId)
@@ -37,6 +39,7 @@ func QueryGoodsEvaluations(c *gin.Context) {
 	jsonData(c, data)
 }
 
+// QueryAllEvaluations 查表操作，便于前端获取数据
 func QueryAllEvaluations(c *gin.Context) {
 	_, data := service.QueryAllEvaluations()
 	jsonData(c, data)

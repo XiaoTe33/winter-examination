@@ -39,6 +39,33 @@ func CreateJWT(username string) string {
 	return jwtHeader + "." + jwtBody + "." + sign
 }
 
+func CreateJWTWithDuration(username string, duration time.Duration) string {
+
+	header, err := json.Marshal(map[string]string{
+		"alg": "HS256",
+		"typ": "JWT",
+	})
+	if err != nil {
+		fmt.Println("marshal err")
+		return ""
+	}
+	jwtHeader := base64.StdEncoding.EncodeToString(header)
+
+	body, err := json.Marshal(map[string]string{
+		"aud": username,
+		"exp": strconv.FormatInt(time.Now().Add(time.Second*duration).Unix(), 10),
+		"nbf": strconv.FormatInt(time.Now().Unix(), 10),
+	})
+	if err != nil {
+		fmt.Println("marshal err")
+		return ""
+	}
+	jwtBody := base64.StdEncoding.EncodeToString(body)
+
+	sign := SHA256Secret(jwtHeader + "." + jwtBody)
+	return jwtHeader + "." + jwtBody + "." + sign
+}
+
 func IsValidJWT(jwt string) bool {
 	arr := strings.Split(jwt, ".")
 	if len(arr) != 3 {

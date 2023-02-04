@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"os"
 	"strconv"
 	"time"
 
@@ -15,6 +16,17 @@ import (
 )
 
 func main() {
+	os.RemoveAll("./src/static/evaluation/pictures")
+	os.RemoveAll("./src/static/goods/pictures")
+	os.RemoveAll("./src/static/user/photos")
+	os.RemoveAll("./src/static/qr")
+	os.MkdirAll("./src/static/evaluation/pictures", 777)
+	os.MkdirAll("./src/static/goods/pictures", 777)
+	os.MkdirAll("./src/static/user/photos", 777)
+	os.MkdirAll("./src/static/qr", 777)
+}
+
+func main18() {
 	fmt.Println(utils.Md5Encoded(`d131dd02c5e6eec4693d9a0698aff95c 2fcab58712467eab4004583eb8fb7f89
 
 	55ad340609f4b30283e488832571415a 085125e8f7cdc99fd91dbdf280373c5b

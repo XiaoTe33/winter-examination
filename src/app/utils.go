@@ -41,8 +41,8 @@ func jsonToken(c *gin.Context, username string) {
 }
 
 func jsonError(c *gin.Context, err string) {
-	c.AbortWithStatusJSON(400, gin.H{
-		"status": http.StatusBadRequest,
+	c.AbortWithStatusJSON(200, gin.H{
+		"status": 400,
 		"msg":    err,
 	})
 }
