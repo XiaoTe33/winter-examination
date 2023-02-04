@@ -1,19 +1,28 @@
-//读取localstorage，渲染页面
-var storage = window.localStorage;
-storage.setItem("id",2958009840063);
-const res = await fetch('http://39.101.72.18:9090/user/login', {
-            method: "post",
-            body: fd,
-        })
-      const data = await res.json();
-      console.log(data);
-
-
-//放大镜
 const pic = document.querySelector('#pic');
 const bigpic = document.querySelector('#bigpic');
 const mask = document.querySelector('#mask');
+const headline = document.querySelector('#headline')
 
+//读取localstorage，渲染页面
+window.addEventListener('load',async()=>{
+    var storage = window.localStorage;
+    const url = `http://39.101.72.18:9090/goods?goodsId=${storage.getItem("id")}`
+    const res = await fetch(url, {
+       method:"get"
+           })
+     const data = await res.json();
+     console.log(data);
+     console.log(data.data.pictureLink)
+     pic.children[0].src = data.data.pictureLink;
+     bigpic.children[0].src = data.data.pictureLink;
+     headline.innerHTML = data.data.name;
+
+})
+
+
+
+
+//放大镜
 pic.addEventListener('mouseenter',()=>{
     bigpic.style.display = 'block';
     mask.style.display = 'block';
@@ -22,7 +31,6 @@ pic.addEventListener('mouseleave',()=>{
     bigpic.style.display = 'none';
     mask.style.display = 'none';
 })
-
 pic.addEventListener('mousemove',(event)=>{
     let clientX=event.clientX;
     let clientY=event.clientY;
@@ -57,21 +65,20 @@ const add = document.querySelector('.add1');
 const buy = document.querySelector('.buyitnow');
 const addtocar = document.querySelector('.addtocar');
 del.addEventListener('click',()=>{ 
-    if(num.value <= 1){
-        console.log('111')
-        del.style.cursor = 'not-allowed';
-        del.style.color = '#dedede';
-    }
     if(num.value > 1){
         num.value = num.value - 1;
     }
+    if(num.value <= 1){
+        console.log('111');
+        //del.style.cursor = 'not-allowed';
+        del.style.color = '#dedede';
+    }
 })
-
 add.addEventListener('click',()=>{
     num.value = Number(num.value)+ 1;
     if(num.value > 1){
         console.log('111')
-        del.style.cursor = 'point';
+        //del.style.cursor = 'point';
         del.style.color = '#666666';
     }
 })

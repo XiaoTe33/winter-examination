@@ -1,6 +1,6 @@
-const leftbtn = document.querySelector('.zuo');
-const rightbtn = document.querySelector('.you');
-const images = document.querySelector('.images');
+// const leftbtn = document.querySelector('.zuo');
+// const rightbtn = document.querySelector('.you');
+// const images = document.querySelector('.images');
 //console.log(images.children[0])
 
 // const timer = setInterval(function () {
@@ -51,3 +51,16 @@ const images = document.querySelector('.images');
 //     dots.children[num].className = 'active';
 //     images.children[num].classList.add('current');
 //     })
+
+
+
+const example = document.querySelectorAll('.more');
+console.log(example);
+example[0].id = 3055483356794;
+console.log(example[0].id)
+for( let i = 0; i < example.length; i++){
+    example[i].addEventListener('click',()=>{
+        let storage = window.localStorage;
+        storage.setItem('id',example[i].id)
+    })
+}

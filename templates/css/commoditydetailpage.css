@@ -13,6 +13,11 @@ li{
   display: flex;
   align-items: center;
 }
+.flex3{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
 .flex1{
   display: flex;
   align-items: flex-start;
@@ -170,7 +175,6 @@ li{
   .main{
     display: flex;
     width: 1200px;
-    height: 500px;
     margin: 0px auto;
   }
   .main .text{
@@ -203,10 +207,17 @@ li{
     overflow: hidden;
     display: none;
   }
+  .main .lunbo #bigpic img{
+    width: 800px;
+    height: 800px;
+  }
   .main .lunbo #pic{
     width: 400px;
     height: 400px;
-    background-color: darkgreen;
+  }
+  .main .lunbo #pic img{
+    width: 400px;
+    height: 400px;
   }
   .main .details{
     width: 590px;
@@ -256,4 +267,84 @@ li{
   height: 40px;
   background-color: darkolivegreen;
   margin: 5px;
+}
+
+
+.another{
+  margin-left: 20px;
+}
+.more{
+  width: 200px;
+  height: 200px;
+  background-color: #fff;
+  overflow: hidden;
+}
+.more img{
+  display: block;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+}
+.name2{
+  height: 50px;
+}
+.more .price2{
+  color: #ff7000;
+}
+.more:hover{
+  color:#ff7000;
+}
+
+.detail{
+  display: flex;
+  width: 1200px;
+  height: 500px;
+  margin: 0px auto;
+  align-items: flex-start;
+}
+.detail .w{
+  margin-left: 13px;
+  border-left: 2px solid #f1f1f1;
+}
+.tab ul{
+  height: 50px;
+  width: 852px;
+  background-color: #f7f7f7;
+}
+.tab ul li{
+  padding: 0 25px;
+}
+.tab ul li:hover{
+  color: #ff8000;
+}
+.btn1{
+  width: 135px;
+  height: 50px;
+  background-color: #ff5500;
+  color: #fff;
+  border:none;
+}
+.detail .w p{
+  width: 987px;
+  height: 55px;
+  line-height: 55px;
+  padding-left: 20px;
+}
+.detail .w .parameter{
+  width: 790px;
+  height: 150px;
+  background-color: #f7f7f7;
+}
+.detail .w .parameter p{
+  height: 33px;
+  line-height: 33px;
+}
+.detail .w .parameter span{
+  display: block;
+  height: 85px;
+  width: 195px;
+  background-color: orange;
+}
+.introduce img{
+  width: 790px;
 }

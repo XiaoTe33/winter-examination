@@ -31,41 +31,43 @@
     //     })
     //   const data = await res.json();
     //   console.log(data);
-    var storage = window.localStorage;
-    storage.setItem("id",2959189491118);
+
+         })
+window.addEventListener('load',async()=>{
+     var storage = window.localStorage;
      const url = `http://39.101.72.18:9090/goods?goodsId=${storage.getItem("id")}`
     const res = await fetch(url, {
         method:"get"
             })
       const data = await res.json();
       console.log(data);
-         })
+})
+   
+        //  let dots = document.querySelector('.dots');
 
-         let dots = document.querySelector('.dots');
-
-for (let i = 0; i < images.children.length; i++) {
-//创建一个小li
-var li = document.createElement('li');
-//记录当前小圆圈的索引号 通过创建自定义属性来做
-li.setAttribute('index', i);
-dots.appendChild(li);
-li.addEventListener('click',()=> {
-    //排他
-    for (let i = 0; i < dots.children.length; i++) {
-        dots.children[i].className = '';
-        images.children[i].classList.remove = 'current';
-    }
-    this.className = 'active';
-        // 当我们点击了某个小li 就拿到它的index属性
-    let index = this.getAttribute('index');
-    //console.log(index)
-    images.children[index].classList.add('current');
-            // //当我们点击了某个小li 就要把这个小li 的index给num
-            num = index;
-            circle = index;
-        })
-    }
-dots.children[0].className = 'active';
+// for (let i = 0; i < images.children.length; i++) {
+// //创建一个小li
+// var li = document.createElement('li');
+// //记录当前小圆圈的索引号 通过创建自定义属性来做
+// li.setAttribute('index', i);
+// dots.appendChild(li);
+// li.addEventListener('click',()=> {
+//     //排他
+//     for (let i = 0; i < dots.children.length; i++) {
+//         dots.children[i].className = '';
+//         images.children[i].classList.remove = 'current';
+//     }
+//     this.className = 'active';
+//         // 当我们点击了某个小li 就拿到它的index属性
+//     let index = this.getAttribute('index');
+//     //console.log(index)
+//     images.children[index].classList.add('current');
+//             // //当我们点击了某个小li 就要把这个小li 的index给num
+//             num = index;
+//             circle = index;
+//         })
+//     }
+// dots.children[0].className = 'active';
 
     </script>
 </body>
