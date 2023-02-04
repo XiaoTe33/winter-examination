@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// AddGoods 上架商品
 func AddGoods(c *gin.Context) {
 	file, err := c.FormFile("picture")
 	userId := c.GetString("userId")
@@ -23,16 +24,18 @@ func AddGoods(c *gin.Context) {
 	if handleBindingError(c, c.ShouldBind(&req), &req) {
 		return
 	}
-	if handleError(c, service.AddGoods(req, userId, file.Filename)) {
+	filename := utils.Md5EncodedWithTime(file.Filename)
+	if handleError(c, service.AddGoods(req, userId, filename)) {
 		return
 	}
-	err = c.SaveUploadedFile(file, conf.LocalSavePathOfGoodsPictures+utils.Md5EncodedWithTime(file.Filename)+style)
+	err = c.SaveUploadedFile(file, conf.LocalSavePathOfGoodsPictures+utils.Md5Encoded(filename)+style)
 	if err != nil {
 		jsonError(c, "文件下载出错")
 	}
 	jsonSuccess(c)
 }
 
+// UpdateGoods 更改商品信息
 func UpdateGoods(c *gin.Context) {
 	userId := c.GetString("userId")
 	var req = model.UpdateGoodsReq{}
@@ -43,9 +46,9 @@ func UpdateGoods(c *gin.Context) {
 		return
 	}
 	jsonSuccess(c)
-
 }
 
+// AddGoodsAmount 进货
 func AddGoodsAmount(c *gin.Context) {
 	userId := c.GetString("userId")
 	var req = model.AddGoodsAmountReq{}
@@ -58,6 +61,8 @@ func AddGoodsAmount(c *gin.Context) {
 	jsonSuccess(c)
 
 }
+
+// CutGoodsAmount 卸货
 func CutGoodsAmount(c *gin.Context) {
 	userId := c.GetString("userId")
 	var req = model.CutGoodsAmountReq{}
@@ -70,6 +75,7 @@ func CutGoodsAmount(c *gin.Context) {
 	jsonSuccess(c)
 }
 
+// DeleteGoods 删除商品
 func DeleteGoods(c *gin.Context) {
 	goodsId := c.Param("goodsId")
 	userId := c.GetString("userId")
@@ -79,12 +85,14 @@ func DeleteGoods(c *gin.Context) {
 	jsonSuccess(c)
 }
 
+// MyShopGoods 本店商品
 func MyShopGoods(c *gin.Context) {
 	userId := c.GetString("userId")
 	data := service.MyShopGoods(userId)
 	jsonData(c, data)
 }
 
+// QueryGoods 查询商品信息
 func QueryGoods(c *gin.Context) {
 	if utils.IsValidJWT(c.Request.Header.Get("Token")) {
 		userId := utils.GetUserIdByToken(c.Request.Header.Get("Token"))
@@ -128,6 +136,7 @@ func QueryGoods(c *gin.Context) {
 	jsonData(c, data)
 }
 
+// QueryAllGoodsWithoutMode 查看商品表默认排序
 func QueryAllGoodsWithoutMode(c *gin.Context) {
 	goodsGroup := service.QueryAllGoodsWithoutMode()
 	jsonData(c, goodsGroup)

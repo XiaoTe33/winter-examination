@@ -6,7 +6,6 @@ import (
 	"strconv"
 	"time"
 
-	"winter-examination/src/conf"
 	"winter-examination/src/dao"
 	"winter-examination/src/model"
 	"winter-examination/src/utils"
@@ -155,36 +154,53 @@ func UpdateOrderStatus2(req model.UpdateOrderStatusReq, userId string) error {
 	order := dao.QueryOrderById(req.OrderId)
 	buyerId := order.BuyerId
 	if buyerId != userId {
-
 		return errors.New("您没有id为" + req.OrderId + "的订单")
 	}
 	order.Status = req.Status
-	dao.UpdateOrder(order)
+	u := dao.QueryUserById(userId)
+
+	if req.Status == "1" {
+		money, _ := strconv.ParseFloat(u.Money, 64)
+		consume, _ := strconv.ParseFloat(order.ActualPrice, 64)
+		if consume > money {
+			return errors.New("余额不足")
+		}
+		u.Money = fmt.Sprintf("%.2f", money-consume)
+		dao.UpdateUser(u)
+	}
 	if req.Status == "2" {
 		order := dao.QueryOrderById(req.OrderId)
 		dao.UpGoodsAmount(order.GoodsId, order.Amount)
+		//已支付就退钱
+		if order.Status == "1" {
+			money, _ := strconv.ParseFloat(u.Money, 64)
+			consume, _ := strconv.ParseFloat(order.ActualPrice, 64)
+			u.Money = fmt.Sprintf("%.2f", money+consume)
+			dao.UpdateUser(u)
+		}
 	}
+	dao.UpdateOrder(order)
 	return nil
 }
 
-func UpdateOrderStatus(token string, orderId string, status string) (msg string) {
-	if orderId != "" {
-		order := dao.QueryOrderById(orderId)
-		buyerId := order.BuyerId
-		if buyerId != "" && buyerId == utils.GetUserIdByToken(token) {
-			order.Status = status
-			dao.UpdateOrder(order)
-			return conf.OKMsg
-		}
-		return "您没有id为" + orderId + "的订单"
-	}
-	if status == "2" {
-		order := dao.QueryOrderById(orderId)
-		dao.UpGoodsAmount(order.GoodsId, order.Amount)
-	}
-
-	return "参数捏？"
-}
+//func UpdateOrderStatus(token string, orderId string, status string) (msg string) {
+//	if orderId != "" {
+//		order := dao.QueryOrderById(orderId)
+//		buyerId := order.BuyerId
+//		if buyerId != "" && buyerId == utils.GetUserIdByToken(token) {
+//			order.Status = status
+//			dao.UpdateOrder(order)
+//			return conf.OKMsg
+//		}
+//		return "您没有id为" + orderId + "的订单"
+//	}
+//	if status == "2" {
+//		order := dao.QueryOrderById(orderId)
+//		dao.UpGoodsAmount(order.GoodsId, order.Amount)
+//	}
+//
+//	return "参数捏？"
+//}
 
 func UpdateOrderAddress2(req model.UpdateOrderAddressReq, userId string) error {
 	order := dao.QueryOrderById(req.OrderId)
@@ -197,22 +213,22 @@ func UpdateOrderAddress2(req model.UpdateOrderAddressReq, userId string) error {
 	return nil
 }
 
-func UpdateOrderAddress(token string, orderId string, address string) (msg string) {
-	if orderId != "" {
-		order := dao.QueryOrderById(orderId)
-		buyerId := order.BuyerId
-		if address == "" {
-			return "地址都不填，是送给我的吗？"
-		}
-		if buyerId != "" && buyerId == utils.GetUserIdByToken(token) {
-			order.Address = address
-			dao.UpdateOrder(order)
-			return conf.OKMsg
-		}
-		return "您没有id为" + orderId + "的订单"
-	}
-	return "参数捏？"
-}
+//func UpdateOrderAddress(token string, orderId string, address string) (msg string) {
+//	if orderId != "" {
+//		order := dao.QueryOrderById(orderId)
+//		buyerId := order.BuyerId
+//		if address == "" {
+//			return "地址都不填，是送给我的吗？"
+//		}
+//		if buyerId != "" && buyerId == utils.GetUserIdByToken(token) {
+//			order.Address = address
+//			dao.UpdateOrder(order)
+//			return conf.OKMsg
+//		}
+//		return "您没有id为" + orderId + "的订单"
+//	}
+//	return "参数捏？"
+//}
 
 func MyOrder(userId string) []model.Order {
 	return dao.QueryOrdersByUserId(userId)

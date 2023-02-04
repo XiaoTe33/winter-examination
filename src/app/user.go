@@ -1,12 +1,12 @@
 package app
 
 import (
+	"winter-examination/src/conf"
 	"winter-examination/src/model"
+	"winter-examination/src/service"
 	"winter-examination/src/utils"
 
 	"github.com/gin-gonic/gin"
-	"winter-examination/src/conf"
-	"winter-examination/src/service"
 )
 
 func Login(c *gin.Context) {

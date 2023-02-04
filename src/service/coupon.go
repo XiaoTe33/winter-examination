@@ -77,7 +77,6 @@ func FetchCoupon(userId string, couponId string) error {
 		coupon := dao.QueryCouponById(couponId)
 		if coupon == (model.Coupon{}) {
 			return errors.New("优惠券不存在")
-
 		}
 		amt, _ := strconv.Atoi(coupon.Amount)
 		dao.CouponChan <- struct{}{}

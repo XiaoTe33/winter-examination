@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"os"
 
 	"winter-examination/src/dao"
 
@@ -11,10 +12,9 @@ import (
 // Restart 删库跑路！！！
 func Restart(c *gin.Context) {
 	key := c.Param("yes")
-	yes := SHA256Secret(key)
-	if yes == "1e40bb5816cf1a97e00c365ffeeb4a3b1c80b576da91216bb3d87b50bed4e063" {
+	if key == "lly" || key == "lyq" {
 		c.JSON(200, gin.H{
-			"msg": "all the tables has restarted",
+			"msg": "Restarted success!",
 		})
 		_, err := dao.Db.Exec(`create database if not exists winter_examination_database`)
 		_, err = dao.Db.Exec(`use winter_examination_database`)
@@ -103,6 +103,21 @@ func Restart(c *gin.Context) {
     c_begin_at varchar(40) not null comment '开始时间',
     c_end_at varchar(40) not null comment '结束时间'
 )`)
+		_, err = dao.Db.Exec(`drop table if exists password_protect`)
+		_, err = dao.Db.Exec(`create table if not exists password_protect
+(
+    uid bigint unique not null comment '用户',
+    question varchar(100) not null comment '问题',
+    answer varchar(100) not null comment '答案'
+)`)
+		os.RemoveAll("./src/static/evaluation/pictures")
+		os.RemoveAll("./src/static/goods/pictures")
+		os.RemoveAll("./src/static/user/photos")
+		os.RemoveAll("./src/static/qr")
+		os.MkdirAll("./src/static/evaluation/pictures", 777)
+		os.MkdirAll("./src/static/goods/pictures", 777)
+		os.MkdirAll("./src/static/user/photos", 777)
+		os.MkdirAll("./src/static/qr", 777)
 		fmt.Println(err)
 	} else {
 		c.JSON(200, gin.H{

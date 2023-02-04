@@ -21,6 +21,7 @@ type Coupon struct {
 	EndAt    string `json:"endAt"`
 }
 
+// Discounts 优惠券的打折方法
 func (c Coupon) Discounts(pre string) (cur string) {
 	if c.Kind == "0" {
 		discount, _ := strconv.ParseFloat(c.Discount, 64)
@@ -96,7 +97,6 @@ func (c Coupon) GetDiscountString() string {
 		return c.Discount + "元"
 	}
 	if c.Kind == "1" {
-
 		return c.Discount + "折"
 	}
 	if c.Kind == "2" {

@@ -44,7 +44,6 @@ func QueryUserInfo(id string, username string, phone string, email string) (msg 
 	if id != "" {
 		if u = dao.QueryUserById(id); u != (model.User{}) {
 			goto RETURN
-
 		}
 	}
 	if username != "" {

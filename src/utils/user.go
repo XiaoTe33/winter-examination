@@ -66,6 +66,7 @@ func Md5Encoded(pre string) string {
 	return fmt.Sprintf("%x", md5.Sum([]byte(pre)))
 }
 
+// Md5EncodedWithTime 防止文件名重复
 func Md5EncodedWithTime(pre string) string {
 	return fmt.Sprintf("%x", md5.Sum([]byte(pre+fmt.Sprintf("%b", time2.Now().Nanosecond()))))
 }
