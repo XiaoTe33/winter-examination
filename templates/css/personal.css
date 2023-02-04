@@ -147,12 +147,15 @@ body{
     line-height: 30px;
     margin-top: 20px;
 }
-.main .xinxi2 input{
+.main .xinxi2 .text input{
     height: 12px;
     width: 150px;
     padding: 7px 5px;
 }
-
+.main .xinxi2 .text1{
+    width: 150px;
+    margin-left: 15px;
+}
 .main .xinxi2 .tips{
     width: 190px;
     height: 20px;
@@ -164,6 +167,13 @@ body{
     height: 30px;
     width: 80px;
     margin-right: 42px;
+}
+.line .text a{
+    font-size: 10px;
+    color: rgb(100, 169, 206);
+}
+.line .text a:hover{
+    color: #ff8000;
 }
 #push{
     background-color: orange;

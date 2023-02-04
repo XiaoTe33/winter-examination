@@ -9,8 +9,23 @@
 <body>
     <button id="btn">提交</button>
     <script>
+
          const btn = document.querySelector('#btn')
          btn.addEventListener('click',async()=>{
+            
+            // var storage = window.localStorage;
+    //         const fd = new FormData()
+    // fd.append("token",storage.getItem("token"))
+    // const res = await fetch('http://39.101.72.18:9090/user/login/token', {
+    //   method : 'post',
+    //   body: fd,
+    // })
+    //  let data = await res.json();
+    //  console.log(data);
+    //  if(data.status == 200){
+    //     storage.setItem("token",data.token)
+    //  }
+     
         //     const res = await fetch('http://39.101.72.18:9999/', {
         //     method: "post",
         //     headers: {
@@ -33,15 +48,15 @@
     //   console.log(data);
 
          })
-window.addEventListener('load',async()=>{
-     var storage = window.localStorage;
-     const url = `http://39.101.72.18:9090/goods?goodsId=${storage.getItem("id")}`
-    const res = await fetch(url, {
-        method:"get"
-            })
-      const data = await res.json();
-      console.log(data);
-})
+// window.addEventListener('load',async()=>{
+//      var storage = window.localStorage;
+//      const url = `http://39.101.72.18:9090/goods?goodsId=${storage.getItem("id")}`
+//     const res = await fetch(url, {
+//         method:"get"
+//             })
+//       const data = await res.json();
+//       console.log(data);
+// })
    
         //  let dots = document.querySelector('.dots');
 

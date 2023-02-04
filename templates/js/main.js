@@ -53,9 +53,9 @@
 //     })
 const phonenum = document.querySelector('#phonenum');
 const example = document.querySelectorAll('.more');
-const header = document.querySelector('.header2')
+const header = document.querySelector('.header2');
+var storage = window.localStorage;
 window.addEventListener('load',async()=>{
-    var storage = window.localStorage;
     //console.log(storage.getItem("token"));
     let url = `http://39.101.72.18:9090/user/info`
     const res = await fetch(url, {
@@ -71,9 +71,24 @@ window.addEventListener('load',async()=>{
        header.children[1].classList.add('none');
      }
      
-
 })
 
+
+
+setInterval(async()=>{
+  console.log('111')
+  const fd = new FormData()
+  fd.append("token",storage.getItem("token"))
+  const res = await fetch('http://39.101.72.18:9090/user/login/token', {
+      method : 'post',
+      body: fd,
+  })
+  let data = await res.json();
+  console.log(data);
+  if(data.status == 200){
+      storage.setItem("token",data.token)
+  }
+},1000)
 
 // console.log(example);
 // example[0].id = 3055483356794;
