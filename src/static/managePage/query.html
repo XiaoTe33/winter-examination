@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goods-Query-Page</title>
+</head>
+<link rel="stylesheet" href="query.css">
+
+<body>
+    <div class="top">
+        <div>
+            <div class="left-top"><a href="">1</a><a href="">2</a><a href="">3</a><a href="">4</a><a href="">5</a></div>
+            <div class="right-top"><a href="">1</a><a href="">2</a><a href="">3</a><a href="">4</a><a href="">5</a></div>
+        </div>
+    </div>
+    <div id="msg"></div>
+    <div class="query-box">
+        <input type="text" name="name" id="query-box" placeholder="请输入商品名">
+        <input type="button" value="搜索" id="search" onclick=query()>
+        查找方式：
+        <input class="queryField" type="radio" name="queryField" id="queryField1" value="" checked>名称
+        <input class="queryField" type="radio" name="queryField" id="queryField2" value="" >种类
+        <br>
+        排序方法：
+        <select name="rangeField" id="rangeField">
+            <option value="1">销量</option>
+            <option value="2">价格</option>
+            <option value="3">评分</option>
+        </select>
+        <select name="method" id="method">
+            <option value="0">降序</option>
+            <option value="1">升序</option>
+        </select>
+
+    </div>
+
+    <div class="body">
+        <div class="goods-box" id="link1">
+            <a class="goods-link" href="#">
+                <img src="goods1.jpg" alt="" class="goods-picture" id="goods-picture1">
+                <div class="name" id="name1">1</div>
+                <div class="price" id="price1">1</div>
+            </a>
+        </div>
+        <div class="goods-box" id="link2">
+            <a class="goods-link" href="#">
+                <img src="" alt="" class="goods-picture" id="goods-picture2">
+                <div class="name" id="name2">2</div>
+                <div class="price" id="price2">2</div>
+            </a>
+        </div>
+        <div class="goods-box" id="link3">
+            <a class="goods-link" href="#">
+                <img src="" alt="" class="goods-picture" id="goods-picture3">
+                <div class="name" id="name3">3</div>
+                <div class="price" id="price3">3</div>
+            </a>
+        </div>
+        <div class="goods-box" id="link4">
+            <a class="goods-link" href="#">
+                <img src="" alt="" class="goods-picture" id="goods-picture4">
+                <div class="name" id="name4">4</div>
+                <div class="price" id="price4">4</div>
+            </a>
+        </div>
+        <div class="goods-box" id="link5">
+            <a class="goods-link" href="#">
+                <img src="" alt="" class="goods-picture" id="goods-picture5">
+                <div class="name" id="name5">5</div>
+                <div class="price" id="price5">5</div>
+            </a>
+        </div>
+        <div class="goods-box" id="link6">
+            <a class="goods-link" href="#">
+                <img src="" alt="" class="goods-picture" id="goods-picture6">
+                <div class="name" id="name6">6</div>
+                <div class="price" id="price6">6</div>
+            </a>
+        </div>
+        <div class="goods-box" id="link7">
+            <a class="goods-link" href="#">
+                <img src="" alt="" class="goods-picture" id="goods-picture7">
+                <div class="name" id="name7">7</div>
+                <div class="price" id="price7">7</div>
+            </a>
+        </div>
+        <div class="goods-box" id="link8">
+            <a class="goods-link" href="#">
+                <img src="" alt="" class="goods-picture" id="goods-picture8">
+                <div class="name" id="name8">8</div>
+                <div class="price" id="price8">8</div>
+            </a>
+        </div>
+        <div class="goods-box" id="link9">
+            <a class="goods-link" href="#">
+                <img src="" alt="" class="goods-picture" id="goods-picture9">
+                <div class="name" id="name9">9</div>
+                <div class="price" id="price9">9</div>
+            </a>
+        </div>
+        <div class="goods-box" id="link10">
+            <a class="goods-link" href="#">
+                <img src="" alt="" class="goods-picture" id="goods-picture10">
+                <div class="name" id="name10">10</div>
+                <div class="price" id="price10">10</div>
+            </a>
+        </div>
+    </div>
+</body>
+<script src="ajax.js"></script>
+<script src="query.js"></script>
+
+</html>
