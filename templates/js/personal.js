@@ -1,7 +1,11 @@
-const details = document.querySelectorAll('.text')
+const details = document.querySelectorAll('.text');
+const name = document.querySelector('#name')
 var storage = window.localStorage;
+const fileInp = document.querySelector('#fileInp');
+const avator = document.querySelector('.touxiang');
+const pic = document.querySelector('#avator');
+const avatorbtn = document.querySelector('#avatorbtn');
 window.addEventListener('load',async()=>{
-    var storage = window.localStorage;
     //console.log(storage.getItem("token"));
     let url = `http://39.101.72.18:9090/user/info`
     const res = await fetch(url, {
@@ -13,6 +17,8 @@ window.addEventListener('load',async()=>{
      if( data.status == 200){
        details[1].children[0].innerHTML = data.data.phone;
        details[2].children[0].innerHTML = data.data.email;
+       name.innerHTML = data.data.username;
+       pic.src = data.data.photo;
      }
      
 
@@ -29,6 +35,46 @@ setInterval(async()=>{
     let data = await res.json();
     console.log(data);
     if(data.status == 200){
-        storage.setItem("token",data.token)
+        storage.setItem("token",data.token);
     }
-},200000)
+},2000000)
+
+
+avator.onclick = function(){
+  fileInp.click()
+}
+avatorbtn.addEventListener('click',async()=>{
+    if(fileInp.files.length >0){
+          const fd = new FormData();
+        fd.append("photo",fileInp.files[0]);
+        const res = await fetch('http://39.101.72.18:9090/user/photo', {
+            method: "post",
+            headers : {"Token": storage.getItem("token")},
+            body: fd,
+        })
+      const data = await res.json();
+      console.log(data);
+      if( data.status == 200){
+      console.log('222');
+    }
+  }
+})
+
+const push = document.querySelector('#push');
+const del = document.querySelector('#delete');
+const nikname = document.querySelector('#nicheng');
+
+push.addEventListener('click',async()=>{
+        const fd = new FormData();
+        fd.append("username",details[0].children[0].value);
+        fd.append("email",details[2].children[0].innerHTML);
+        fd.append("phone",details[1].children[0].innerHTML);
+        console.log(fd.get("username"));
+        const res = await fetch('39.101.72.18:9090/user/info', {
+            method: "put",
+            headers : {"Token": storage.getItem("token")},
+            body: fd,
+        })
+      const data = await res.json();
+      console.log(data);
+})

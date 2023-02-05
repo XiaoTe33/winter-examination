@@ -127,6 +127,11 @@ body{
     border: 2px solid #e3e3e3;
     margin-left: 90px;
     margin-right: 25px;
+    overflow: hidden;
+}
+#avator{
+    width: 130px;
+    height: 130px;
 }
 .main .big .yonghuming input{
     height: 12px;
