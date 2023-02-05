@@ -1,7 +1,8 @@
 const account = document.querySelector('#account');
 const password = document.querySelector('#psd');
-const btn = document.querySelector('#btn')
-
+const btn = document.querySelector('#btn');
+const jump = document.querySelector('#jump');
+var storage = window.localStorage;
 
 btn.addEventListener('click',async()=>{
     if(account.value == ''|| account.value == undefined || account.value == null){
@@ -9,6 +10,7 @@ btn.addEventListener('click',async()=>{
     }else if(password.value == ''|| password.value == undefined || password.value == null){
     alert('请输入密码')
     }else{
+      console.log('111')
         let fd = new FormData();
         fd.append("username",account.value);
         fd.append("password",password.value);
@@ -18,14 +20,14 @@ btn.addEventListener('click',async()=>{
           })
           const data = await res.json()
           console.log(data);
-          if(data.msg == '用户名不存在'){
-            alert('用户名不正确');
-          }else if(data.msg == '密码错误'){
-            alert('密码错误');
+          if(data.status !=200){
+            alert(data.msg);
+          }else{
+            storage.setItem("token",data.token);
+            console.log(storage.getItem("token"));
+            jump.href = './main.html'
           }
-          var storage = window.localStorage;
-          storage.setItem("token",data.token);
-          console.log(storage.getItem("token"));
+
     }
     
 })

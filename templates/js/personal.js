@@ -52,7 +52,7 @@ avatorbtn.addEventListener('click',async()=>{
             headers : {"Token": storage.getItem("token")},
             body: fd,
         })
-      const data = await res.json();
+      let data = await res.json();
       console.log(data);
       if( data.status == 200){
       console.log('222');
@@ -69,12 +69,16 @@ push.addEventListener('click',async()=>{
         fd.append("username",details[0].children[0].value);
         fd.append("email",details[2].children[0].innerHTML);
         fd.append("phone",details[1].children[0].innerHTML);
-        console.log(fd.get("username"));
-        const res = await fetch('39.101.72.18:9090/user/info', {
+        console.log(fd.get("email"));
+        const res = await fetch('http://39.101.72.18:9090/user/info', {
             method: "put",
             headers : {"Token": storage.getItem("token")},
             body: fd,
         })
-      const data = await res.json();
-      console.log(data);
+      //let data = await res.json();
+      console.log(res);
+      if(res.status == 200){
+        alert('修改成功');
+      }
 })
+ 
