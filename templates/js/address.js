@@ -46,17 +46,21 @@ add.addEventListener('click',()=>{
     bg.classList.add('active');
 })
 
-// submit.addEventListener('click',async()=>{
-//     const fd = new FormData();
-//     fd.append("")
-//       const res = await fetch('http://39.101.72.18:9090/user/address', {
-//           method: "post",
-//           headers : {"Token": storage.getItem("token")},
-//           body: fd,
-//       })
-//     let data = await res.json();
-//     console.log(data);
-//     if( data.status == 200){
-//     console.log('222');
-//   }
-// })
+submit.addEventListener('click',async()=>{
+    const fd = new FormData();
+    fd.append("province",list[0].value);
+    fd.append("city",list[1].value);
+    fd.append("county",list[2].value);
+    fd.append("detail",list[3].value);
+    fd.append("tag",list[4].value);
+      const res = await fetch('http://39.101.72.18:9090/user/address', {
+          method: "post",
+          headers : {"Token": storage.getItem("token")},
+          body: fd,
+      })
+    let data = await res.json();
+    console.log(data);
+    if( data.status == 200){
+    console.log('222');
+  }
+})

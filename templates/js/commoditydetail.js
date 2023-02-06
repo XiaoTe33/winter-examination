@@ -1,22 +1,42 @@
 const pic = document.querySelector('#pic');
 const bigpic = document.querySelector('#bigpic');
 const mask = document.querySelector('#mask');
-const headline = document.querySelector('#headline')
-
+const headline = document.querySelector('#headline');
+const address = document.querySelector('.address')
+var storage = window.localStorage;
 //读取localstorage，渲染页面
 window.addEventListener('load',async()=>{
-    var storage = window.localStorage;
+    
     const url = `http://39.101.72.18:9090/goods?goodsId=${storage.getItem("id")}`
     const res = await fetch(url, {
        method:"get"
            })
-     const data = await res.json();
-     console.log(data);
-     console.log(data.data.pictureLink)
-     pic.children[0].src = data.data.pictureLink;
-     bigpic.children[0].src = data.data.pictureLink;
-     headline.innerHTML = data.data.name;
+     const goodsdata = await res.json();
+     console.log(goodsdata);
+     console.log(goodsdata.data.pictureLink)
+     if(goodsdata.status == 200){
 
+        pic.children[0].src = goodsdata.data.pictureLink;
+        bigpic.children[0].src = goodsdata.data.pictureLink;
+        headline.innerHTML = goodsdata.data.name;
+     }
+//登录
+    const resp = await fetch('http://39.101.72.18:9090/user/info', {
+      method : 'get',
+      headers : {"Token": storage.getItem("token")}
+    })
+     let persondata = await resp.json();
+     console.log(persondata);
+//地址
+    const responce = await fetch('http://39.101.72.18:9090/user/address', {
+    method : 'get',
+    headers : {"Token": storage.getItem("token")}
+  })
+   let data = await responce.json();
+   console.log(data);
+   if(data.status == 200){
+    address.innerHTML = data.data.province + data.data.city + data.data.county + data.data.detail;
+   }
 })
 //刷新token，保持登录
 setInterval(async()=>{
@@ -30,9 +50,9 @@ setInterval(async()=>{
     let data = await res.json();
     console.log(data);
     if(data.status == 200){
-        storage.setItem("token",data.token)
+        storage.setItem("token",data.token);
     }
-},1000)
+},2000000)
 
 
 
@@ -73,12 +93,40 @@ pic.addEventListener('mousemove',(event)=>{
 })
 
 
+//收藏
+const yuan = document.querySelector('.yuan');
+const shoucang = document.querySelector('.shoucang');
+const collect = document.querySelector('.collect');
+collect.addEventListener('mouseenter',()=>{
+    yuan.classList.add('hover1');
+    shoucang.classList.add('hover2');
+})
+collect.addEventListener('mouseleave',()=>{
+    yuan.classList.remove('hover1');
+    shoucang.classList.remove('hover2');
+})
+collect.addEventListener('click',async()=>{
+    let url = `http://39.101.72.18:9090/user/star/${storage.getItem("id")}`
+    const res = await fetch(url,{
+        method:"put",
+        headers : {"Token": storage.getItem("token")},
+    })
+    //let data = res.json();
+    console.log(res);
+    if(res.status == 200){
+        yuan.style.backgroundColor = '#ff7000';
+        shoucang.style.color = '#ff7000';
+        shoucang.innerHTML = '已收藏';
+    }
+})
+
+
 //加购数量
 const num = document.querySelector('#num')
 const del = document.querySelector('.del1');
 const add = document.querySelector('.add1');
 const buy = document.querySelector('.buyitnow');
-const addtocar = document.querySelector('.addtocar');
+const addtocar = document.querySelectorAll('.addtocar');
 del.addEventListener('click',()=>{ 
     if(num.value > 1){
         num.value = num.value - 1;
@@ -97,24 +145,38 @@ add.addEventListener('click',()=>{
         del.style.color = '#666666';
     }
 })
+
+
 //立即购买，跳转订单页面
 buy.addEventListener('click',async()=>{
     const fd = new FormData();
-    fd.append("goodsId","张三");
-    fd.append("amount",num.value);
-    fd.append("style","23");
-    fd.append("address","male");  
+    fd.append("goodsId",storage.getItem("id"));
+    fd.append("amount",Number(num.value));
+    fd.append("style",1);
+    fd.append("address",address.innerHTML);  
     console.log(fd.get('amount'));
-    const res = await fetch('http://39.101.72.18:9090/order', {
-        method: "post",
-        body: fd,
+    // const res = await fetch('http://39.101.72.18:9090/order', {
+    //     method: "post",
+    //     body: fd,
+    //   })
+    //   const data = await res.json();
+    //   console.log(data);
+})
+
+
+//加入购物车
+for(let i = 0; i<addtocar.length;i++){
+addtocar[i].addEventListener('click',async()=>{
+    let url = `http://39.101.72.18:9090/user/car/${storage.getItem("id")}`
+    const res = await fetch(url, {
+        method: "put",
+        headers : {"Token": storage.getItem("token")}
       })
       const data = await res.json();
       console.log(data);
 })
-//加入购物车
-addtocar.addEventListener('click',async()=>{
-    
-})
+}
+
 
 //选择款式
+

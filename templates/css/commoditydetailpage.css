@@ -183,6 +183,9 @@ li{
     font-size: 14px;
     margin:5px;
   }
+
+
+  /* 放大镜 */
   .main .lunbo{
     width: 400px;
     height: 490px;
@@ -219,6 +222,29 @@ li{
     width: 400px;
     height: 400px;
   }
+
+
+  /* 收藏 */
+  .collect{
+    cursor: pointer;
+  }
+  .yuan{
+    width: 15px;
+    height: 15px;
+    border-radius: 7px;
+    background-color: #807167;
+    margin-right: 5px;
+  }
+  .shoucang{
+    color: #807167;
+  }
+  .hover1{
+    background-color: #ff7000;
+  }
+  .hover2{
+    color:#ff7000;
+  }
+/* 具体信息 */
   .main .details{
     width: 590px;
   }
