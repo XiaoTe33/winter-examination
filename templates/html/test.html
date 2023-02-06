@@ -12,7 +12,18 @@
 
          const btn = document.querySelector('#btn')
          btn.addEventListener('click',async()=>{
-            
+    const fd = new FormData();
+    fd.append("goodsId",123);
+    fd.append("amount",1);
+    fd.append("style",1);
+    fd.append("address",123);  
+    const res = await fetch('http://39.101.72.18:9090/order', {
+        method: "post",
+        body: fd,
+      })
+      const data = await res.json();
+      console.log(data);
+
             // var storage = window.localStorage;
     //         const fd = new FormData()
     // fd.append("token",storage.getItem("token"))

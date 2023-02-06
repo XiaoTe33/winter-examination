@@ -1,11 +1,5 @@
 var storage = window.localStorage;
-
-const pic = document.querySelectorAll('.pic');
-const name = document.querySelectorAll('.name');
-const version = document.querySelectorAll('.version');
-const price = document.querySelectorAll('.price');
-const num = document.querySelectorAll('#num');
-const sum = document.querySelectorAll('.sum');
+let details = document.querySelector('.details');
 
 window.addEventListener('load',async()=>{
     //console.log(storage.getItem("token"));
@@ -25,14 +19,64 @@ window.addEventListener('load',async()=>{
            console.log(data);
            if(data.status == 200){
             for(let i = 0; i<data.data.length; i++){
-                pic[i].children[0].src = data.data[i].pictureLink;
-                name[i].innerHTML = data.data[i].name;
-                //version[i].innerHTML = data.data[i].name;
-                price[i].innerHTML = Number(data.data[i].price);
+                let ul = document.createElement('ul');
+                ul.classList.add('flex');
+                details.appendChild(ul);
+                for( let j=1;j<=8;j++){
+                    let li = document.createElement('li');
+                    var classname = `list${j}`;
+                    li.classList.add(classname);
+                    ul.appendChild(li);
+                    if(j==6){
+                        li.classList.add('flex');
+                        li.classList.add('num');
+                        let btn1 = document.createElement('button');
+                        li.appendChild(btn1);
+                        btn1.classList.add('del1');
+                        btn1.classList.add('btn');
+                        btn1.innerHTML = '-'
+                        let input = document.createElement('input');
+                        input.classList.add('num1');
+                        input.setAttribute("type","text")
+                        input.value = 1;
+                        li.appendChild(input);
+                        let btn2 = document.createElement('button');
+                        btn2.classList.add('add1');
+                        btn2.classList.add('btn');
+                        btn2.innerHTML = '+'
+                        li.appendChild(btn2);
+                    }
+                    if( j==1){
+                        let input = document.createElement('input');
+                        input.setAttribute("type","checkbox");
+                        input.classList.add('check');
+                        li.appendChild(input);
+                    }
+                    if(j==2){
+                        li.classList.add('pic');
+                        let img = document.createElement('img');
+                        li.appendChild(img);
+                        img.src = data.data[i].pictureLink
+                    }
+                    if(j==3){
+                        li.classList.add('name');
+                        li.innerHTML = data.data[i].name;
+                    }
+                    if(j==4){
+                        li.classList.add('version');
+                    }
+                    if(j==5){
+                        li.classList.add('price');
+                        li.innerHTML = Number(data.data[i].price);
+                    }
+                    if(j==7){li.classList.add('sum')}
+                }
             }
            }
      }
 })
+
+
 setInterval(async()=>{
     console.log('111')
     const fd = new FormData()
@@ -48,7 +92,12 @@ setInterval(async()=>{
     }
 },2000000)
 
-
+const pic = document.querySelectorAll('.pic');
+const name = document.querySelectorAll('.name');
+const version = document.querySelectorAll('.version');
+const price = document.querySelectorAll('.price');
+const num = document.querySelectorAll('.num1');
+const sum = document.querySelectorAll('.sum');
 
 
 

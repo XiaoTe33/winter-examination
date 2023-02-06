@@ -15,7 +15,7 @@ window.addEventListener('load',async()=>{
      console.log(goodsdata);
      console.log(goodsdata.data.pictureLink)
      if(goodsdata.status == 200){
-
+        storage.setItem('shopId',goodsdata.data.shopId);
         pic.children[0].src = goodsdata.data.pictureLink;
         bigpic.children[0].src = goodsdata.data.pictureLink;
         headline.innerHTML = goodsdata.data.name;
@@ -35,7 +35,7 @@ window.addEventListener('load',async()=>{
    let data = await responce.json();
    console.log(data);
    if(data.status == 200){
-    address.innerHTML = data.data.province + data.data.city + data.data.county + data.data.detail;
+    address.innerHTML = data.data[0].province + data.data[0].city + data.data[0].county;
    }
 })
 //刷新token，保持登录
@@ -93,7 +93,7 @@ pic.addEventListener('mousemove',(event)=>{
 })
 
 
-//收藏
+//收藏 ok
 const yuan = document.querySelector('.yuan');
 const shoucang = document.querySelector('.shoucang');
 const collect = document.querySelector('.collect');
@@ -121,7 +121,7 @@ collect.addEventListener('click',async()=>{
 })
 
 
-//加购数量
+//加购数量 ok
 const num = document.querySelector('#num')
 const del = document.querySelector('.del1');
 const add = document.querySelector('.add1');
@@ -155,16 +155,16 @@ buy.addEventListener('click',async()=>{
     fd.append("style",1);
     fd.append("address",address.innerHTML);  
     console.log(fd.get('amount'));
-    // const res = await fetch('http://39.101.72.18:9090/order', {
-    //     method: "post",
-    //     body: fd,
-    //   })
-    //   const data = await res.json();
-    //   console.log(data);
+    const res = await fetch('http://39.101.72.18:9090/order', {
+        method: "post",
+        body: fd,
+      })
+      const data = await res.json();
+      console.log(data);
 })
 
 
-//加入购物车
+//加入购物车 ok
 for(let i = 0; i<addtocar.length;i++){
 addtocar[i].addEventListener('click',async()=>{
     let url = `http://39.101.72.18:9090/user/car/${storage.getItem("id")}`
@@ -179,4 +179,29 @@ addtocar[i].addEventListener('click',async()=>{
 
 
 //选择款式
+
+
+
+
+//获取评论
+const comment = document.querySelector('.comment1');
+comment.addEventListener('click',async()=>{
+    console.log('333')
+    const url = `http://39.101.72.18:9090/evaluation?goodsId=${storage.getItem("id")}`
+    const res = await fetch(url, {
+        method:"get",
+       })
+    const data = await res.json();
+    console.log(data);
+    if(data.status == 200){
+        //渲染评论框
+    }
+})
+
+
+//店铺
+// const store = document.querySelector('.store');
+// store.addEventListener('click',async()=>{
+
+// })
 

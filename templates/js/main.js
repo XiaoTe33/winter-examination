@@ -185,7 +185,9 @@ setInterval(async()=>{
 
 
 // //注册事件
+
 for( let i = 0; i < example.length; i++){
+    example[i].id = '3055483356794';
     example[i].addEventListener('click',()=>{
         let storage = window.localStorage;
         storage.setItem('id',example[i].id)
