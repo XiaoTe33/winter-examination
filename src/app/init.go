@@ -77,7 +77,8 @@ func initBackEndRouters() {
 		s.PUT("/notice", JWT(), UpdateShopNotice) //修改商店公告
 		s.GET("/info", JWT(), MyShopInfo)         //我的商店信息
 		s.GET("/order", JWT(), MyShopOrders)      //本店订单
-		s.POST("/queryAll", QueryAllShops)        //查看当前所有商店信息
+		s.GET("/all", QueryAllShops)              //查看当前所有商店信息
+		s.GET("/info/other", QueryShop)           //id查商店
 
 		g := s.Group("/goods") //商品模块(商家)
 		{

@@ -40,16 +40,14 @@ func UpdateShopNotice(c *gin.Context) {
 	jsonSuccess(c)
 }
 
-//func QueryShops(c *gin.Context) {
-//	name := c.PostForm("name")
-//	ownerId := c.PostForm("ownerId")
-//	owner := c.PostForm("owner")
-//	msg, shops := service.QueryShops(name, ownerId, owner)
-//	c.JSON(200, gin.H{
-//		"msg":  msg,
-//		"data": shops,
-//	})
-//}
+func QueryShop(c *gin.Context) {
+	id := c.Query("id")
+	data, err := service.QueryShop(id)
+	if handleError(c, err) {
+		return
+	}
+	jsonData(c, data)
+}
 
 func DeleteShop(c *gin.Context) {
 	userId := c.GetString("userId")

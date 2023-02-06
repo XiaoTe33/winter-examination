@@ -26,3 +26,8 @@ type MyShopInfoRsp struct {
 	Name   string `json:"name"`
 	Notice string `json:"notice"`
 }
+type ShopInfoRsp struct {
+	Id     string `json:"id"`
+	Name   string `json:"name"`
+	Notice string `json:"notice"`
+}
