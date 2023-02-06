@@ -31,7 +31,7 @@ func QueryShopById(id string) model.Shop {
 	var shop model.Shop
 	err := row.Scan(&shop.Id, &shop.OwnerId, &shop.Name, &shop.IsDeleted, &shop.Notice)
 	if err != nil {
-		fmt.Println("QueryShopById row.Scan failed ...")
+		fmt.Println("QueryShopById row.Scan failed ...", err)
 		return model.Shop{}
 	}
 	return shop
