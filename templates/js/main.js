@@ -64,10 +64,9 @@ window.addEventListener('load',async()=>{
     })
      let data = await res.json();
      console.log(data);
-     console.log(data.data.phone)
      if( data.status == 200){
        phonenum.innerText = data.data.phone;
-       header.children[2].classList.remove('none');
+       phonenum.classList.remove('none');
        header.children[0].classList.add('none');
        header.children[1].classList.add('none');
      }
@@ -89,7 +88,7 @@ setInterval(async()=>{
   if(data.status == 200){
       storage.setItem("token",data.token)
   }
-},200000)
+},2000000)
 
 // console.log(example);
 // example[0].id = 3055483356794;
@@ -192,3 +191,22 @@ for( let i = 0; i < example.length; i++){
         storage.setItem('id',example[i].id)
     })
 }
+
+//退出登录
+const signOut = document.querySelector('.sign-out');
+signOut.addEventListener('click',async()=>{
+  const res = await fetch('http://39.101.72.18:9090/user/info', {
+    method : 'get',
+    headers : {"Token": "123456789"}
+  })
+   let data = await res.json();
+   console.log(data);
+   if( data.status != 200){
+    console.log('333')
+     //phonenum.innerText = data.data.phone;
+     phonenum.classList.add('none');
+     header.children[0].classList.remove('none');
+     header.children[1].classList.remove('none');
+     storage.setItem("token","123456789");
+   }
+})

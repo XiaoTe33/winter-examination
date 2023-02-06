@@ -55,7 +55,7 @@ avatorbtn.addEventListener('click',async()=>{
       let data = await res.json();
       console.log(data);
       if( data.status == 200){
-      console.log('222');
+      console.log('修改成功，请刷新');
     }
   }
 })

@@ -77,10 +77,11 @@ li{
 .header a:hover{
     color: #ff8000;
 }
+ .header a{
+    margin: 0 3px;
+ }
 
 .dropbtn {
-    background-color: #c32d2f;
-    color: white;
     border: none;
     cursor: pointer;
   }
@@ -90,25 +91,22 @@ li{
   .dropdown-content {
     display: none;
     position: absolute;
-    top: 40px;
-    width: 140px;
-    background-color: #c32d2f;
+    top: 35px;
+    width: 100px;
+    background-color: #f1f1f1;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
   }
-  .dropdown-content a {
-    color: white;
-    padding: 5px 16px;
-    text-decoration: none;
+  .dropdown-content span {
+    padding: 5px 10px;
     display: block;
   }
-  .dropdown-content a:hover {
-    background-color: #f1f1f1
+  .dropdown-content span:hover {
+    color: #ff8000;
   }
   .dropdown:hover .dropdown-content {
     display: block;
   }
-
 
 .top{
     height: 150px;
