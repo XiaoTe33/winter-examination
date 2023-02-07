@@ -55,7 +55,6 @@ body{
     float: left;
     height: 60px;
     padding-left: 160px;
-    
 }
 .header .nav1 ul li{
     float:left;
@@ -183,14 +182,49 @@ body{
 
 
 
-.main .order .list ul{
+.main .order .list .littlehead{
     /* width: 980px; */
     height: 30px;
     background-color: #f5f5f5;
 }
-.main .order .list ul li{
+.main .order .littlehead li{
     display: block;
     width: 100px;
     height: 30px;
     line-height: 30px;
+}
+.details .list1{
+    width: 70px;
+    height: 135px;
+    margin-left: 15px;
+}
+.details .list2 img{
+    width: 80px;
+    height: 80px;
+}
+.details .list3{
+    width: 265px;
+}
+.details .list4{
+    width: 150px;
+    height: 100px;
+    font-size: 10px;
+    color: #999999;
+}
+.details .list4:hover{
+    border:2px dashed #ff8000;
+}
+.details .list5{
+    width: 125px;
+    text-align: center;
+}
+.details .list6{
+    width: 70px;
+    height: 20px;
+}
+.details .list7{
+    width: 150px;
+}
+.details .list8{
+    width: 135px;
 }

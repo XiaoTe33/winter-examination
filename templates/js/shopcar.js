@@ -4,6 +4,7 @@ const del = document.querySelector('.delete');
 let yes = document.querySelector('.yes');
 let totalPrice = document.querySelector('.totalprice');
 let totalNum = document.querySelector('.totalnum');
+let address;
 
 window.addEventListener('load',async()=>{
     //console.log(storage.getItem("token"));
@@ -128,6 +129,15 @@ window.addEventListener('load',async()=>{
             }
            }
      }
+    const responce = await fetch('http://39.101.72.18:9090/user/address', {
+    method : 'get',
+    headers : {"Token": storage.getItem("token")}
+  })
+   let addressdata = await responce.json();
+   console.log(addressdata);
+   if(data.status == 200){
+    address = addressdata.data[0].province + addressdata.data[0].city + addressdata.data[0].county + addressdata.data[0].detail;
+   }
 })
 
 
@@ -146,87 +156,31 @@ setInterval(async()=>{
     }
 },2000000)
 
-const pic = document.querySelectorAll('.pic');
-const name = document.querySelectorAll('.name');
-const version = document.querySelectorAll('.version');
-const price = document.querySelectorAll('.price');
-const num = document.querySelectorAll('.num1');
-const sum = document.querySelectorAll('.sum');
+console.log(details.children[1])
+//更新总价和总数 no
+for(let i = 0 ;i<details.children.length;i++){  
+    if( details.children[i].children[0].checked == true){
+        console.log('999');
+        totalNum.innerHTML = Number(totalNum.innerHTML) + Number(details.children[i].children[4].value);
+        totalPrice.innerHTML = Number(totalPrice.innerHTML) + Number(details.children[i].children[3].innerHTML)*Number(details.children[i].children[4].value);
+    }
+}
 
-
-// //全选 ok
-let input = document.querySelectorAll('.check');
-// let yes = document.querySelectorAll('.yes');
-// let j=0;
-// for(let i = 0; i < yes.length ; i++){
-//     yes[i].addEventListener('click',function(){
-//         j++;
-//         if (  j % 2 != 0 ){
-//             for(let i=0;i<input.length;i++){
-//                 input[i].checked = true;
-//             }
-//         }else{
-//             for(let i=0;i<input.length;i++){             
-//                 input[i].checked = false;
-//             }
-//         }   
-//     });
-// }
-
-//更新总价和总数
-
-// for(let i = 0 ;i< input.length ;i++){  
-//     if( input[i].checked = true){
-//         console.log('999')
-//         totalNum.innerHTML = Number(totalNum.innerHTML) + Number(num[i]);
-//         totalPrice.innerHTML = Number(totalPrice.innerHTML) + Number(sum[i]);
-//     }
-// }
-
-
-//删除ok
-// del.addEventListener('click',async()=>{
-//     for(let i = 0; i<input.length ; i++){
-//         if( input[i].checked == true){
-//             let url = `http://39.101.72.18:9090/user/car/${Number(i)}`
-//             const res = await fetch(url,{
-//                 method:"delete",
-//                 headers : {"Token": storage.getItem("token")},
-//             })
-//             const data = await res.json();
-//             console.log(data);
-//             //console.log(url);
-//         }
-
-//     }
-// })
 
 //去结算
 const btn = document.querySelector('.totalbtn');
-btn.addEventListener('click',async()=>{
-    
+btn.addEventListener('mouseenter',()=>{
+    for(let i = 0; i<details.children.length;i++){
+        if(details.children[i].children[0].checked == true){
+            btn.style.backgroundColor = '#ff8000';
+        }
+    }
 })
-
-// //数量加减ok
-// const del1 = document.querySelectorAll('.del1');
-// const add1 = document.querySelectorAll('.add1');
-// for(let i = 0;i < input.length ; i++){
-//     del1[i].addEventListener('click',()=>{ 
-//         if(num[i].value > 1){
-//             num[i].value = num[i].value - 1;
-//         }
-//         if(num[i].value <= 1){
-//             console.log('111');
-//             //del1[i].style.cursor = 'not-allowed';
-//             del1[i].style.color = '#dedede';
-//         }
-//     })
-// add1[i].addEventListener('click',()=>{
-//     num[i].value = Number(num[i].value)+ 1;
-//     if(num[i].value > 1){
-//         console.log('111')
-//         //del1[i].style.cursor = 'point';
-//         del1[i].style.color = '#666666';
-//     }
-// })
-// }
+btn.addEventListener('click',async()=>{
+    for(let i = 0; i<details.children.length;i++){
+        if( details.children[i].children[0].checked == true){
+          storage.setItem("id",)
+          //通过购物车的id去查找对应商品id，再传过去
+        }
+    }
+})

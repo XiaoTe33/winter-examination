@@ -1,5 +1,7 @@
+var storage = window.localStorage;
+const ul = document.querySelector('.details');
 window.addEventListener('load',async()=>{
-    var storage = window.localStorage;
+
     //console.log(storage.getItem("token"));
     let url = `http://39.101.72.18:9090/user/info`
     const res = await fetch(url, {
@@ -9,7 +11,13 @@ window.addEventListener('load',async()=>{
      let data = await res.json();
      console.log(data);
      if( data.status == 200){
-       
+        let url = `http://39.101.72.18:9090/order?status=${1}`
+        const res = await fetch(url, {
+          method : 'get',
+          headers : {"Token": storage.getItem("token")}
+        })
+         let data = await res.json();
+         console.log(data);
      }
      
 
@@ -29,4 +37,6 @@ setInterval(async()=>{
         storage.setItem("token",data.token)
     }
 },1000)
+
+
 
