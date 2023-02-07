@@ -71,8 +71,8 @@ func initBackEndRouters() {
 
 	s := r.Group("/shop") //商店模块
 	{
-		s.POST("/", JWT(), AddShop)               //新增商店
-		s.DELETE("/", JWT(), DeleteShop)          //删除商店
+		s.POST("", JWT(), AddShop)                //新增商店
+		s.DELETE("", JWT(), DeleteShop)           //删除商店
 		s.PUT("/info", JWT(), UpdateShopInfo)     //更新商店信息
 		s.PUT("/notice", JWT(), UpdateShopNotice) //修改商店公告
 		s.GET("/info", JWT(), MyShopInfo)         //我的商店信息
@@ -82,12 +82,12 @@ func initBackEndRouters() {
 
 		g := s.Group("/goods") //商品模块(商家)
 		{
-			g.POST("/", JWT(), AddGoods)                          //新增商品
-			g.PUT("/", JWT(), UpdateGoods)                        //修改商品信息
+			g.POST("", JWT(), AddGoods)                           //新增商品
+			g.PUT("", JWT(), UpdateGoods)                         //修改商品信息
 			g.PUT("/add/:goodsId/:amount", JWT(), AddGoodsAmount) //补货
 			g.PUT("/cut/:goodsId/:amount", JWT(), CutGoodsAmount) //卸货
 			g.DELETE("/:goodsId", JWT(), DeleteGoods)             //下架商品
-			g.GET("/", JWT(), MyShopGoods)                        //我的商品
+			g.GET("", JWT(), MyShopGoods)                         //我的商品
 			g.GET("/all", QueryAllGoodsWithoutMode)               //查看所有商品信息
 		}
 	}
@@ -98,16 +98,16 @@ func initBackEndRouters() {
 
 	c := r.Group("/coupon") //优惠券模块(商家)
 	{
-		c.POST("/", JWT(), AddCoupon) //发放优惠券
+		c.POST("", JWT(), AddCoupon) //发放优惠券
 		c.GET("/all", QueryAllCoupons)
 	}
 
 	o := r.Group("/order") //订单模块
 	{
-		o.POST("/", JWT(), AddOrder)                 //新增订单
+		o.POST("", JWT(), AddOrder)                  //新增订单
 		o.PUT("/status", JWT(), UpdateOrderStatus)   //修改订单状态
 		o.PUT("/address", JWT(), UpdateOrderAddress) //修改订单地址
-		o.GET("/", JWT(), MyOrder)                   //我的订单
+		o.GET("", JWT(), MyOrder)                    //我的订单
 		o.GET("/id/:id", QueryOrdersById)            //订单号查询订单
 		o.GET("/shopId/:shopId", QueryOrderByShopId) //商店id查询订单
 		o.GET("/all", QueryAllOrders)                //查看所有订单
@@ -115,15 +115,15 @@ func initBackEndRouters() {
 
 	e := r.Group("/evaluation") //评价模块
 	{
-		e.POST("/", JWT(), AddEvaluation)          //新增评价
+		e.POST("", JWT(), AddEvaluation)           //新增评价
 		e.DELETE("/:id", JWT(), DeleteEvaluations) //删除评价
-		e.GET("/", QueryGoodsEvaluations)          //查询某个商品的评价
+		e.GET("", QueryGoodsEvaluations)           //查询某个商品的评价
 		e.GET("/all", QueryAllEvaluations)         //查看所有
 	}
 
 	q := r.Group("/qr") //扫码
 	{
-		q.GET("/", GetQR)                  //获取二维码
+		q.GET("", GetQR)                   //获取二维码
 		q.GET("/key/:key", JudgeQR)        //用户扫码访问地址
 		q.GET("/status/:key", GetQRStatus) //轮询地址
 	}
