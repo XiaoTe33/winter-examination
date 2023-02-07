@@ -1,56 +1,5 @@
-// const leftbtn = document.querySelector('.zuo');
-// const rightbtn = document.querySelector('.you');
-// const images = document.querySelector('.images');
-//console.log(images.children[0])
-
-// const timer = setInterval(function () {
-//         rightbtn.click();
-//     }, 10000);
-    
-// images.addEventListener('mouseenter', ()=> {
-//         leftbtn.style.display = 'block';
-//         rightbtn.style.display = 'block';
-//         clearInterval(timer);
-//         timer = null;//清除计时器
-//     });
-// images.addEventListener('mouseleave',()=> {
-//         leftbtn.style.display = 'none';
-//         rightbtn.style.display = 'none';
-//         timer = setInterval(function () {
-//             rightbtn.click();
-//         }, 10000);
-//     });
 
 
-// var num = 1;
-// //点击左右按钮
-// rightbtn.addEventListener('click', function () {
-//     // 最后一张图片
-//     if (num == images.children.length) {
-//             num = 0;
-//     }
-//     num++;
-//     //排他清除一下   
-//     for (let i = 0; i < dots.children.length; i++) {
-//         dots.children[i].className = '';
-//         images.children[i].classList.remove = 'current';
-//     }
-//     dots.children[num-1].className = 'active';
-//     images.children[num-1].classList.add('current');
-// })
-
-// leftbtn.addEventListener('click',()=> {
-//     if (num == 0) {
-//          num = images.children.length;
-//      }
-//     num--;
-//     for (let i = 0; i < dots.children.length; i++) {
-//         dots.children[i].className = '';
-//         images.children[i].classList.remove = 'current';
-//     }
-//     dots.children[num].className = 'active';
-//     images.children[num].classList.add('current');
-//     })
 const phonenum = document.querySelector('.phonenum');
 const example = document.querySelectorAll('.more');
 const header = document.querySelector('.header2');
@@ -90,96 +39,88 @@ setInterval(async()=>{
   }
 },2000000)
 
-// console.log(example);
-// example[0].id = 3055483356794;
-// console.log(example[0].id)
+let num = 0;
+let circle = 0;
+  // 小圆点的点击事件
+  const imgbox = document.querySelector('.images')
+  const ul = document.querySelector('.picture');
+  let dots = document.querySelector('.dots');
+  const width = imgbox.offsetWidth;
+  for (let i = 0; i < ul.children.length; i++) {
+    let li =document.createElement('li');
+    //li.setAttribute('index',i);
+    dots.append(li);
+    li.addEventListener('click',()=>{
+      for( let j = 0; j < dots.children.length; j++){
+        dots.children[j].classList.remove('active');
+      }
+      li.classList.add('active');
+      num = i;
+      circle =i;
+      //移动ul
+      const width = imgbox.offsetWidth;
+      console.log(width);
+      animate(ul, -i*width);
+    })
+}
+dots.children[0].classList.add('active');
 
-// const imgs = document.querySelectorAll('.img');
-// const left = document.querySelector('.zuo');
-// const right = document.querySelector('.you');
-// const dots = document.querySelector('.dots').querySelector('li');
+//克隆第一张图(在生成li之后克隆)
+let first = ul.children[0].cloneNode(true);
+ul.appendChild(first);
+//左右按钮
+const left = document.querySelector('.zuo');
+const right = document.querySelector('.you');
+// let num = 0;
+// let circle = 0;
+right.addEventListener('click',()=>{
+  if(num == ul.children.length - 1){
+    ul.style.left = 0;
+    num=0;
+  }
+  num++;
+  animate(ul, -num*width);
+  circle++;
+  if(circle == dots.children.length){
+    circle=0;
+  }
+  for(let i = 0; i<dots.children.length;i++){
+    dots.children[i].classList.remove('active');
+  }
+  dots.children[circle].classList.add('active');
+})
 
- 
-//   // // 鼠标移动到左右箭头的位置更换图片 有灰色背景的图片
-//   // leftArrow.addEventListener('mouseenter', function() {
-//   //     this.style.backgroundPosition = '0 0';
-//   // });
 
-//   // leftArrow.addEventListener('mouseleave', function() {
-//   //     this.style.backgroundPosition = '-83px 0';
-//   // });
+left.addEventListener('click',()=>{
+  if(num == 0){
+    num = ul.children.length - 1;
+    ul.style.left = -num*width + 'px';
+  }
+  num--;
+  animate(ul, -num*width);
+  circle--;
+  if(circle < 0){
+    circle = dots.children.length - 1;
+  }
+  for(let i = 0; i<dots.children.length;i++){
+    dots.children[i].classList.remove('active');
+  }
+  dots.children[circle].classList.add('active');
+})
 
-//   // rightArrow.addEventListener('mouseenter', function() {
-//   //     this.style.backgroundPosition = '-42px 0';
-//   // });
 
-//   // rightArrow.addEventListener('mouseleave', function() {
-//   //     this.style.backgroundPosition = '-123px 0';
-//   // });
-
-
-//   // 给图片设置index 属性，好判断当前的图片是哪一张
-//   for (let i = 0; i < imgs.length; i++) {
-//       imgs[i].setAttribute('data-index', i);
-//   }
-
-//   // 获取当前图片 和 图片的index（数组下标）
-//   var current = this.document.querySelector('.current');
-//   var currentIndex = current.getAttribute('data-index');
-
-//   // 左箭头的点击事件，点击了就返回前一张图片 
-//   // 如果当前图片为第一张那么需要更换到最后一张图片也就是第四张
-//   left.addEventListener('click', function() {
-//       if (currentIndex > 0) {
-//           imgs[currentIndex].classList.remove('current');
-//           dots[currentIndex].classList.remove('active');
-//           imgs[--currentIndex].classList.add('current');
-//           dots[currentIndex].classList.add('active');
-//       } else {
-//           imgs[currentIndex].classList.remove('current');
-//           dots[currentIndex].classList.remove('active');
-//           currentIndex = 4;
-//           imgs[currentIndex].classList.add('current');
-//           dots[currentIndex].classList.add('active');
-//       }
-//   });
-
-//   // 点击右箭头下一张图片切换
-//   // 如果当前为第五张图片，那么切换回第一张图片
-//   right.addEventListener('click', changeImage);
-
-//   var timer = this.setInterval(changeImage, 8000);
-
-//   function changeImage() {
-//       if (currentIndex < 4) {
-//           imgs[currentIndex].classList.remove('current');
-//           dots[currentIndex].classList.remove('active');
-//           imgs[++currentIndex].classList.add('current');
-//           dots[currentIndex].classList.add('active');
-//       } else {
-//           imgs[currentIndex].classList.remove('current');
-//           dots[currentIndex].classList.remove('active');
-//           currentIndex = 0;
-//           imgs[currentIndex].classList.add('current');
-//           dots[currentIndex].classList.add('active');
-//       }
-//   };
-
-//   // 小圆点的点击事件
-//   for (let k = 0; k < dots.length; k++) {
-//       dots[k].setAttribute('data-index', k);
-//       dots[k].addEventListener('click', function() {
-//           var index = this.getAttribute('data-index');
-//           if (index != currentIndex) {
-//               imgs[currentIndex].classList.remove('current');
-//               dots[currentIndex].classList.remove('active');
-//               imgs[index].classList.add('current');
-//               dots[index].classList.add('active');
-//               currentIndex = index;
-//           }
-
-//       })
-//   }
+const timer = setInterval(function () {
+        right.click();
+    }, 10000);
+    
+imgbox.addEventListener('mouseenter', ()=> {
+        left.style.display = 'block';
+        right.style.display = 'block';
+    });
+imgbox.addEventListener('mouseleave',()=> {
+        left.style.display = 'none';
+        right.style.display = 'none';
+    });
 
 
 
