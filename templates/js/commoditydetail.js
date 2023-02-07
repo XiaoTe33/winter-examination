@@ -148,20 +148,24 @@ add.addEventListener('click',()=>{
 
 
 //立即购买，跳转订单页面
-buy.addEventListener('click',async()=>{
-    const fd = new FormData();
-    fd.append("goodsId",storage.getItem("id"));
-    fd.append("amount",Number(num.value));
-    fd.append("style",1);
-    fd.append("address",address.innerHTML);  
-    console.log(fd.get('amount'));
-    const res = await fetch('http://39.101.72.18:9090/order', {
-        method: "post",
-        body: fd,
-      })
-      const data = await res.json();
-      console.log(data);
-})
+// buy.addEventListener('click',async()=>{
+//     const fd = new FormData();
+//     fd.append("goodsId",storage.getItem("id"));
+//     fd.append("amount",Number(num.value));
+//     fd.append("style",1);
+//     fd.append("address",address.innerHTML);  
+//     console.log(fd.get('amount'));
+//     const res = await fetch('http://39.101.72.18:9090/order', {
+//         method: "post",
+//         headers : {"Token": storage.getItem("token")},
+//         body: fd,
+//       })
+//       const data = await res.json();
+//       console.log(data);
+//       if(data.data.status == 200){
+//         buy.children.href = './order.html'
+//       }
+// })
 
 
 //加入购物车 ok
@@ -183,19 +187,20 @@ addtocar[i].addEventListener('click',async()=>{
 
 
 
-//获取评论
+//获取评论 no
 const comment = document.querySelector('.comment1');
 comment.addEventListener('click',async()=>{
     console.log('333')
-    const url = `http://39.101.72.18:9090/evaluation?goodsId=${storage.getItem("id")}`
-    const res = await fetch(url, {
+    console.log(storage.getItem("id"))
+    //const url = `http://39.101.72.18:9090/evaluation?goodsId=${storage.getItem("id")}`
+    const res = await fetch('http://39.101.72.18:9090/evaluation?goodsId=3052467651255', {
         method:"get",
        })
     const data = await res.json();
     console.log(data);
-    if(data.status == 200){
-        //渲染评论框
-    }
+    // if(data.status == 200){
+    //     //渲染评论框
+    // }
 })
 
 

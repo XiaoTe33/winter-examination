@@ -184,6 +184,7 @@ setInterval(async()=>{
 
 
 
+
 // //注册事件
 
 for( let i = 0; i < example.length; i++){
