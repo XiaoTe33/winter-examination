@@ -4,8 +4,7 @@ const btn = document.querySelector('#btn');
 const jump = document.querySelector('#jump');
 var storage = window.localStorage;
 
-btn.addEventListener('click',async(event)=>{
-  event.preventDefault;
+btn.addEventListener('click',async()=>{
   if(account.value == ''|| account.value == undefined || account.value == null){
   alert('请输入账户名称');
   }else if(password.value == ''|| password.value == undefined || password.value == null){
