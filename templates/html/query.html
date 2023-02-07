@@ -6,43 +6,84 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Goods-Query-Page</title>
+    <link rel="stylesheet" href="../css/query.css">
+    <link rel="shortcut icon" href="https://www.suning.com/favicon.ico">
 </head>
-<link rel="stylesheet" href="query.css">
 
 <body>
-    <div class="top">
-        <div>
-            <div class="left-top"><a href="">1</a><a href="">2</a><a href="">3</a><a href="">4</a><a href="">5</a></div>
-            <div class="right-top"><a href="">1</a><a href="">2</a><a href="">3</a><a href="">4</a><a href="">5</a></div>
+    <div class="toptop">
+        <img src="../images/maintop.jpg" />
+        <span>X</span>
+    </div>
+        <div class="header">
+        <div class="header1">
+            <a href="">网站导航</a>
+            <a href="">商家入驻</a>
+            <a href="">客户服务</a>
+            <a href=""></a>
         </div>
-    </div>
-    <div id="msg"></div>
+        <div class="header2 flex">
+            <a href="./login.html" class="">请登录</a>
+            <a href="./register.html" class="">注册有礼</a>
+            <a href="./mysuning.html" class="">
+                <div class="dropdown">
+                    <span class="dropbtn phonenum"></span>
+                    <div class="dropdown-content">
+                      <a href="../html/personal.html">账号管理</a>
+                      <span class="sign-out">退出登录</span>
+                    </div>
+                </div>
+            </a>
+            <a href="">我的订单</a>
+            <a href="">我的易购</a>
+            <a href="">苏宁会员</a>
+            <a href="">购物车</a>
+            <a href="">易付宝</a>
+            <a href="">企业采购</a>
+            <a href="">手机苏宁</a>
+        </div>
+        </div>
+    <!-- <div id="msg"></div> -->
     <div class="query-box">
-        <input type="text" name="name" id="query-box" placeholder="请输入商品名">
-        <input type="button" value="搜索" id="search" onclick=query()>
-        查找方式：
-        <input class="queryField" type="radio" name="queryField" id="queryField1" value="" checked>名称
-        <input class="queryField" type="radio" name="queryField" id="queryField2" value="" >种类
-        <br>
-        排序方法：
-        <select name="rangeField" id="rangeField">
-            <option value="1">销量</option>
-            <option value="2">价格</option>
-            <option value="3">评分</option>
-        </select>
-        <select name="method" id="method">
-            <option value="0">降序</option>
-            <option value="1">升序</option>
-        </select>
+        <div class="searchbox flex1">
+            <img src="../images/logo.png">
+            <div class="flex1">
+                <input type="text" placeholder="请输入商品名" class="box" id="query-box">
+                <button class="btn" id="search">搜索</button>
+            </div>    
+        </div>
+        <div class="flex1">
+            <div>
+                <span>查找方式：</span>
+                <input class="queryField" type="radio" name="queryField" id="queryField1" checked>
+                <label for="queryField1"> 名称</label>
+                <input class="queryField" type="radio" name="queryField" id="queryField2" >
+                <label for="queryField2">种类</label>
+            </div>
+            <div class="paixu">
+                <span>排序方法：</span>
+                <select name="rangeField" id="rangeField">
+                    <option value="1" selected="selected">销量</option>
+                    <option value="2">价格</option>
+                    <option value="3">评分</option>
+                </select>
+                <select name="method" id="method">
+                    <option value="0" selected="selected">降序</option>
+                    <option value="1">升序</option>
+                </select> 
+            </div>
+   
+        </div>
+
 
     </div>
 
-    <div class="body">
+    <div class="body flex">
         <div class="goods-box" id="link1">
             <a class="goods-link" href="#">
-                <img src="goods1.jpg" alt="" class="goods-picture" id="goods-picture1">
-                <div class="name" id="name1">1</div>
-                <div class="price" id="price1">1</div>
+                <img src="" alt="" class="goods-picture" id="goods-picture1">
+                <p class="name" id="name1">1</p>
+                <p class="price" id="price1">1</p>
             </a>
         </div>
         <div class="goods-box" id="link2">
@@ -109,8 +150,6 @@
             </a>
         </div>
     </div>
+    <script src="../js/query.js"></script>
 </body>
-<script src="ajax.js"></script>
-<script src="query.js"></script>
-
 </html>

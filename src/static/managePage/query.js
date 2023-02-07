@@ -3,6 +3,7 @@ var queryMode = '20'
 var btn = document.getElementById('search')
 var query = function () {
 
+
     //1.获取元素
     var pictures = document.getElementsByClassName('goods-picture')
     var goodsBoxes = document.getElementsByClassName('goods-box')
@@ -13,7 +14,7 @@ var query = function () {
     var queryField =document.querySelectorAll
     //2.获取数据
     //2.1获取查询参数
-    var queryText = document.getElementById('query-box')
+    var queryText = document.getElementById('query-box');
     //2.2发送请求
     ajax({
         method: 'get',
